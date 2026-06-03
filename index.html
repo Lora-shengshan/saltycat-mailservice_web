@@ -1208,13 +1208,23 @@
                             <span class="font-mono text-slate-200 block">MX</span>
                         </div>
                     </div>
+                    <!-- Priority -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div>
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">優先權 Priority / Precedence</span>
+                            <span class="font-mono text-slate-200 block">10</span>
+                        </div>
+                        <button onclick="copyText('10', '優先權')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
                     <!-- Value -->
                     <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
                         <div class="truncate">
-                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">設定值 Value</span>
-                            <span class="font-mono text-slate-200 block truncate">10 inbound-smtp.us-east-1.amazonaws.com.</span>
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">設定值 Value / Points To</span>
+                            <span class="font-mono text-slate-200 block truncate">inbound-smtp.us-east-1.amazonaws.com.</span>
                         </div>
-                        <button onclick="copyText('10 inbound-smtp.us-east-1.amazonaws.com.', '設定值 Value')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                        <button onclick="copyText('inbound-smtp.us-east-1.amazonaws.com.', '設定值 Value')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
                             <i class="fa-solid fa-copy"></i>
                         </button>
                     </div>
