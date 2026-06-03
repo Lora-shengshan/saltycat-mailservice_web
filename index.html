@@ -541,6 +541,53 @@
         </div>
     </div>
 
+    <!-- ================= MODERN MODAL COMPONENT (Admin User Details - Phase 7) ================= -->
+    <div id="admin-user-details-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
+        <div class="glass-panel rounded-3xl max-w-3xl w-full p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start border-b border-slate-800 pb-4">
+                <div>
+                    <h3 class="text-xl font-black text-rose-500"><i class="fa-solid fa-user-gear"></i> 用戶詳細營運與設定狀態</h3>
+                    <p class="text-xs text-slate-400 mt-1">檢視此用戶目前在平台中綁定的自訂域名、驗證狀態，與設置的轉寄對照規則。</p>
+                </div>
+                <button onclick="closeAdminUserDetailsModal()" class="text-slate-400 hover:text-white transition text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- User meta details -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-slate-950/50 rounded-2xl p-4 border border-slate-800 text-xs">
+                <div>
+                    <span class="text-slate-500 block">用戶 UID</span>
+                    <span id="admin-detail-uid" class="font-mono text-slate-200 block truncate select-all"></span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block">登入電子信箱</span>
+                    <span id="admin-detail-email" class="font-semibold text-slate-200 block truncate"></span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block">帳號方案等級</span>
+                    <span id="admin-detail-tier" class="font-bold text-indigo-400 block"></span>
+                </div>
+                <div>
+                    <span class="text-slate-500 block">帳號使用狀態</span>
+                    <span id="admin-detail-status" class="font-bold block"></span>
+                </div>
+            </div>
+
+            <!-- Domains & Mappings breakdown -->
+            <div class="space-y-4">
+                <h4 class="text-sm font-bold text-slate-300 tracking-wider uppercase"><i class="fa-solid fa-globe text-indigo-400 mr-1"></i> 已綁定的自訂網域與轉寄規則</h4>
+                <div id="admin-detail-domains-container" class="space-y-4">
+                    <!-- Dynamic Domains & Mappings list -->
+                </div>
+            </div>
+
+            <div class="flex justify-end border-t border-slate-800 pt-4">
+                <button onclick="closeAdminUserDetailsModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-6 rounded-xl text-sm transition">
+                    關閉
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- ================= FIREBASE & APP LOGIC SCRIPT ================= -->
     <!-- Firebase App and Auth SDKs (Compat v9 for Native browser script execution) -->
@@ -1305,6 +1352,7 @@
                                     </span>
                                 </td>
                                 <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-xs font-medium space-x-2">
+                                    <button onclick="viewUserDetails('${u.uid}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 py-1.5 px-3 rounded-lg border border-slate-700 transition">查看詳情</button>
                                     ${actionBtn}
                                 </td>
                             </tr>
@@ -1337,6 +1385,85 @@
             } catch (e) {
                 Swal.fire({ icon: "error", title: "網路異常", text: e.message });
             }
+        }
+
+        async function viewUserDetails(uid) {
+            Swal.fire({ title: "正在獲取詳細營運資料...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/admin/users/${uid}/details`, {
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (res.ok) {
+                    Swal.close();
+                    const data = await res.json();
+                    
+                    // Fill in user metadata
+                    document.getElementById("admin-detail-uid").innerText = data.uid;
+                    document.getElementById("admin-detail-email").innerText = data.email || "無";
+                    document.getElementById("admin-detail-tier").innerText = data.tier.toUpperCase();
+                    
+                    const statusEl = document.getElementById("admin-detail-status");
+                    statusEl.innerText = data.account_status === "active" ? "啟用中 (Active)" : "已停用 (Suspended)";
+                    statusEl.className = data.account_status === "active" 
+                        ? "font-bold text-emerald-400 block" 
+                        : "font-bold text-rose-400 block";
+                        
+                    // Render domains & mappings breakdown
+                    const container = document.getElementById("admin-detail-domains-container");
+                    if (data.domains.length === 0) {
+                        container.innerHTML = `<p class="text-xs text-slate-500 py-2">該用戶尚未綁定任何域名。</p>`;
+                    } else {
+                        container.innerHTML = "";
+                        data.domains.forEach(d => {
+                            const d_verified = d.status === "verified";
+                            const d_badge = d_verified 
+                                ? `<span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded text-[10px] font-bold">已驗證</span>`
+                                : `<span class="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded text-[10px] font-bold">待驗證</span>`;
+                                
+                            let mappings_html = "";
+                            if (d.mappings.length === 0) {
+                                mappings_html = `<p class="text-[11px] text-slate-500 italic mt-1 pl-4">└ 尚未建立任何郵件轉寄規則</p>`;
+                            } else {
+                                d.mappings.forEach(m => {
+                                    mappings_html += `
+                                        <div class="flex items-center space-x-2 text-xs text-slate-300 mt-1 pl-4 font-mono">
+                                            <span class="text-slate-500">└</span>
+                                            <span class="font-semibold text-slate-200">${m.prefix}</span>
+                                            <span class="text-slate-600">@${d.domain_name}</span>
+                                            <i class="fa-solid fa-arrow-right-long text-slate-700 mx-1"></i>
+                                            <span class="text-indigo-400 font-semibold">${m.target_gmail}</span>
+                                        </div>
+                                    `;
+                                });
+                            }
+                            
+                            container.innerHTML += `
+                                <div class="bg-slate-950/40 border border-slate-800 rounded-2xl p-4 space-y-2">
+                                    <div class="flex items-center space-x-2">
+                                        <span class="font-mono text-sm font-bold text-slate-100">${d.domain_name}</span>
+                                        ${d_badge}
+                                    </div>
+                                    <div class="space-y-1">
+                                        <span class="text-[11px] text-slate-500 font-bold block">轉寄對照規則 Mappings:</span>
+                                        ${mappings_html}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    document.getElementById("admin-user-details-modal").classList.remove("hidden");
+                } else {
+                    const err = await res.json();
+                    Swal.fire({ icon: "error", title: "獲取詳情失敗", text: err.detail });
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+            }
+        }
+        
+        function closeAdminUserDetailsModal() {
+            document.getElementById("admin-user-details-modal").classList.add("hidden");
         }
     </script>
 </body>
