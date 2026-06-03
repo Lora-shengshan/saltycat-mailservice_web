@@ -26,7 +26,7 @@
 
     <!-- Top Navigation Bar -->
     <header class="glass-panel sticky top-0 z-40 w-full border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-3">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="handleLogoClick()">
             <div class="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
                 <i class="fa-solid fa-cat text-white text-xl"></i>
             </div>
@@ -36,93 +36,188 @@
             </div>
         </div>
         
-        <!-- User Info & Action -->
-        <div id="nav-user-area" class="hidden flex items-center space-x-4">
-            <span id="user-display-email" class="text-sm font-medium text-slate-300"></span>
-            <span class="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-1 text-xs font-medium text-indigo-400 ring-1 ring-inset ring-indigo-500/30">
-                免費體驗方案
-            </span>
-            <button onclick="handleSignOut()" class="text-sm font-semibold text-slate-400 hover:text-white transition duration-200">
-                登出 <i class="fa-solid fa-arrow-right-from-bracket ml-1"></i>
-            </button>
+        <!-- Navigation Buttons & User Info -->
+        <div class="flex items-center space-x-6">
+            <nav class="hidden md:flex space-x-6 text-sm font-semibold text-slate-300">
+                <a href="#" onclick="showSection('landing-section')" class="hover:text-white transition">首頁功能</a>
+                <a href="#" onclick="showSection('pricing-section')" class="hover:text-white transition">方案定價</a>
+            </nav>
+
+            <div id="nav-user-area" class="hidden flex items-center space-x-4">
+                <span id="user-display-email" class="text-sm font-medium text-slate-300"></span>
+                <span id="user-tier-badge" class="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-1 text-xs font-medium text-indigo-400 ring-1 ring-inset ring-indigo-500/30">
+                    免費體驗方案
+                </span>
+                <button onclick="handleSignOut()" class="text-sm font-semibold text-slate-400 hover:text-white transition duration-200">
+                    登出 <i class="fa-solid fa-arrow-right-from-bracket ml-1"></i>
+                </button>
+            </div>
+
+            <!-- Login/Register Trigger when logged out -->
+            <div id="nav-guest-area" class="flex items-center space-x-3">
+                <button onclick="openAuthModal()" class="text-sm font-semibold text-slate-300 hover:text-white transition px-3 py-2">登入</button>
+                <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-xl text-sm transition">註冊免費體驗</button>
+            </div>
         </div>
     </header>
+
+    <!-- Guest Mode Banner Indicator -->
+    <div id="guest-indicator-banner" class="hidden bg-amber-500/10 border-b border-amber-500/20 text-amber-400 px-6 py-2.5 text-center text-xs font-bold flex items-center justify-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>您目前正在使用「免註冊體驗模式」。此時域名及轉寄僅為網頁預覽模擬，點此 </span>
+        <button onclick="openAuthModal('signup')" class="underline hover:text-white transition">註冊一個免費帳號</button>
+        <span>即可正式啟用 AWS SES 雲端轉寄服務！</span>
+    </div>
 
     <!-- Main Content Area -->
     <main class="flex-grow container mx-auto px-6 py-8">
         
-        <!-- ================= LANDING / AUTH VIEW ================= -->
-        <div id="auth-view" class="max-w-4xl mx-auto my-12 flex flex-col md:flex-row items-center justify-between gap-12">
-            <div class="md:w-1/2 space-y-6">
-                <div class="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-semibold">
-                    <span>🎉 專案試營運階段：註冊即享永久免費版</span>
-                </div>
-                <h2 class="text-4xl md:text-5xl font-black text-white leading-tight">
-                    最省錢的<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-500">專屬自訂域名</span><br>郵件轉寄服務
-                </h2>
-                <p class="text-slate-400 leading-relaxed text-sm">
-                    為什麼要為企業信箱支付昂貴的月費？使用 Saltycat Mailservice，您可以將自己的網域（如 <code class="text-indigo-300 bg-slate-800 px-1 rounded">hi@yourdomain.com</code>）100% 完美轉寄至您現有的免費 Gmail，並完全通過 SPF、DKIM 與 DMARC 加密校驗，拒絕垃圾郵件箱！
-                </p>
-                <div class="grid grid-cols-2 gap-4 pt-4">
-                    <div class="flex items-start space-x-2.5">
-                        <i class="fa-solid fa-circle-check text-indigo-400 mt-1"></i>
-                        <p class="text-xs text-slate-300"><strong>100% 附件保存</strong><br><span class="text-slate-500">無損轉送所有文件與附檔</span></p>
+        <!-- ================= SECTION 1: LANDING & FEATURES ================= -->
+        <section id="landing-section" class="space-y-16 py-8">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
+                <div class="md:w-1/2 space-y-6">
+                    <div class="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-semibold">
+                        <span>🎉 專案試營運階段：Lite 方案註冊享首月免費體驗</span>
                     </div>
-                    <div class="flex items-start space-x-2.5">
-                        <i class="fa-solid fa-circle-check text-indigo-400 mt-1"></i>
-                        <p class="text-xs text-slate-300"><strong>極速零殘留</strong><br><span class="text-slate-500">轉寄完成立刻抹除，極致隱私</span></p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Login Card -->
-            <div class="w-full md:w-[400px] glass-panel rounded-3xl p-8 shadow-2xl">
-                <h3 class="text-xl font-bold text-white mb-2">開始體驗</h3>
-                <p class="text-xs text-slate-400 mb-6">請選擇以下登入或註冊方式</p>
-                
-                <!-- Google Login Button -->
-                <button onclick="handleGoogleLogin()" class="w-full bg-white text-slate-900 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-3 hover:bg-slate-100 transition duration-200 shadow-lg shadow-white/5 mb-4">
-                    <svg class="w-5 h-5" viewBox="0 0 24 24">
-                        <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.48 14.98 1 12 1 7.35 1 3.37 3.68 1.42 7.57l3.79 2.93c.92-2.76 3.51-4.46 6.79-4.46z"/>
-                        <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.74 2.9c2.19-2.02 3.69-4.99 3.69-8.64z"/>
-                        <path fill="#FBBC05" d="M5.21 10.5c-.24-.72-.38-1.49-.38-2.3s.14-1.58.38-2.3L1.42 2.97C.52 4.77 0 6.82 0 9s.52 4.23 1.42 6.03l3.79-2.53z"/>
-                        <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.74-2.9c-1.1.74-2.51 1.18-4.22 1.18-3.28 0-5.87-1.7-6.79-4.46L1.42 16.37C3.37 20.32 7.35 23 12 23z"/>
-                    </svg>
-                    <span>使用 Google 帳號登入</span>
-                </button>
-
-                <div class="relative flex py-3 items-center">
-                    <div class="flex-grow border-t border-slate-800"></div>
-                    <span class="flex-shrink mx-4 text-xs text-slate-600 font-bold">或電子信箱登入</span>
-                    <div class="flex-grow border-t border-slate-800"></div>
-                </div>
-
-                <!-- Traditional Login Form -->
-                <form id="email-login-form" onsubmit="handleEmailAuth(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-400 mb-1.5">電子信箱 Address</label>
-                        <input id="auth-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-400 mb-1.5">密碼 Password</label>
-                        <input id="auth-password" type="password" required placeholder="••••••••" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
-                    </div>
-                    
-                    <div class="flex items-center justify-between pt-1">
-                        <button type="button" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-xs text-indigo-400 hover:underline">
-                            沒有帳號？立即註冊
+                    <h2 class="text-4xl md:text-5xl font-black text-white leading-tight">
+                        最省錢的<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-500">專屬自訂域名</span><br>郵件轉寄服務
+                    </h2>
+                    <p class="text-slate-400 leading-relaxed text-sm">
+                        為什麼要為企業信箱支付昂貴的月費？使用 Saltycat Mailservice，您可以將自己的網域（如 <code class="text-indigo-300 bg-slate-800 px-1 rounded">ceo@yourdomain.tw</code>）100% 完美轉寄至您現有的免費 Gmail，免除每個月數百元按帳號收費的負擔！
+                    </p>
+                    <div class="flex flex-wrap gap-4 pt-2">
+                        <button onclick="startGuestExperience()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20 flex items-center space-x-2">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                            <span>免註冊，直接免費體驗</span>
+                        </button>
+                        <button onclick="showSection('pricing-section')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3.5 px-6 rounded-xl text-sm transition">
+                            查看方案定價
                         </button>
                     </div>
+                </div>
 
-                    <button type="submit" id="auth-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition duration-200 shadow-lg shadow-indigo-600/20">
-                        立即登入
-                    </button>
-                </form>
+                <!-- Feature visual block -->
+                <div class="w-full md:w-1/2 bg-slate-950/40 rounded-3xl p-8 border border-slate-800 space-y-6">
+                    <h3 class="text-lg font-bold text-white"><i class="fa-solid fa-list-check text-indigo-400 mr-1.5"></i> 四大技術核心特點：</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-200">100% SPF/DKIM/DMARC 完美對齊</h4>
+                                <p class="text-xs text-slate-500 mt-1">內建 Sender Rewriting Scheme (SRS)，出站自動重簽署 DKIM 驗證，絕不掉入 Gmail 垃圾箱。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
+                                <i class="fa-solid fa-paperclip"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-200">100% 大附檔與二進位附件支援</h4>
+                                <p class="text-xs text-slate-500 mt-1">郵件採流式（Streaming）原封儲存與二次打包，完整保留所有多媒體 HTML 與大檔案附件。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
+                                <i class="fa-solid fa-user-secret"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-bold text-slate-200">24小時零殘留極致隱私</h4>
+                                <p class="text-xs text-slate-500 mt-1">S3 入站緩衝區設有物理生命週期防禦，轉寄投遞成功後立刻物理刪除，不留底，安全放心。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- ================= CLIENT DASHBOARD VIEW ================= -->
-        <div id="dashboard-view" class="hidden space-y-8">
+        <!-- ================= SECTION 2: PRICING PLANS ================= -->
+        <section id="pricing-section" class="py-8 space-y-12">
+            <div class="text-center max-w-2xl mx-auto space-y-4">
+                <h3 class="text-3xl font-black text-white">透明、簡單、划算的定價方案</h3>
+                <p class="text-sm text-slate-400">Lite 體驗版免費直接用。當您需要正式將網域連線、並在雲端運行真正郵件轉寄時，才需要註冊帳號。</p>
+            </div>
+
+            <!-- 3 Column Pricing Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                
+                <!-- 1. Lite Plan -->
+                <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between border border-slate-800/80 hover:border-slate-700 transition relative">
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <h4 class="text-xl font-bold text-white">Lite 體驗版</h4>
+                            <p class="text-xs text-slate-500">適合個人工作室、自由職業者，免費體驗轉寄服務。</p>
+                        </div>
+                        <div class="flex items-baseline text-white">
+                            <span class="text-4xl font-extrabold tracking-tight">NT$ 0</span>
+                            <span class="ml-1 text-sm font-semibold text-slate-500">/ 註冊享首月免費體驗</span>
+                        </div>
+                        <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>1 個</strong> 自訂域名綁定</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 組</strong> 郵件對照規則 (Mappings)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 100% 附件保存、零留底傳輸</li>
+                            <li class="flex items-center text-slate-500"><i class="fa-solid fa-xmark mr-2.5"></i> 萬用前綴金鑰 (Catch-all *)</li>
+                        </ul>
+                    </div>
+                    <button onclick="startGuestExperience()" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
+                        免費免註冊體驗 <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+
+                <!-- 2. Starter Plan (Most Popular) -->
+                <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between border-2 border-indigo-500 hover:border-indigo-400 transition relative shadow-2xl shadow-indigo-500/10">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase shadow-lg shadow-indigo-500/20">
+                        Most Popular 熱門推薦
+                    </div>
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <h4 class="text-xl font-bold text-white">Starter 方案</h4>
+                            <p class="text-xs text-slate-500">適合小型企業或個人品牌，解鎖更靈活的郵件接收配置。</p>
+                        </div>
+                        <div class="flex items-baseline text-white">
+                            <span class="text-4xl font-extrabold tracking-tight">NT$ 99</span>
+                            <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                        </div>
+                        <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>10 組</strong> 郵件對照規則</li>
+                            <li class="flex items-center font-bold text-white"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 萬用金鑰 (Catch-all *)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 包含 Lite 版所有核心安全技術</li>
+                        </ul>
+                    </div>
+                    <button onclick="openUpgradeModal()" class="mt-8 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-500/20">
+                        聯繫客服升級 Starter
+                    </button>
+                </div>
+
+                <!-- 3. Pro Plan -->
+                <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between border border-slate-800/80 hover:border-slate-700 transition relative">
+                    <div class="space-y-6">
+                        <div class="space-y-2">
+                            <h4 class="text-xl font-bold text-white">Pro 方案</h4>
+                            <p class="text-xs text-slate-500">適合專業團隊與企業營運，具備極致的域名自主管理能力。</p>
+                        </div>
+                        <div class="flex items-baseline text-white">
+                            <span class="text-4xl font-extrabold tracking-tight">NT$ 299</span>
+                            <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                        </div>
+                        <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>無限個</strong> 自訂網域綁定</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>無限組</strong> 郵件對照規則</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 萬用金鑰 (Catch-all *)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 專屬出站 IP 投遞保障</li>
+                        </ul>
+                    </div>
+                    <button onclick="openUpgradeModal()" class="mt-8 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
+                        聯繫客服升級 Pro
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: CLIENT DASHBOARD ================= -->
+        <section id="dashboard-section" class="hidden space-y-8 py-8">
             
             <!-- Dashboard Welcome Banner -->
             <div class="glass-panel rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
@@ -168,7 +263,6 @@
                     <div class="glass-panel rounded-3xl p-6 shadow-xl space-y-4">
                         <h4 class="text-sm font-bold text-slate-300 tracking-wider uppercase">已連接的自訂域名</h4>
                         <div id="domains-list-container" class="space-y-3">
-                            <!-- Dynamic Domain badge -->
                             <p class="text-xs text-slate-500 py-2">尚未綁定任何域名。</p>
                         </div>
                     </div>
@@ -243,10 +337,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
-        <!-- ================= ADMIN GOVERNMENT PANEL ================= -->
-        <div id="admin-view" class="hidden space-y-8">
+        <!-- ================= SECTION 4: ADMIN GOVERNMENT PANEL ================= -->
+        <section id="admin-section" class="hidden space-y-8 py-8">
             <div class="glass-panel rounded-3xl p-6 flex items-center justify-between">
                 <div>
                     <h2 class="text-2xl font-black text-rose-500 flex items-center gap-2">
@@ -295,7 +389,6 @@
                             </tr>
                         </thead>
                         <tbody id="admin-users-table-body" class="divide-y divide-slate-800">
-                            <!-- Dynamic Users rows -->
                             <tr>
                                 <td colspan="4" class="py-6 text-center text-xs text-slate-500">載入用戶列表中...</td>
                             </tr>
@@ -303,7 +396,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </section>
 
     </main>
 
@@ -312,6 +405,54 @@
         <p>© 2026 Saltycat Mailservice 鹹魚域名郵件轉寄專案. All rights reserved.</p>
         <p class="mt-1">如有任何商務合作或帳號疑問，請發信至 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a></p>
     </footer>
+
+    <!-- ================= AUTH MODAL (Google / Email Password) ================= -->
+    <div id="auth-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
+        <div class="glass-panel rounded-3xl max-w-sm w-full p-8 shadow-2xl relative">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="auth-modal-title" class="text-xl font-bold text-white mb-2">登入您的帳戶</h3>
+            <p class="text-xs text-slate-400 mb-6">請選擇以下登入或註冊方式正式啟用雲端轉寄功能</p>
+            
+            <!-- Google Login Button -->
+            <button onclick="handleGoogleLogin()" class="w-full bg-white text-slate-900 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-3 hover:bg-slate-100 transition duration-200 shadow-lg shadow-white/5 mb-4">
+                <svg class="w-5 h-5" viewBox="0 0 24 24">
+                    <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.48 14.98 1 12 1 7.35 1 3.37 3.68 1.42 7.57l3.79 2.93c.92-2.76 3.51-4.46 6.79-4.46z"/>
+                    <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.74 2.9c2.19-2.02 3.69-4.99 3.69-8.64z"/>
+                    <path fill="#FBBC05" d="M5.21 10.5c-.24-.72-.38-1.49-.38-2.3s.14-1.58.38-2.3L1.42 2.97C.52 4.77 0 6.82 0 9s.52 4.23 1.42 6.03l3.79-2.53z"/>
+                    <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.74-2.9c-1.1.74-2.51 1.18-4.22 1.18-3.28 0-5.87-1.7-6.79-4.46L1.42 16.37C3.37 20.32 7.35 23 12 23z"/>
+                </svg>
+                <span>使用 Google 帳號登入</span>
+            </button>
+
+            <div class="relative flex py-3 items-center">
+                <div class="flex-grow border-t border-slate-800"></div>
+                <span class="flex-shrink mx-4 text-xs text-slate-600 font-bold">或電子信箱登入</span>
+                <div class="flex-grow border-t border-slate-800"></div>
+            </div>
+
+            <!-- Traditional Login Form -->
+            <form id="email-login-form" onsubmit="handleEmailAuth(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">電子信箱 Address</label>
+                    <input id="auth-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">密碼 Password</label>
+                    <input id="auth-password" type="password" required placeholder="••••••••" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                </div>
+                
+                <div class="flex items-center justify-between pt-1">
+                    <button type="button" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-xs text-indigo-400 hover:underline">
+                        沒有帳號？立即註冊
+                    </button>
+                </div>
+
+                <button type="submit" id="auth-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition duration-200 shadow-lg shadow-indigo-600/20">
+                    立即登入
+                </button>
+            </form>
+        </div>
+    </div>
 
     <!-- ================= MODERN MODAL COMPONENT (DNS overlay) ================= -->
     <div id="dns-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
@@ -433,61 +574,136 @@
         let currentActiveDomain = "";
         let isSignupMode = false;
 
+        // NEW: Guest State Variables
+        let isGuestMode = false;
+        let guestDomains = [];
+        let guestMappings = [];
+
         // On Auth state change
         auth.onAuthStateChanged(async (user) => {
             if (user) {
+                // Terminate guest mode if logged in
+                isGuestMode = false;
+                document.getElementById("guest-indicator-banner").classList.add("hidden");
+
                 userUid = user.uid;
                 userToken = await user.getIdToken();
                 localStorage.setItem("bearer_jwt", userToken);
                 
-                // Show dashboard elements
-                document.getElementById("auth-view").classList.add("hidden");
+                // Set navigation layout
+                document.getElementById("nav-guest-area").classList.add("hidden");
                 document.getElementById("nav-user-area").classList.remove("hidden");
-                document.getElementById("dashboard-view").classList.remove("hidden");
                 document.getElementById("user-display-email").innerText = user.email;
 
-                // Show Admin tab if email matches system administrator Taosheng
+                // Configure Admin panel access
                 if (user.email === "taosheng.chen@gmail.com") {
                     document.getElementById("admin-entry-btn").classList.remove("hidden");
                 } else {
                     document.getElementById("admin-entry-btn").classList.add("hidden");
                 }
 
-                // Initialize client data
+                // Load server data and transition to dashboard section
                 await initUserProfile();
                 await fetchDomains();
                 await fetchMappings();
+                showSection("dashboard-section");
             } else {
                 userUid = "";
                 userToken = "";
                 localStorage.removeItem("bearer_jwt");
                 
-                // Reset to landing view
-                document.getElementById("auth-view").classList.remove("hidden");
-                document.getElementById("nav-user-area").classList.add("hidden");
-                document.getElementById("dashboard-view").classList.add("hidden");
-                document.getElementById("admin-view").classList.add("hidden");
+                // Show Guest headers if not in active guest mode
+                if (!isGuestMode) {
+                    document.getElementById("nav-guest-area").classList.remove("hidden");
+                    document.getElementById("nav-user-area").classList.add("hidden");
+                    showSection("landing-section");
+                }
             }
         });
+
+        // Section Routing controller
+        function showSection(sectionId) {
+            const sections = ["landing-section", "pricing-section", "dashboard-section", "admin-section"];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (id === sectionId) {
+                    el.classList.remove("hidden");
+                } else {
+                    el.classList.add("hidden");
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Click Logo redirects back to features or dashboard depending on auth
+        function handleLogoClick() {
+            if (auth.currentUser || isGuestMode) {
+                showSection("dashboard-section");
+            } else {
+                showSection("landing-section");
+            }
+        }
+
+        // ================= GUEST EXPERIENCE MODE CONTROLLER =================
+        function startGuestExperience() {
+            isGuestMode = true;
+            document.getElementById("guest-indicator-banner").classList.remove("hidden");
+            document.getElementById("nav-guest-area").classList.remove("hidden");
+            document.getElementById("nav-user-area").classList.add("hidden");
+            
+            // Clear or load mock structures
+            guestDomains = JSON.parse(localStorage.getItem("guest_domains") || "[]");
+            guestMappings = JSON.parse(localStorage.getItem("guest_mappings") || "[]");
+
+            renderDomains();
+            renderMappings();
+            showSection("dashboard-section");
+
+            Swal.fire({
+                icon: "info",
+                title: "訪客體驗模式已啟動！",
+                text: "您可以免註冊直接在下方模擬：新增網域、查看 Easy DKIM 密鑰與建立轉送規則！正式啟用雲端發信時才需要註冊帳號。",
+                confirmButtonText: "開始體驗 Lite"
+            });
+        }
 
         // Toggle signup / login mode UI
         function toggleAuthMode() {
             isSignupMode = !isSignupMode;
             const toggleBtn = document.getElementById("auth-toggle-btn");
             const submitBtn = document.getElementById("auth-submit-btn");
+            const modalTitle = document.getElementById("auth-modal-title");
             if (isSignupMode) {
+                modalTitle.innerText = "註冊全新帳戶";
                 toggleBtn.innerText = "已有帳號？立即登入";
                 submitBtn.innerText = "註冊新帳號";
             } else {
+                modalTitle.innerText = "登入您的帳戶";
                 toggleBtn.innerText = "沒有帳號？立即註冊";
                 submitBtn.innerText = "立即登入";
             }
         }
 
+        // Modal triggers
+        function openAuthModal(mode = 'login') {
+            if (mode === 'signup') {
+                isSignupMode = false;
+                toggleAuthMode();
+            } else {
+                isSignupMode = true;
+                toggleAuthMode();
+            }
+            document.getElementById("auth-modal").classList.remove("hidden");
+        }
+
+        function closeAuthModal() {
+            document.getElementById("auth-modal").classList.add("hidden");
+        }
+
         // Traditional Email Auth Handler
         async function handleEmailAuth(event) {
             event.preventDefault();
-            const email = document.getElementById("auth-email").value.strip ? document.getElementById("auth-email").value.strip() : document.getElementById("auth-email").value;
+            const email = document.getElementById("auth-email").value.trim();
             const password = document.getElementById("auth-password").value;
 
             Swal.fire({ title: "安全連線中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
@@ -495,13 +711,20 @@
             try {
                 if (isSignupMode) {
                     await auth.createUserWithEmailAndPassword(email, password);
+                    closeAuthModal();
                     Swal.fire({ icon: "success", title: "註冊成功！", text: "歡迎加入 Saltycat Mailservice！", timer: 1500 });
                 } else {
                     await auth.signInWithEmailAndPassword(email, password);
+                    closeAuthModal();
                     Swal.fire({ icon: "success", title: "登入成功！", text: "歡迎回來！", timer: 1500, showConfirmButton: false });
                 }
             } catch (error) {
-                Swal.fire({ icon: "error", title: "驗證失敗", text: error.message });
+                let errorMsg = error.message;
+                // Friendly error translator for auth/configuration-not-found
+                if (error.code === "auth/configuration-not-found") {
+                    errorMsg = "Firebase 專案尚未開啟 Email/密碼 登入機制，請管理員進入 Firebase Console -> Authentication -> Sign-in method 點選啟用 Email/Password 即可解決！";
+                }
+                Swal.fire({ icon: "error", title: "驗證失敗", text: errorMsg });
             }
         }
 
@@ -510,15 +733,23 @@
             const provider = new firebase.auth.GoogleAuthProvider();
             try {
                 await auth.signInWithPopup(provider);
+                closeAuthModal();
                 Swal.fire({ icon: "success", title: "Google 登入成功", text: "歡迎回來！", timer: 1500, showConfirmButton: false });
             } catch (error) {
-                Swal.fire({ icon: "error", title: "Google 登入失敗", text: error.message });
+                let errorMsg = error.message;
+                if (error.code === "auth/configuration-not-found") {
+                    errorMsg = "Firebase 專案尚未開啟 Google 登入機制，請管理員前往 Firebase Console -> Authentication -> Sign-in method 新增 Google 登入，並確保在設置中將 email.saltycat.tw 加入「授權網域」中即可解決！";
+                }
+                Swal.fire({ icon: "error", title: "Google 登入失敗", text: errorMsg });
             }
         }
 
         // Sign Out
         function handleSignOut() {
             auth.signOut();
+            isGuestMode = false;
+            document.getElementById("guest-indicator-banner").classList.add("hidden");
+            showSection("landing-section");
         }
 
         // Initialise user profile on backend (Phase 5.2)
@@ -536,6 +767,7 @@
 
         // Fetch user domains
         async function fetchDomains() {
+            if (isGuestMode) return; // Managed by LocalStorage in guest mode
             try {
                 const res = await fetch(`${BACKEND_URL}/api/domains`, {
                     headers: { "Authorization": `Bearer ${userToken}` }
@@ -552,18 +784,20 @@
         // Render Domains container
         function renderDomains() {
             const container = document.getElementById("domains-list-container");
-            if (registeredDomains.length === 0) {
+            const activeList = isGuestMode ? guestDomains : registeredDomains;
+
+            if (activeList.length === 0) {
                 container.innerHTML = `<p class="text-xs text-slate-500 py-2">尚未綁定任何域名。</p>`;
                 currentActiveDomain = "";
                 document.getElementById("mapping-domain-suffix").innerText = "@...";
                 return;
             }
 
-            currentActiveDomain = registeredDomains[0].domain_name;
+            currentActiveDomain = activeList[0].domain_name;
             document.getElementById("mapping-domain-suffix").innerText = `@${currentActiveDomain}`;
 
             container.innerHTML = "";
-            registeredDomains.forEach(domain => {
+            activeList.forEach(domain => {
                 const isVerified = domain.status === "verified";
                 const badgeClass = isVerified 
                     ? "bg-emerald-500/10 text-emerald-400 ring-emerald-500/30" 
@@ -601,6 +835,38 @@
                 return;
             }
 
+            // GUEST MODE INTERACTION (No real API hit)
+            if (isGuestMode) {
+                if (guestDomains.length >= 1) {
+                    Swal.fire({ icon: "error", title: "額度上限限制", text: "Lite 免費版在體驗模式下最多只能綁定 1 個域名！" });
+                    return;
+                }
+                const mockDns = [
+                    { type: "CNAME", host: "saltycat1._domainkey", value: "saltycat1.dkim.amazonses.com." },
+                    { type: "CNAME", host: "saltycat2._domainkey", value: "saltycat2.dkim.amazonses.com." },
+                    { type: "CNAME", host: "saltycat3._domainkey", value: "saltycat3.dkim.amazonses.com." }
+                ];
+                guestDomains.push({
+                    domain_name,
+                    status: "pending_verification",
+                    mx_payload: "10 inbound-smtp.us-east-1.amazonaws.com.",
+                    dns_payload: mockDns
+                });
+                localStorage.setItem("guest_domains", JSON.stringify(guestDomains));
+                domainInput.value = "";
+                renderDomains();
+                Swal.fire({
+                    icon: "success",
+                    title: "【模擬】網域註冊成功！",
+                    text: `已在體驗模式中模擬註冊 ${domain_name}！您可以繼續在右側配置 mappings rules。`,
+                    confirmButtonText: "查看模擬 DNS 設定值"
+                }).then(() => {
+                    showDnsModalDetails(domain_name, mockDns);
+                });
+                return;
+            }
+
+            // REAL MODE API HANDSHAKE
             Swal.fire({ title: "AWS SES 手續連線中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
             try {
@@ -647,6 +913,17 @@
                 cancelButtonText: "取消"
             }).then(async (result) => {
                 if (result.isConfirmed) {
+                    if (isGuestMode) {
+                        guestDomains = guestDomains.filter(d => d.domain_name !== domain_name);
+                        guestMappings = guestMappings.filter(m => m.domain_name !== domain_name);
+                        localStorage.setItem("guest_domains", JSON.stringify(guestDomains));
+                        localStorage.setItem("guest_mappings", JSON.stringify(guestMappings));
+                        renderDomains();
+                        renderMappings();
+                        Swal.fire({ icon: "success", title: "【模擬】刪除成功！", text: "已清理該域名與模擬規則。" });
+                        return;
+                    }
+
                     Swal.fire({ title: "正在註銷中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
                     try {
                         const res = await fetch(`${BACKEND_URL}/api/domains/${domain_name}`, {
@@ -679,7 +956,8 @@
 
             let dns_records = custom_dns;
             if (!dns_records) {
-                const found = registeredDomains.find(d => d.domain_name === domain_name);
+                const activeList = isGuestMode ? guestDomains : registeredDomains;
+                const found = activeList.find(d => d.domain_name === domain_name);
                 dns_records = found ? found.dns_payload : [];
             }
 
@@ -724,6 +1002,33 @@
         // Verify DNS Status trigger
         async function triggerDnsVerify() {
             if (!activeVerifyDomain) return;
+
+            if (isGuestMode) {
+                const btn = document.getElementById("verify-dns-btn");
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在對接 AWS SES 驗證主機中...</span>`;
+                setTimeout(() => {
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>我已在 GoDaddy 設定完畢，立即檢查驗證狀態！</span>`;
+                    
+                    // Simulate verified
+                    guestDomains.forEach(d => {
+                        if (d.domain_name === activeVerifyDomain) {
+                            d.status = "verified";
+                        }
+                    });
+                    localStorage.setItem("guest_domains", JSON.stringify(guestDomains));
+                    renderDomains();
+                    Swal.fire({
+                        icon: "success",
+                        title: "【模擬】驗證通過！",
+                        text: "在體驗模式中成功模擬網域驗證！您的自訂網域現已切換為已驗證狀態。"
+                    });
+                    closeDnsModal();
+                }, 1500);
+                return;
+            }
+
             const btn = document.getElementById("verify-dns-btn");
             btn.disabled = true;
             btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在對接 AWS SES 驗證主機中...</span>`;
@@ -751,8 +1056,8 @@
         }
 
         // Fetch current forwarding mappings
-        let activeMappings = [];
         async function fetchMappings() {
+            if (isGuestMode) return;
             try {
                 const res = await fetch(`${BACKEND_URL}/api/mappings`, {
                     headers: { "Authorization": `Bearer ${userToken}` }
@@ -770,10 +1075,11 @@
         function renderMappings() {
             const body = document.getElementById("mappings-table-body");
             const quota = document.getElementById("mapping-quota-indicator");
+            const activeList = isGuestMode ? guestMappings : activeMappings;
             
-            quota.innerText = `${activeMappings.length} / 2 Mappings`;
+            quota.innerText = `${activeList.length} / 2 Mappings`;
 
-            if (activeMappings.length === 0) {
+            if (activeList.length === 0) {
                 body.innerHTML = `
                     <tr>
                         <td colspan="4" class="py-8 text-center text-xs text-slate-500">
@@ -785,7 +1091,7 @@
             }
 
             body.innerHTML = "";
-            activeMappings.forEach(m => {
+            activeList.forEach(m => {
                 body.innerHTML += `
                     <tr class="hover:bg-slate-800/20 transition">
                         <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-slate-200 font-mono">
@@ -825,6 +1131,30 @@
                 return;
             }
 
+            // GUEST MODE INTERACTION (No real API hit)
+            if (isGuestMode) {
+                if (guestMappings.length >= 2) {
+                    Swal.fire({ icon: "error", title: "模擬額度限制", text: "Lite 免費版限制最多只能建立 2 組轉寄對照規則！" });
+                    return;
+                }
+                if (prefix === "*") {
+                    Swal.fire({ icon: "error", title: "規則限制", text: "免費方案不支援萬用金鑰 (Catch-all *) 轉寄，請升級 Starter 方案解鎖！" });
+                    return;
+                }
+                guestMappings.push({
+                    domain_name: currentActiveDomain,
+                    prefix,
+                    target_gmail
+                });
+                localStorage.setItem("guest_mappings", JSON.stringify(guestMappings));
+                prefixInput.value = "";
+                targetInput.value = "";
+                renderMappings();
+                Swal.fire({ icon: "success", title: "【模擬】規則已建立！", text: "在免註冊體驗中成功模擬了一組轉送規則！", timer: 1200, showConfirmButton: false });
+                return;
+            }
+
+            // REAL MODE API HANDSHAKE
             Swal.fire({ title: "儲存規則中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
             try {
@@ -868,6 +1198,14 @@
                 cancelButtonText: "取消"
             }).then(async (result) => {
                 if (result.isConfirmed) {
+                    if (isGuestMode) {
+                        guestMappings = guestMappings.filter(m => !(m.domain_name === domain_name && m.prefix === prefix));
+                        localStorage.setItem("guest_mappings", JSON.stringify(guestMappings));
+                        renderMappings();
+                        Swal.fire({ icon: "success", title: "【模擬】規則已刪除", text: "轉寄規則已自模擬表中刪除。" });
+                        return;
+                    }
+
                     Swal.fire({ title: "正在註銷中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
                     try {
                         const res = await fetch(`${BACKEND_URL}/api/mappings/${domain_name}/${prefix}`, {
@@ -898,26 +1236,26 @@
 
         // Mailto link for manual upgrade
         function handleManualUpgradeEmail() {
-            window.location.href = `mailto:cs@saltycat.tw?subject=Saltycat Mailservice 帳號升級申請&body=您好，我想申請將我的帳號 (UID: ${userUid}) 升級至更高階方案，謝謝！`;
+            const uidStr = userUid ? userUid : "訪客未註冊";
+            window.location.href = `mailto:cs@saltycat.tw?subject=Saltycat Mailservice 帳號升級申請&body=您好，我想申請將我的帳號 (UID: ${uidStr}) 升級至更高階方案，謝謝！`;
             closeUpgradeModal();
         }
 
         // Admin panel (Phase 7)
         function showAdminPanel() {
-            document.getElementById("dashboard-view").classList.add("hidden");
-            document.getElementById("admin-view").classList.remove("hidden");
+            document.getElementById("dashboard-section").classList.add("hidden");
+            document.getElementById("admin-section").classList.remove("hidden");
             fetchAdminStats();
             fetchAdminUsers();
         }
 
         function exitAdminPanel() {
-            document.getElementById("admin-view").classList.add("hidden");
-            document.getElementById("dashboard-view").classList.remove("hidden");
+            document.getElementById("admin-section").classList.add("hidden");
+            document.getElementById("dashboard-section").classList.remove("hidden");
         }
 
         async function fetchAdminStats() {
             try {
-                // In Phase 7 we will implement the /api/admin/stats endpoint
                 const res = await fetch(`${BACKEND_URL}/api/admin/stats`, {
                     headers: { "Authorization": `Bearer ${userToken}` }
                 });
