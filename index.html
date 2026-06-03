@@ -473,27 +473,19 @@
                 </div>
             </div>
 
+            <!-- Subdomain Note Alert -->
+            <div id="dns-subdomain-note-container" class="hidden">
+                <div class="bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-2xl p-4 text-xs font-semibold leading-relaxed">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    <span id="dns-subdomain-note-text"></span>
+                </div>
+            </div>
+
             <!-- MX Records -->
             <div class="space-y-4 border-t border-slate-800/80 pt-4">
                 <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第二步：配置 AWS SES 郵件進站路徑 (MX Record)</h4>
-                <div class="bg-slate-950/50 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
-                    <div class="grid grid-cols-3 gap-2 flex-grow text-xs">
-                        <div>
-                            <span class="text-slate-500 block">主機 Host</span>
-                            <span class="font-mono text-slate-200">@</span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">類型 Type</span>
-                            <span class="font-mono text-slate-200">MX</span>
-                        </div>
-                        <div>
-                            <span class="text-slate-500 block">設定值 Value</span>
-                            <span class="font-mono text-slate-200">10 inbound-smtp.us-east-1.amazonaws.com.</span>
-                        </div>
-                    </div>
-                    <button onclick="copyToClipboard('@', 'MX', '10 inbound-smtp.us-east-1.amazonaws.com.')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded-lg text-slate-400 hover:text-white transition ml-3">
-                        <i class="fa-solid fa-copy"></i>
-                    </button>
+                <div id="dns-mx-row-container" class="space-y-3">
+                    <!-- Dynamic MX Row -->
                 </div>
             </div>
 
@@ -1069,6 +1061,22 @@
             activeVerifyDomain = domain_name;
             document.getElementById("dns-modal-title").innerText = `${domain_name} DNS 設定教學 (GoDaddy)`;
             
+            // Subdomain and MX Host analysis
+            const godaddySub = getGoDaddyHostPrefix(domain_name);
+            const mxHost = godaddySub ? godaddySub.replace(/^\./, "") : "@";
+            
+            const noteContainer = document.getElementById("dns-subdomain-note-container");
+            const noteText = document.getElementById("dns-subdomain-note-text");
+            
+            if (godaddySub) {
+                noteText.innerHTML = `偵測到您綁定的是子網域 <strong>${domain_name}</strong>。為了相容 GoDaddy DNS，所有的 CNAME 主機 (Host) 欄位已自動補上子網域字尾（<strong>${godaddySub}</strong>），並且第二步的 <strong>MX 記錄主機 (Host) 已自動修正為 ${mxHost}</strong>（非預設的 @），請直接複製使用！`;
+                noteContainer.classList.remove("hidden");
+            } else {
+                noteText.innerText = "";
+                noteContainer.classList.add("hidden");
+            }
+            
+            // 1. Render CNAME rows
             const rowsContainer = document.getElementById("dns-cname-rows-container");
             rowsContainer.innerHTML = "";
 
@@ -1081,27 +1089,76 @@
 
             dns_records.forEach((dns, idx) => {
                 rowsContainer.innerHTML += `
-                    <div class="bg-slate-950/50 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
-                        <div class="grid grid-cols-3 gap-2 flex-grow text-xs">
-                            <div>
-                                <span class="text-slate-500 block">主機 Host (${idx+1})</span>
-                                <span class="font-mono text-slate-200 block truncate">${dns.host}</span>
+                    <div class="bg-slate-950/50 rounded-2xl p-4 border border-slate-800 space-y-3">
+                        <div class="flex items-center justify-between text-xs border-b border-slate-800/80 pb-2">
+                            <span class="font-bold text-slate-400">安全金鑰記錄 #${idx+1} (CNAME)</span>
+                        </div>
+                        <div class="space-y-2 text-xs">
+                            <!-- Host -->
+                            <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                                <div class="truncate">
+                                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">主機 Host</span>
+                                    <span class="font-mono text-slate-200 block truncate">${dns.host}</span>
+                                </div>
+                                <button onclick="copyText('${dns.host}', '主機 Host')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
                             </div>
-                            <div>
-                                <span class="text-slate-500 block">類型 Type</span>
-                                <span class="font-mono text-slate-200 block">${dns.type}</span>
+                            <!-- Type -->
+                            <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                                <div>
+                                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">類型 Type</span>
+                                    <span class="font-mono text-slate-200 block">CNAME</span>
+                                </div>
                             </div>
-                            <div>
-                                <span class="text-slate-500 block">設定值 Value</span>
-                                <span class="font-mono text-slate-200 block truncate">${dns.value}</span>
+                            <!-- Value -->
+                            <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                                <div class="truncate">
+                                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">設定值 Value</span>
+                                    <span class="font-mono text-slate-200 block truncate">${dns.value}</span>
+                                </div>
+                                <button onclick="copyText('${dns.value}', '設定值 Value')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                                    <i class="fa-solid fa-copy"></i>
+                                </button>
                             </div>
                         </div>
-                        <button onclick="copyToClipboard('${dns.host}', '${dns.type}', '${dns.value}')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded-lg text-slate-400 hover:text-white transition ml-3">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
                     </div>
                 `;
             });
+
+            // 2. Render MX row
+            const mxContainer = document.getElementById("dns-mx-row-container");
+            mxContainer.innerHTML = `
+                <div class="bg-slate-950/50 rounded-2xl p-4 border border-slate-800 space-y-2 text-xs">
+                    <!-- Host -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div class="truncate">
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">主機 Host</span>
+                            <span class="font-mono text-slate-200 block truncate">${mxHost}</span>
+                        </div>
+                        <button onclick="copyText('${mxHost}', '主機 Host')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- Type -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div>
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">類型 Type</span>
+                            <span class="font-mono text-slate-200 block">MX</span>
+                        </div>
+                    </div>
+                    <!-- Value -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div class="truncate">
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">設定值 Value</span>
+                            <span class="font-mono text-slate-200 block truncate">10 inbound-smtp.us-east-1.amazonaws.com.</span>
+                        </div>
+                        <button onclick="copyText('10 inbound-smtp.us-east-1.amazonaws.com.', '設定值 Value')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
 
             document.getElementById("dns-modal").classList.remove("hidden");
         }
@@ -1111,9 +1168,15 @@
         }
 
         // Clipboard Copy Helper
-        function copyToClipboard(host, type, val) {
-            navigator.clipboard.writeText(val).then(() => {
-                Swal.fire({ icon: "success", title: "已複製設定值！", text: `已將 ${val} 複製至剪貼簿。`, timer: 1000, showConfirmButton: false });
+        function copyText(text, label) {
+            navigator.clipboard.writeText(text).then(() => {
+                Swal.fire({
+                    icon: "success",
+                    title: `已複製${label}！`,
+                    text: `已將 ${text} 複製至剪貼簿。`,
+                    timer: 1000,
+                    showConfirmButton: false
+                });
             });
         }
 
