@@ -39,7 +39,7 @@
         <!-- Navigation Buttons & User Info -->
         <div class="flex items-center space-x-6">
             <nav class="hidden md:flex space-x-6 text-sm font-semibold text-slate-300">
-                <a href="#" onclick="showSection('landing-section')" class="hover:text-white transition">首頁功能</a>
+                <a href="#" onclick="showSection('landing-section')" class="hover:text-white transition">首頁</a>
                 <a href="#" onclick="showSection('pricing-section')" class="hover:text-white transition">方案定價</a>
             </nav>
 
@@ -125,9 +125,70 @@
                             <div>
                                 <h4 class="text-sm font-bold text-slate-200">24小時零殘留極致隱私</h4>
                                 <p class="text-xs text-slate-500 mt-1">S3 入站緩衝區設有物理生命週期防禦，轉寄投遞成功後立刻物理刪除，不留底，安全放心。</p>
-                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Money Saving Case Study Component -->
+            <div class="max-w-4xl mx-auto bg-slate-950/20 border border-slate-800 rounded-3xl p-8 space-y-6 mt-12">
+                <div class="flex items-center space-x-2">
+                    <div class="bg-emerald-500/10 p-2 rounded-xl text-emerald-400">
+                        <i class="fa-solid fa-calculator text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-white">💡 小微企業真實省錢案例算給您看</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">以一個老闆 + 3 位員工（4 個客製化信箱）的台灣在地小公司為例：</p>
+                    </div>
+                </div>
+
+                <!-- Scenario Card -->
+                <div class="bg-slate-900/40 border border-slate-800 p-4 rounded-2xl text-xs space-y-2 leading-relaxed">
+                    <p class="text-slate-300">
+                        <strong>真實情境：</strong>您目前的個人 Gmail 是 <code class="bg-slate-800 text-indigo-300 px-1.5 py-0.5 rounded font-mono">theboss@gmail.com</code>，而您剛成立的公司購買了域名 <code class="bg-slate-800 text-indigo-300 px-1.5 py-0.5 rounded font-mono">supergood.com.tw</code>。
+                    </p>
+                    <p class="text-slate-300">
+                        因為做生意的需求，您需要 <strong>4 個公司信箱</strong>（包含您的 <code class="bg-slate-800 text-slate-300 px-1 py-0.5 rounded font-mono">ceo@</code> 以及分給 3 名員工接收不同商務郵件的 <code class="bg-slate-800 text-slate-300 px-1 py-0.5 rounded font-mono">sales@</code>、<code class="bg-slate-800 text-slate-300 px-1 py-0.5 rounded font-mono">info@</code>、<code class="bg-slate-800 text-slate-300 px-1 py-0.5 rounded font-mono">support@</code>）。
+                    </p>
+                </div>
+
+                <!-- Comparison Table -->
+                <div class="overflow-x-auto border border-slate-800 rounded-2xl">
+                    <table class="min-w-full divide-y divide-slate-800 text-left text-xs">
+                        <thead class="bg-slate-950/40 text-slate-400 font-bold">
+                            <tr>
+                                <th scope="col" class="py-3 px-4">比較項目</th>
+                                <th scope="col" class="py-3 px-4">Google Workspace (按人收費)</th>
+                                <th scope="col" class="py-3 px-4 text-indigo-400">閒貓郵件轉寄 (我們的服務)</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 text-slate-300">
+                            <tr>
+                                <td class="py-3 px-4 font-bold">帳號數量需求</td>
+                                <td class="py-3 px-4">4 個獨立信箱 (4 個授權)</td>
+                                <td class="py-3 px-4 font-semibold text-white">4 組對照規則 (無限制轉寄對象)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold">計費模式</td>
+                                <td class="py-3 px-4">NT$ 180 / 帳號 / 月</td>
+                                <td class="py-3 px-4 font-semibold text-white">Starter 方案固定月費</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 font-bold">每月費用</td>
+                                <td class="py-3 px-4 text-rose-400 font-semibold">NT$ 180 × 4 = NT$ 720</td>
+                                <td class="py-3 px-4 text-emerald-400 font-extrabold text-sm">NT$ 99</td>
+                            </tr>
+                            <tr class="bg-indigo-600/5">
+                                <td class="py-4 px-4 font-black text-slate-100">每年總花費</td>
+                                <td class="py-4 px-4 text-rose-400 font-bold">NT$ 8,640</td>
+                                <td class="py-4 px-4 text-emerald-400 font-black text-sm">NT$ 1,188</td>
+                            </tr>
+                            <tr class="bg-emerald-500/10">
+                                <td class="py-4 px-4 font-bold text-emerald-400" colspan="2"><i class="fa-solid fa-gift mr-1"></i> 使用閒貓服務，每年為您省下：</td>
+                                <td class="py-4 px-4 text-emerald-400 font-black text-base">NT$ 7,452 / 年 (省下高達 86%!)</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </section>
