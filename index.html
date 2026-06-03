@@ -588,6 +588,36 @@
         </div>
     </div>
 
+    <!-- ================= MODERN MODAL COMPONENT (Email 6-digit verification) ================= -->
+    <div id="email-verification-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
+        <div class="glass-panel rounded-3xl max-w-sm w-full p-8 shadow-2xl text-center space-y-6">
+            <div class="w-16 h-16 bg-indigo-500/10 rounded-2xl mx-auto flex items-center justify-center">
+                <i class="fa-solid fa-envelope-shield text-indigo-500 text-3xl"></i>
+            </div>
+            
+            <div class="space-y-2">
+                <h3 class="text-xl font-black text-white">輸入電子信箱驗證碼</h3>
+                <p class="text-xs text-slate-400">已發送一組 6 位數臨時驗證碼至您的信箱，請查看您的郵件並填入下方以完成註冊。</p>
+            </div>
+
+            <!-- Code input fields -->
+            <div class="space-y-4">
+                <input id="verification-code-input" type="text" maxlength="6" placeholder="例如: 123456" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3.5 text-center text-lg font-mono font-black tracking-[8px] text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                
+                <div class="flex items-center justify-between text-xs px-1">
+                    <button onclick="handleResendCode()" class="text-indigo-400 hover:underline">重新發送驗證碼</button>
+                    <button onclick="handleCancelVerification()" class="text-slate-500 hover:underline">取消註冊</button>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <button onclick="handleVerifyCode()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20">
+                    送出驗證
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <!-- ================= FIREBASE & APP LOGIC SCRIPT ================= -->
     <!-- Firebase App and Auth SDKs (Compat v9 for Native browser script execution) -->
@@ -650,7 +680,12 @@
                 }
 
                 // Load server data and transition to dashboard section
-                await initUserProfile();
+                const profile = await initUserProfile();
+                if (profile && profile.account_status === "pending_verification") {
+                    document.getElementById("email-verification-modal").classList.remove("hidden");
+                    return;
+                }
+                
                 await fetchDomains();
                 await fetchMappings();
                 showSection("dashboard-section");
@@ -806,9 +841,15 @@
                     method: "POST",
                     headers: { "Authorization": `Bearer ${userToken}` }
                 });
-                if (!res.ok) console.error("Failed to initialize user profile on backend.");
+                if (res.ok) {
+                    const data = await res.json();
+                    return data.profile;
+                }
+                console.error("Failed to initialize user profile on backend.");
+                return null;
             } catch (e) {
                 console.error("Network error during init user profile:", e);
+                return null;
             }
         }
 
@@ -1494,6 +1535,74 @@
         
         function closeAdminUserDetailsModal() {
             document.getElementById("admin-user-details-modal").classList.add("hidden");
+        }
+
+        async function handleVerifyCode() {
+            const inputEl = document.getElementById("verification-code-input");
+            const code = inputEl.value.trim();
+            
+            if (code.length !== 6 || isNaN(code)) {
+                Swal.fire({ icon: "warning", title: "格式不正確", text: "請輸入 6 位數純數字驗證碼！" });
+                return;
+            }
+            
+            Swal.fire({ title: "正在驗證中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/users/verify-code`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ code })
+                });
+                
+                if (res.ok) {
+                    inputEl.value = "";
+                    document.getElementById("email-verification-modal").classList.add("hidden");
+                    Swal.fire({
+                        icon: "success",
+                        title: "信箱驗證成功！",
+                        text: "您的帳號已順利啟用，歡迎使用閒貓郵件轉寄控制台！",
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                    
+                    // Refresh data and load dashboard
+                    await fetchDomains();
+                    await fetchMappings();
+                    showSection("dashboard-section");
+                } else {
+                    const err = await res.json();
+                    Swal.fire({ icon: "error", title: "驗證失敗", text: err.detail || "驗證碼不正確或已過期。" });
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+            }
+        }
+        
+        async function handleResendCode() {
+            Swal.fire({ title: "正在重新發送驗證碼...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/users/resend-code`, {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (res.ok) {
+                    Swal.fire({ icon: "success", title: "已發送！", text: "全新驗證碼已寄送到您的電子信箱。", timer: 1500, showConfirmButton: false });
+                } else {
+                    const err = await res.json();
+                    Swal.fire({ icon: "error", title: "發送失敗", text: err.detail });
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+            }
+        }
+        
+        function handleCancelVerification() {
+            document.getElementById("email-verification-modal").classList.add("hidden");
+            auth.signOut();
         }
     </script>
 </body>
