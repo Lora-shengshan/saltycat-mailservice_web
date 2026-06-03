@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Saltycat Mailservice - sitemap.xml
+  開發者備忘錄：若日後為本站新增更多靜態頁面（例如說明文件、部落格等），請務必同步更新此 sitemap.xml 檔案，以維持搜尋引擎的最佳收錄效率！
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://email.saltycat.tw/</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
