@@ -1,7 +1,1005 @@
-<html>
-<head></head>
-<body>
-<h1>
-This is just placeholder</h1>
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saltycat Mailservice - 鹹魚域名郵件轉寄服務</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 for modern dialogs -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col justify-between">
+
+    <!-- Top Navigation Bar -->
+    <header class="glass-panel sticky top-0 z-40 w-full border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <div class="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                <i class="fa-solid fa-cat text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-black tracking-wider text-white">Saltycat Mailservice</h1>
+                <p class="text-xs text-slate-400 font-medium">鹹魚自訂域名郵件轉寄</p>
+            </div>
+        </div>
+        
+        <!-- User Info & Action -->
+        <div id="nav-user-area" class="hidden flex items-center space-x-4">
+            <span id="user-display-email" class="text-sm font-medium text-slate-300"></span>
+            <span class="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-1 text-xs font-medium text-indigo-400 ring-1 ring-inset ring-indigo-500/30">
+                免費體驗方案
+            </span>
+            <button onclick="handleSignOut()" class="text-sm font-semibold text-slate-400 hover:text-white transition duration-200">
+                登出 <i class="fa-solid fa-arrow-right-from-bracket ml-1"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-6 py-8">
+        
+        <!-- ================= LANDING / AUTH VIEW ================= -->
+        <div id="auth-view" class="max-w-4xl mx-auto my-12 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div class="md:w-1/2 space-y-6">
+                <div class="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-semibold">
+                    <span>🎉 專案試營運階段：註冊即享永久免費版</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-white leading-tight">
+                    最省錢的<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-500">專屬自訂域名</span><br>郵件轉寄服務
+                </h2>
+                <p class="text-slate-400 leading-relaxed text-sm">
+                    為什麼要為企業信箱支付昂貴的月費？使用 Saltycat Mailservice，您可以將自己的網域（如 <code class="text-indigo-300 bg-slate-800 px-1 rounded">hi@yourdomain.com</code>）100% 完美轉寄至您現有的免費 Gmail，並完全通過 SPF、DKIM 與 DMARC 加密校驗，拒絕垃圾郵件箱！
+                </p>
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <div class="flex items-start space-x-2.5">
+                        <i class="fa-solid fa-circle-check text-indigo-400 mt-1"></i>
+                        <p class="text-xs text-slate-300"><strong>100% 附件保存</strong><br><span class="text-slate-500">無損轉送所有文件與附檔</span></p>
+                    </div>
+                    <div class="flex items-start space-x-2.5">
+                        <i class="fa-solid fa-circle-check text-indigo-400 mt-1"></i>
+                        <p class="text-xs text-slate-300"><strong>極速零殘留</strong><br><span class="text-slate-500">轉寄完成立刻抹除，極致隱私</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Login Card -->
+            <div class="w-full md:w-[400px] glass-panel rounded-3xl p-8 shadow-2xl">
+                <h3 class="text-xl font-bold text-white mb-2">開始體驗</h3>
+                <p class="text-xs text-slate-400 mb-6">請選擇以下登入或註冊方式</p>
+                
+                <!-- Google Login Button -->
+                <button onclick="handleGoogleLogin()" class="w-full bg-white text-slate-900 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-3 hover:bg-slate-100 transition duration-200 shadow-lg shadow-white/5 mb-4">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5.04c1.66 0 3.2.57 4.38 1.69l3.27-3.27C17.67 1.48 14.98 1 12 1 7.35 1 3.37 3.68 1.42 7.57l3.79 2.93c.92-2.76 3.51-4.46 6.79-4.46z"/>
+                        <path fill="#4285F4" d="M23.49 12.27c0-.81-.07-1.59-.2-2.35H12v4.51h6.46c-.29 1.48-1.14 2.73-2.4 3.58l3.74 2.9c2.19-2.02 3.69-4.99 3.69-8.64z"/>
+                        <path fill="#FBBC05" d="M5.21 10.5c-.24-.72-.38-1.49-.38-2.3s.14-1.58.38-2.3L1.42 2.97C.52 4.77 0 6.82 0 9s.52 4.23 1.42 6.03l3.79-2.53z"/>
+                        <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.74-2.9c-1.1.74-2.51 1.18-4.22 1.18-3.28 0-5.87-1.7-6.79-4.46L1.42 16.37C3.37 20.32 7.35 23 12 23z"/>
+                    </svg>
+                    <span>使用 Google 帳號登入</span>
+                </button>
+
+                <div class="relative flex py-3 items-center">
+                    <div class="flex-grow border-t border-slate-800"></div>
+                    <span class="flex-shrink mx-4 text-xs text-slate-600 font-bold">或電子信箱登入</span>
+                    <div class="flex-grow border-t border-slate-800"></div>
+                </div>
+
+                <!-- Traditional Login Form -->
+                <form id="email-login-form" onsubmit="handleEmailAuth(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1.5">電子信箱 Address</label>
+                        <input id="auth-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1.5">密碼 Password</label>
+                        <input id="auth-password" type="password" required placeholder="••••••••" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                    </div>
+                    
+                    <div class="flex items-center justify-between pt-1">
+                        <button type="button" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-xs text-indigo-400 hover:underline">
+                            沒有帳號？立即註冊
+                        </button>
+                    </div>
+
+                    <button type="submit" id="auth-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition duration-200 shadow-lg shadow-indigo-600/20">
+                        立即登入
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- ================= CLIENT DASHBOARD VIEW ================= -->
+        <div id="dashboard-view" class="hidden space-y-8">
+            
+            <!-- Dashboard Welcome Banner -->
+            <div class="glass-panel rounded-3xl p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h2 class="text-2xl font-black text-white">您好，歡迎使用鹹魚郵件轉寄控制台！</h2>
+                    <p class="text-slate-400 text-sm mt-1">在這裡管理您的專屬域名、下載 DNS CNAME 設定值、以及配置 forwarding 轉寄目標。</p>
+                </div>
+                <div class="flex space-x-3">
+                    <button onclick="openUpgradeModal()" class="bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-2.5 px-5 rounded-xl text-sm shadow-lg shadow-orange-500/10 flex items-center space-x-2 transition">
+                        <i class="fa-solid fa-crown"></i>
+                        <span>升級 Starter/Pro 方案</span>
+                    </button>
+                    <button id="admin-entry-btn" onclick="showAdminPanel()" class="hidden bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-sm flex items-center space-x-2 transition">
+                        <i class="fa-solid fa-user-shield"></i>
+                        <span>進入 Admin 後台</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Two Column Dashboard Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Left Column: Domain Setup Card -->
+                <div class="space-y-8">
+                    <!-- Domain Register Card -->
+                    <div class="glass-panel rounded-3xl p-6 shadow-xl space-y-4">
+                        <div class="flex items-center space-x-2 text-white">
+                            <i class="fa-solid fa-globe text-indigo-400 text-lg"></i>
+                            <h3 class="text-lg font-bold">1. 連接您的自訂域名</h3>
+                        </div>
+                        <p class="text-xs text-slate-400">請輸入您在 GoDaddy 或 Namecheap 購買的自訂域名，免費版上限為 1 個網域。</p>
+                        
+                        <div class="space-y-3 pt-2">
+                            <input id="register-domain-input" type="text" placeholder="例如：yourbusiness.tw" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                            <button onclick="handleRegisterDomain()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-link"></i>
+                                <span>立即連線自訂域名</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Verified Domains List -->
+                    <div class="glass-panel rounded-3xl p-6 shadow-xl space-y-4">
+                        <h4 class="text-sm font-bold text-slate-300 tracking-wider uppercase">已連接的自訂域名</h4>
+                        <div id="domains-list-container" class="space-y-3">
+                            <!-- Dynamic Domain badge -->
+                            <p class="text-xs text-slate-500 py-2">尚未綁定任何域名。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Mapping Rules (2 Columns Wide) -->
+                <div class="lg:col-span-2 space-y-8">
+                    
+                    <!-- Mapping Rules Form Card -->
+                    <div class="glass-panel rounded-3xl p-6 shadow-xl space-y-6">
+                        <div class="flex items-center space-x-2 text-white">
+                            <i class="fa-solid fa-envelope-open-text text-indigo-400 text-lg"></i>
+                            <h3 class="text-lg font-bold">2. 配置郵件轉寄對照規則 (Email Mappings)</h3>
+                        </div>
+                        <p class="text-xs text-slate-400">將您網域下的特定信箱前綴 (Prefix) 綁定轉寄至您的 Gmail。免費版帳戶上限為 2 組轉寄對照規則。</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                            <!-- Prefix -->
+                            <div class="md:col-span-4">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">信箱前綴 Prefix</label>
+                                <div class="relative">
+                                    <input id="mapping-prefix" type="text" placeholder="例如: hello" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl pl-4 pr-12 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                                    <span id="mapping-domain-suffix" class="absolute right-3 top-3.5 text-xs font-bold text-slate-600">@...</span>
+                                </div>
+                            </div>
+                            <!-- Arrow -->
+                            <div class="hidden md:flex md:col-span-1 justify-center pb-3">
+                                <i class="fa-solid fa-arrow-right text-slate-600 text-xl"></i>
+                            </div>
+                            <!-- Destination Gmail -->
+                            <div class="md:col-span-5">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">轉寄目標信箱 Target Gmail</label>
+                                <input id="mapping-target" type="email" placeholder="例如: yourname@gmail.com" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                            </div>
+                            <!-- Save Button -->
+                            <div class="md:col-span-2">
+                                <button onclick="handleCreateMapping()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-1.5">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    <span>儲存</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mapping Rules Data Table Card -->
+                    <div class="glass-panel rounded-3xl p-6 shadow-xl space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-sm font-bold text-slate-300 tracking-wider uppercase">當前運行中的轉寄對照表</h4>
+                            <span id="mapping-quota-indicator" class="text-xs font-semibold text-slate-500">0 / 2 Mappings</span>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-800">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">自訂信箱來源</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider"></th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">轉寄目標信箱</th>
+                                        <th scope="col" class="relative py-3.5 pl-3 pr-4 text-right">
+                                            <span class="sr-only">操作</span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mappings-table-body" class="divide-y divide-slate-800 bg-slate-900/40">
+                                    <!-- Dynamic rows -->
+                                    <tr>
+                                        <td colspan="4" class="py-6 text-center text-xs text-slate-500">尚未建立任何轉寄對照。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= ADMIN GOVERNMENT PANEL ================= -->
+        <div id="admin-view" class="hidden space-y-8">
+            <div class="glass-panel rounded-3xl p-6 flex items-center justify-between">
+                <div>
+                    <h2 class="text-2xl font-black text-rose-500 flex items-center gap-2">
+                        <i class="fa-solid fa-shield-cat"></i> Saltycat 系統治理後台
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-1">系統管理員專屬權限控制台，進行平台營運狀態與用戶管理。</p>
+                </div>
+                <button onclick="exitAdminPanel()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-sm flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>返回個人儀表板</span>
+                </button>
+            </div>
+
+            <!-- AWS SES Account Telemetry -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel rounded-2xl p-6 space-y-2">
+                    <p class="text-xs font-bold text-slate-500 uppercase">SES 寄信信譽 Reputation</p>
+                    <p class="text-2xl font-black text-emerald-400">100% 良好</p>
+                    <p class="text-xs text-slate-500">系統投遞退信率極低。</p>
+                </div>
+                <div class="glass-panel rounded-2xl p-6 space-y-2">
+                    <p class="text-xs font-bold text-slate-500 uppercase">沙盒狀態 Sandbox Status</p>
+                    <p class="text-2xl font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-circle-check text-indigo-400"></i> 已解鎖生產模式
+                    </p>
+                    <p class="text-xs text-slate-500">可投遞至全球任何信箱。</p>
+                </div>
+                <div class="glass-panel rounded-2xl p-6 space-y-2">
+                    <p class="text-xs font-bold text-slate-500 uppercase">今日發信量 (24-Hour Send)</p>
+                    <p id="admin-ses-volume" class="text-2xl font-black text-indigo-400">N/A</p>
+                    <p class="text-xs text-slate-500">系統即時發送指標。</p>
+                </div>
+            </div>
+
+            <!-- User List Table Card -->
+            <div class="glass-panel rounded-3xl p-6 shadow-xl space-y-4">
+                <h3 class="text-lg font-bold text-white">平台租戶總覽 (Users Account Management)</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-800">
+                        <thead>
+                            <tr>
+                                <th class="py-3.5 pl-4 pr-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">用戶 UID / 電子信箱</th>
+                                <th class="px-3 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">帳號層級 Tier</th>
+                                <th class="px-3 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider">帳號狀態 Status</th>
+                                <th class="relative py-3.5 pl-3 pr-4 text-right">操作 Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-users-table-body" class="divide-y divide-slate-800">
+                            <!-- Dynamic Users rows -->
+                            <tr>
+                                <td colspan="4" class="py-6 text-center text-xs text-slate-500">載入用戶列表中...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="glass-panel border-t border-slate-800/50 py-6 px-6 text-center text-xs text-slate-500">
+        <p>© 2026 Saltycat Mailservice 鹹魚域名郵件轉寄專案. All rights reserved.</p>
+        <p class="mt-1">如有任何商務合作或帳號疑問，請發信至 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a></p>
+    </footer>
+
+    <!-- ================= MODERN MODAL COMPONENT (DNS overlay) ================= -->
+    <div id="dns-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
+        <div class="glass-panel rounded-3xl max-w-2xl w-full p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start border-b border-slate-800 pb-4">
+                <div>
+                    <h3 id="dns-modal-title" class="text-xl font-black text-white">GoDaddy DNS 自訂網域設定值</h3>
+                    <p class="text-xs text-slate-400 mt-1">請將下方 3 組 Easy DKIM CNAME 與 1 組 MX 記錄貼入您的 GoDaddy DNS 後台。</p>
+                </div>
+                <button onclick="closeDnsModal()" class="text-slate-400 hover:text-white transition text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- CNAME records tables -->
+            <div class="space-y-4">
+                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第一步：配置 3 組 DKIM 安全金鑰 (CNAME Records)</h4>
+                <div class="space-y-3" id="dns-cname-rows-container">
+                    <!-- Dynamic CNAME Rows -->
+                </div>
+            </div>
+
+            <!-- MX Records -->
+            <div class="space-y-4 border-t border-slate-800/80 pt-4">
+                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第二步：配置 AWS SES 郵件進站路徑 (MX Record)</h4>
+                <div class="bg-slate-950/50 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
+                    <div class="grid grid-cols-3 gap-2 flex-grow text-xs">
+                        <div>
+                            <span class="text-slate-500 block">主機 Host</span>
+                            <span class="font-mono text-slate-200">@</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">類型 Type</span>
+                            <span class="font-mono text-slate-200">MX</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 block">設定值 Value</span>
+                            <span class="font-mono text-slate-200">10 inbound-smtp.us-east-1.amazonaws.com.</span>
+                        </div>
+                    </div>
+                    <button onclick="copyToClipboard('@', 'MX', '10 inbound-smtp.us-east-1.amazonaws.com.')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                        <i class="fa-solid fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3 pt-4">
+                <button id="verify-dns-btn" onclick="triggerDnsVerify()" class="flex-grow bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-2 shadow-lg shadow-indigo-600/10">
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span>我已在 GoDaddy 設定完畢，立即檢查驗證狀態！</span>
+                </button>
+                <button onclick="closeDnsModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-5 rounded-xl text-sm transition">
+                    關閉
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MODERN MODAL COMPONENT (Upgrade Manual Overlay - Phase 6.4) ================= -->
+    <div id="upgrade-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
+        <div class="glass-panel rounded-3xl max-w-lg w-full p-8 shadow-2xl text-center space-y-6">
+            <div class="w-16 h-16 bg-amber-500/10 rounded-2xl mx-auto flex items-center justify-center">
+                <i class="fa-solid fa-crown text-amber-500 text-3xl"></i>
+            </div>
+            
+            <div class="space-y-2">
+                <h3 class="text-xl font-black text-white">升級 Saltycat Mailservice 高階方案</h3>
+                <p class="text-xs text-slate-500">解鎖多網域綁定與萬用金鑰 (Wildcard)，開啟極限路由！</p>
+            </div>
+
+            <!-- Intercept zh_TW message explicitly requested -->
+            <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 text-left space-y-3">
+                <p class="text-amber-400 font-bold text-sm"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> 手動升級通知：</p>
+                <p class="text-slate-300 text-sm leading-relaxed font-semibold">
+                    「專案試營運階段：如需解鎖 Starter 方案（2 網域 / 10 Mappings + 萬用金鑰）或更高階的 Pro 方案，請直接點擊下方按鈕，發信至官方客服信箱 cs@saltycat.tw，我們將有專人手動為您的帳號變更升級權限！」
+                </p>
+            </div>
+
+            <div class="flex flex-col gap-3 pt-2">
+                <button onclick="handleManualUpgradeEmail()" class="w-full bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-400 hover:to-orange-500 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition shadow-lg shadow-orange-500/20 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>聯繫客服申請升級</span>
+                </button>
+                <button onclick="closeUpgradeModal()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
+                    暫時不要
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= FIREBASE & APP LOGIC SCRIPT ================= -->
+    <!-- Firebase App and Auth SDKs (Compat v9 for Native browser script execution) -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+    <script>
+        // Real Firebase Web Config generated automatically by SandyAI API!
+        const firebaseConfig = {
+            projectId: "sandyai-1495680215360",
+            appId: "1:497792128300:web:ab092d45fa1d600b484889",
+            storageBucket: "sandyai-1495680215360.firebasestorage.app",
+            apiKey: "AIzaSyD0Ju1nNqMIMGHrpUVIQyJ8KI_BMeVL8Z4",
+            authDomain: "sandyai-1495680215360.firebaseapp.com",
+            messagingSenderId: "497792128300",
+            projectNumber: "497792128300"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Backend URL config (detects if local development or Cloud Run deploy)
+        const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+            ? "http://localhost:8000" 
+            : "https://mailservice-api-497792128300.us-central1.run.app"; // Update with actual Cloud Run deployment URL
+
+        let userToken = "";
+        let userUid = "";
+        let registeredDomains = [];
+        let currentActiveDomain = "";
+        let isSignupMode = false;
+
+        // On Auth state change
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                userUid = user.uid;
+                userToken = await user.getIdToken();
+                localStorage.setItem("bearer_jwt", userToken);
+                
+                // Show dashboard elements
+                document.getElementById("auth-view").classList.add("hidden");
+                document.getElementById("nav-user-area").classList.remove("hidden");
+                document.getElementById("dashboard-view").classList.remove("hidden");
+                document.getElementById("user-display-email").innerText = user.email;
+
+                // Show Admin tab if email matches system administrator Taosheng
+                if (user.email === "taosheng.chen@gmail.com") {
+                    document.getElementById("admin-entry-btn").classList.remove("hidden");
+                } else {
+                    document.getElementById("admin-entry-btn").classList.add("hidden");
+                }
+
+                // Initialize client data
+                await initUserProfile();
+                await fetchDomains();
+                await fetchMappings();
+            } else {
+                userUid = "";
+                userToken = "";
+                localStorage.removeItem("bearer_jwt");
+                
+                // Reset to landing view
+                document.getElementById("auth-view").classList.remove("hidden");
+                document.getElementById("nav-user-area").classList.add("hidden");
+                document.getElementById("dashboard-view").classList.add("hidden");
+                document.getElementById("admin-view").classList.add("hidden");
+            }
+        });
+
+        // Toggle signup / login mode UI
+        function toggleAuthMode() {
+            isSignupMode = !isSignupMode;
+            const toggleBtn = document.getElementById("auth-toggle-btn");
+            const submitBtn = document.getElementById("auth-submit-btn");
+            if (isSignupMode) {
+                toggleBtn.innerText = "已有帳號？立即登入";
+                submitBtn.innerText = "註冊新帳號";
+            } else {
+                toggleBtn.innerText = "沒有帳號？立即註冊";
+                submitBtn.innerText = "立即登入";
+            }
+        }
+
+        // Traditional Email Auth Handler
+        async function handleEmailAuth(event) {
+            event.preventDefault();
+            const email = document.getElementById("auth-email").value.strip ? document.getElementById("auth-email").value.strip() : document.getElementById("auth-email").value;
+            const password = document.getElementById("auth-password").value;
+
+            Swal.fire({ title: "安全連線中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+
+            try {
+                if (isSignupMode) {
+                    await auth.createUserWithEmailAndPassword(email, password);
+                    Swal.fire({ icon: "success", title: "註冊成功！", text: "歡迎加入 Saltycat Mailservice！", timer: 1500 });
+                } else {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    Swal.fire({ icon: "success", title: "登入成功！", text: "歡迎回來！", timer: 1500, showConfirmButton: false });
+                }
+            } catch (error) {
+                Swal.fire({ icon: "error", title: "驗證失敗", text: error.message });
+            }
+        }
+
+        // Google Social Login
+        async function handleGoogleLogin() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try {
+                await auth.signInWithPopup(provider);
+                Swal.fire({ icon: "success", title: "Google 登入成功", text: "歡迎回來！", timer: 1500, showConfirmButton: false });
+            } catch (error) {
+                Swal.fire({ icon: "error", title: "Google 登入失敗", text: error.message });
+            }
+        }
+
+        // Sign Out
+        function handleSignOut() {
+            auth.signOut();
+        }
+
+        // Initialise user profile on backend (Phase 5.2)
+        async function initUserProfile() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/users/init`, {
+                    method: "POST",
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (!res.ok) console.error("Failed to initialize user profile on backend.");
+            } catch (e) {
+                console.error("Network error during init user profile:", e);
+            }
+        }
+
+        // Fetch user domains
+        async function fetchDomains() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/domains`, {
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (res.ok) {
+                    registeredDomains = await res.json();
+                    renderDomains();
+                }
+            } catch (e) {
+                console.error("Error fetching domains:", e);
+            }
+        }
+
+        // Render Domains container
+        function renderDomains() {
+            const container = document.getElementById("domains-list-container");
+            if (registeredDomains.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-500 py-2">尚未綁定任何域名。</p>`;
+                currentActiveDomain = "";
+                document.getElementById("mapping-domain-suffix").innerText = "@...";
+                return;
+            }
+
+            currentActiveDomain = registeredDomains[0].domain_name;
+            document.getElementById("mapping-domain-suffix").innerText = `@${currentActiveDomain}`;
+
+            container.innerHTML = "";
+            registeredDomains.forEach(domain => {
+                const isVerified = domain.status === "verified";
+                const badgeClass = isVerified 
+                    ? "bg-emerald-500/10 text-emerald-400 ring-emerald-500/30" 
+                    : "bg-amber-500/10 text-amber-400 ring-amber-500/30";
+                const badgeText = isVerified ? "已驗證 Active" : "待驗證 Pending";
+
+                container.innerHTML += `
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-2xl p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-white text-sm tracking-wide font-mono">${domain.domain_name}</span>
+                            <span class="inline-flex items-center rounded-md px-2 py-1 text-xs font-semibold ring-1 ring-inset ${badgeClass}">
+                                ${badgeText}
+                            </span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="showDnsModalDetails('${domain.domain_name}')" class="flex-grow bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2 px-3 rounded-lg text-xs transition">
+                                <i class="fa-solid fa-server mr-1"></i> DNS 設定值
+                            </button>
+                            <button onclick="handleDeleteDomain('${domain.domain_name}')" class="bg-rose-950/30 hover:bg-rose-900/50 text-rose-400 p-2 rounded-lg text-xs transition">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Domain register form submit (Phase 5.3)
+        async function handleRegisterDomain() {
+            const domainInput = document.getElementById("register-domain-input");
+            const domain_name = domainInput.value.trim().toLowerCase();
+            
+            if (!domain_name) {
+                Swal.fire({ icon: "warning", title: "請輸入網域", text: "欄位不能留白！" });
+                return;
+            }
+
+            Swal.fire({ title: "AWS SES 手續連線中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/domains/register`, {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ domain_name })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    domainInput.value = "";
+                    Swal.fire({
+                        icon: "success",
+                        title: "網域連線成功！",
+                        text: `已成功註冊 ${domain_name} 網域！`,
+                        confirmButtonText: "查看 GoDaddy DNS 設定值"
+                    }).then(() => {
+                        fetchDomains();
+                        showDnsModalDetails(domain_name, data.dns_payload);
+                    });
+                } else {
+                    const error = await res.json();
+                    Swal.fire({ icon: "error", title: "註冊失敗", text: error.detail || "未知錯誤" });
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+            }
+        }
+
+        // Delete Domain
+        async function handleDeleteDomain(domain_name) {
+            Swal.fire({
+                title: "確定刪除網域嗎？",
+                text: `這將徹底刪除網域 ${domain_name} 以及其名下所有的郵件轉寄規則！`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "確定刪除",
+                cancelButtonText: "取消"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({ title: "正在註銷中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+                    try {
+                        const res = await fetch(`${BACKEND_URL}/api/domains/${domain_name}`, {
+                            method: "DELETE",
+                            headers: { "Authorization": `Bearer ${userToken}` }
+                        });
+                        if (res.ok) {
+                            Swal.fire({ icon: "success", title: "刪除成功！", text: "該網域已被完美刪除。" });
+                            fetchDomains();
+                            fetchMappings();
+                        } else {
+                            const err = await res.json();
+                            Swal.fire({ icon: "error", title: "刪除失敗", text: err.detail });
+                        }
+                    } catch (e) {
+                        Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+                    }
+                }
+            });
+        }
+
+        // Open DNS Overlay Modal
+        let activeVerifyDomain = "";
+        function showDnsModalDetails(domain_name, custom_dns = null) {
+            activeVerifyDomain = domain_name;
+            document.getElementById("dns-modal-title").innerText = `${domain_name} DNS 設定教學 (GoDaddy)`;
+            
+            const rowsContainer = document.getElementById("dns-cname-rows-container");
+            rowsContainer.innerHTML = "";
+
+            let dns_records = custom_dns;
+            if (!dns_records) {
+                const found = registeredDomains.find(d => d.domain_name === domain_name);
+                dns_records = found ? found.dns_payload : [];
+            }
+
+            dns_records.forEach((dns, idx) => {
+                rowsContainer.innerHTML += `
+                    <div class="bg-slate-950/50 rounded-xl p-4 border border-slate-800 flex items-center justify-between">
+                        <div class="grid grid-cols-3 gap-2 flex-grow text-xs">
+                            <div>
+                                <span class="text-slate-500 block">主機 Host (${idx+1})</span>
+                                <span class="font-mono text-slate-200 block truncate">${dns.host}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">類型 Type</span>
+                                <span class="font-mono text-slate-200 block">${dns.type}</span>
+                            </div>
+                            <div>
+                                <span class="text-slate-500 block">設定值 Value</span>
+                                <span class="font-mono text-slate-200 block truncate">${dns.value}</span>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('${dns.host}', '${dns.type}', '${dns.value}')" class="bg-slate-800 hover:bg-slate-700 p-2 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            document.getElementById("dns-modal").classList.remove("hidden");
+        }
+
+        function closeDnsModal() {
+            document.getElementById("dns-modal").classList.add("hidden");
+        }
+
+        // Clipboard Copy Helper
+        function copyToClipboard(host, type, val) {
+            navigator.clipboard.writeText(val).then(() => {
+                Swal.fire({ icon: "success", title: "已複製設定值！", text: `已將 ${val} 複製至剪貼簿。`, timer: 1000, showConfirmButton: false });
+            });
+        }
+
+        // Verify DNS Status trigger
+        async function triggerDnsVerify() {
+            if (!activeVerifyDomain) return;
+            const btn = document.getElementById("verify-dns-btn");
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在對接 AWS SES 驗證主機中...</span>`;
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/domains/${activeVerifyDomain}/verify`, {
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.status === "verified") {
+                        Swal.fire({ icon: "success", title: "恭喜！驗證通過！", text: "您的自訂域名已完全啟用！現在起可以自由轉寄郵件！" });
+                        closeDnsModal();
+                        fetchDomains();
+                    } else {
+                        Swal.fire({ icon: "info", title: "DNS 尚未生效", text: "AWS SES 尚未偵測到您的 DNS 更新。GoDaddy DNS 傳播通常需要數分鐘，請耐心等待後再點擊檢查。" });
+                    }
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "連線失敗", text: e.message });
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>我已在 GoDaddy 設定完畢，立即檢查驗證狀態！</span>`;
+            }
+        }
+
+        // Fetch current forwarding mappings
+        let activeMappings = [];
+        async function fetchMappings() {
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/mappings`, {
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (res.ok) {
+                    activeMappings = await res.json();
+                    renderMappings();
+                }
+            } catch (e) {
+                console.error("Error fetching mappings:", e);
+            }
+        }
+
+        // Render Mappings list
+        function renderMappings() {
+            const body = document.getElementById("mappings-table-body");
+            const quota = document.getElementById("mapping-quota-indicator");
+            
+            quota.innerText = `${activeMappings.length} / 2 Mappings`;
+
+            if (activeMappings.length === 0) {
+                body.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="py-8 text-center text-xs text-slate-500">
+                            <i class="fa-solid fa-folder-open text-xl block mb-2 opacity-30"></i> 尚未配置任何郵件轉寄規則。
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            body.innerHTML = "";
+            activeMappings.forEach(m => {
+                body.innerHTML += `
+                    <tr class="hover:bg-slate-800/20 transition">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-slate-200 font-mono">
+                            ${m.prefix}<span class="text-slate-500">@${m.domain_name}</span>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-xs text-slate-500 text-center">
+                            <i class="fa-solid fa-arrow-right-long text-slate-700"></i>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-indigo-400 font-mono">
+                            ${m.target_gmail}
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
+                            <button onclick="handleDeleteMapping('${m.domain_name}', '${m.prefix}')" class="text-rose-400 hover:text-rose-300 transition duration-150">
+                                <i class="fa-solid fa-trash-can"></i> 刪除
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Handle Create mapping (Phase 5.4)
+        async function handleCreateMapping() {
+            if (!currentActiveDomain) {
+                Swal.fire({ icon: "warning", title: "請先連接域名", text: "您必須先註冊連接一個自訂域名，才能建立轉寄規則！" });
+                return;
+            }
+
+            const prefixInput = document.getElementById("mapping-prefix");
+            const targetInput = document.getElementById("mapping-target");
+
+            const prefix = prefixInput.value.trim().toLowerCase();
+            const target_gmail = targetInput.value.trim().toLowerCase();
+
+            if (!prefix || !target_gmail) {
+                Swal.fire({ icon: "warning", title: "欄位未填滿", text: "前綴與目標信箱均不能留空！" });
+                return;
+            }
+
+            Swal.fire({ title: "儲存規則中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/mappings/create`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        prefix,
+                        target_gmail,
+                        domain_name: currentActiveDomain
+                    })
+                });
+
+                if (res.ok) {
+                    prefixInput.value = "";
+                    targetInput.value = "";
+                    Swal.fire({ icon: "success", title: "轉寄對照已生效！", text: "該規則已完全寫入全域郵件轉寄路由器！", timer: 1500, showConfirmButton: false });
+                    fetchMappings();
+                } else {
+                    const err = await res.json();
+                    Swal.fire({ icon: "error", title: "建立失敗", text: err.detail || "請檢查限額或規則限制！" });
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+            }
+        }
+
+        // Delete mapping rule
+        async function handleDeleteMapping(domain_name, prefix) {
+            Swal.fire({
+                title: "確定刪除此轉寄規則嗎？",
+                text: `這將停止所有 ${prefix}@${domain_name} 轉寄至目標信箱的行為！`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "確定刪除",
+                cancelButtonText: "取消"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({ title: "正在註銷中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+                    try {
+                        const res = await fetch(`${BACKEND_URL}/api/mappings/${domain_name}/${prefix}`, {
+                            method: "DELETE",
+                            headers: { "Authorization": `Bearer ${userToken}` }
+                        });
+                        if (res.ok) {
+                            Swal.fire({ icon: "success", title: "規則已刪除", text: "轉寄通道已成功關閉。" });
+                            fetchMappings();
+                        } else {
+                            const err = await res.json();
+                            Swal.fire({ icon: "error", title: "刪除失敗", text: err.detail });
+                        }
+                    } catch (e) {
+                        Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+                    }
+                }
+            });
+        }
+
+        // Upgrade modals (Phase 6.4)
+        function openUpgradeModal() {
+            document.getElementById("upgrade-modal").classList.remove("hidden");
+        }
+        function closeUpgradeModal() {
+            document.getElementById("upgrade-modal").classList.add("hidden");
+        }
+
+        // Mailto link for manual upgrade
+        function handleManualUpgradeEmail() {
+            window.location.href = `mailto:cs@saltycat.tw?subject=Saltycat Mailservice 帳號升級申請&body=您好，我想申請將我的帳號 (UID: ${userUid}) 升級至更高階方案，謝謝！`;
+            closeUpgradeModal();
+        }
+
+        // Admin panel (Phase 7)
+        function showAdminPanel() {
+            document.getElementById("dashboard-view").classList.add("hidden");
+            document.getElementById("admin-view").classList.remove("hidden");
+            fetchAdminStats();
+            fetchAdminUsers();
+        }
+
+        function exitAdminPanel() {
+            document.getElementById("admin-view").classList.add("hidden");
+            document.getElementById("dashboard-view").classList.remove("hidden");
+        }
+
+        async function fetchAdminStats() {
+            try {
+                // In Phase 7 we will implement the /api/admin/stats endpoint
+                const res = await fetch(`${BACKEND_URL}/api/admin/stats`, {
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById("admin-ses-volume").innerText = `${data.send_volume_24h} / 封`;
+                }
+            } catch (e) {
+                console.error("Failed to fetch admin stats:", e);
+            }
+        }
+
+        async function fetchAdminUsers() {
+            const body = document.getElementById("admin-users-table-body");
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/admin/users`, {
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (res.ok) {
+                    const users = await res.json();
+                    body.innerHTML = "";
+                    users.forEach(u => {
+                        const isSuspended = u.account_status === "suspended";
+                        const statusBadge = isSuspended 
+                            ? "bg-rose-500/10 text-rose-400 ring-rose-500/30" 
+                            : "bg-emerald-500/10 text-emerald-400 ring-emerald-500/30";
+                        const statusText = isSuspended ? "已停用 Suspended" : "啟用中 Active";
+                        
+                        const actionBtn = isSuspended 
+                            ? `<button onclick="toggleUserStatus('${u.uid}', 'active')" class="text-xs bg-emerald-950/30 hover:bg-emerald-900/50 text-emerald-400 py-1.5 px-3 rounded-lg border border-emerald-500/20 transition">重新啟用</button>`
+                            : `<button onclick="toggleUserStatus('${u.uid}', 'suspended')" class="text-xs bg-rose-950/30 hover:bg-rose-900/50 text-rose-400 py-1.5 px-3 rounded-lg border border-rose-500/20 transition">停用帳戶</button>`;
+
+                        body.innerHTML += `
+                            <tr class="hover:bg-slate-800/10 transition">
+                                <td class="whitespace-nowrap py-4 pl-4 pr-3 text-xs">
+                                    <span class="block text-slate-400 font-mono">${u.uid}</span>
+                                    <span class="block text-slate-200 font-semibold">${u.email}</span>
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-xs">
+                                    <span class="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-1 font-semibold text-indigo-400 ring-1 ring-inset ring-indigo-500/30">
+                                        ${u.tier.toUpperCase()}
+                                    </span>
+                                </td>
+                                <td class="whitespace-nowrap px-3 py-4 text-xs">
+                                    <span class="inline-flex items-center rounded-md px-2 py-1 font-semibold ring-1 ring-inset ${statusBadge}">
+                                        ${statusText}
+                                    </span>
+                                </td>
+                                <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-xs font-medium space-x-2">
+                                    ${actionBtn}
+                                </td>
+                            </tr>
+                        `;
+                    });
+                }
+            } catch (e) {
+                body.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-xs text-rose-400">無法獲取用戶列表：${e.message}</td></tr>`;
+            }
+        }
+
+        async function toggleUserStatus(uid, new_status) {
+            Swal.fire({ title: "修改帳號權限中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/admin/users/${uid}/status`, {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ account_status: new_status })
+                });
+                if (res.ok) {
+                    Swal.fire({ icon: "success", title: "狀態修改成功！", text: `該用戶狀態已被設定為 ${new_status}。`, timer: 1500, showConfirmButton: false });
+                    fetchAdminUsers();
+                } else {
+                    const err = await res.json();
+                    Swal.fire({ icon: "error", title: "修改失敗", text: err.detail });
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+            }
+        }
+    </script>
 </body>
 </html>
