@@ -72,13 +72,28 @@
     <!-- Main Content Area -->
     <main class="flex-grow container mx-auto px-6 py-8">
         
-        <!-- ================= SECTION 1: LANDING & FEATURES ================= -->
-        <section id="landing-section" class="space-y-16 py-8">
-            <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-                <div class="md:w-1/2 space-y-6">
-                    <div class="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-semibold">
-                        <span>🎉 專案試營運階段：Lite 方案註冊享首月免費體驗</span>
-                    </div>
+        <!-- ================= SECTION 1: LANDING ================= -->
+        <section id="landing-section" class="space-y-12 py-8">
+            <div class="max-w-3xl mx-auto text-center space-y-6 flex flex-col items-center justify-center">
+                <div class="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-3 py-1 rounded-full text-xs font-semibold">
+                    <span>🎉 專案試營運階段：Lite 方案註冊享首月免費體驗</span>
+                </div>
+                <h2 class="text-4xl md:text-5xl font-black text-white leading-tight">
+                    最省錢的<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-500">專屬自訂域名</span><br>郵件轉寄服務
+                </h2>
+                <p class="text-slate-400 leading-relaxed text-sm max-w-2xl mx-auto">
+                    為什麼要為企業信箱支付昂貴的月費？使用 Saltycat Mailservice，您可以將自己的網域（如 <code class="text-indigo-300 bg-slate-800 px-1 rounded">ceo@yourdomain.tw</code>）100% 完美轉寄至您現有的免費 Gmail，免除每個月數百元按帳號收費的負擔！
+                </p>
+                <div class="flex flex-wrap gap-4 pt-2 justify-center">
+                    <button onclick="startGuestExperience()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20 flex items-center space-x-2">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>免註冊，直接免費體驗</span>
+                    </button>
+                    <button onclick="showSection('pricing-section')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3.5 px-6 rounded-xl text-sm transition">
+                        查看方案定價
+                    </button>
+                </div>
+            </div>
                     <h2 class="text-4xl md:text-5xl font-black text-white leading-tight">
                         最省錢的<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-500">專屬自訂域名</span><br>郵件轉寄服務
                     </h2>
@@ -243,7 +258,7 @@
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>10 組</strong> 郵件對照規則</li>
-                            <li class="flex items-center font-bold text-white"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 萬用金鑰 (Catch-all *)</li>
+                            <li class="flex items-center font-bold text-white"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 萬用金鑰 (Catch-all *) 一起轉寄到同個信箱</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 包含 Lite 版所有核心安全技術</li>
                         </ul>
                     </div>
@@ -266,8 +281,7 @@
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>無限個</strong> 自訂網域綁定</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>無限組</strong> 郵件對照規則</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 萬用金鑰 (Catch-all *)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 專屬出站 IP 投遞保障</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 萬用金鑰 (Catch-all *) 一起轉寄到同個信箱</li>
                         </ul>
                     </div>
                     <button onclick="openUpgradeModal()" class="mt-8 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
