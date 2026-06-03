@@ -258,7 +258,7 @@
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>10 組</strong> 郵件對照規則</li>
-                            <li class="flex items-center font-bold text-white"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 萬用金鑰 (Catch-all *) 一起轉寄到同個信箱</li>
+                            <li class="flex items-center font-bold text-white"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 包含 Lite 版所有核心安全技術</li>
                         </ul>
                     </div>
@@ -281,7 +281,7 @@
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>無限個</strong> 自訂網域綁定</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>無限組</strong> 郵件對照規則</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 萬用金鑰 (Catch-all *) 一起轉寄到同個信箱</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
                         </ul>
                     </div>
                     <button onclick="openUpgradeModal()" class="mt-8 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
@@ -585,14 +585,14 @@
             
             <div class="space-y-2">
                 <h3 class="text-xl font-black text-white">升級 Saltycat Mailservice 高階方案</h3>
-                <p class="text-xs text-slate-500">解鎖多網域綁定與萬用金鑰 (Wildcard)，開啟極限路由！</p>
+                <p class="text-xs text-slate-500">解鎖多網域綁定與 Catch-all 萬用郵件，開啟極限路由！</p>
             </div>
 
             <!-- Intercept zh_TW message explicitly requested -->
             <div class="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-6 text-left space-y-3">
                 <p class="text-amber-400 font-bold text-sm"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> 手動升級通知：</p>
                 <p class="text-slate-300 text-sm leading-relaxed font-semibold">
-                    「專案試營運階段：如需解鎖 Starter 方案（2 網域 / 10 Mappings + 萬用金鑰）或更高階的 Pro 方案，請直接點擊下方按鈕，發信至官方客服信箱 cs@saltycat.tw，我們將有專人手動為您的帳號變更升級權限！」
+                    「專案試營運階段：如需解鎖 Starter 方案（2 網域 / 10 Mappings + Catch-all）或更高階的 Pro 方案，請直接點擊下方按鈕，發信至官方客服信箱 cs@saltycat.tw，我們將有專人手動為您的帳號變更升級權限！」
                 </p>
             </div>
 
@@ -1404,7 +1404,7 @@
                     return;
                 }
                 if (prefix === "*") {
-                    Swal.fire({ icon: "error", title: "規則限制", text: "免費方案不支援萬用金鑰 (Catch-all *) 轉寄，請升級 Starter 方案解鎖！" });
+                    Swal.fire({ icon: "error", title: "規則限制", text: "免費方案不支援 Catch-all 萬用轉寄，請升級 Starter 方案解鎖！" });
                     return;
                 }
                 guestMappings.push({
