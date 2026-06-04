@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用與服務條款 (Terms of Service) - 閒貓電郵 Saltycat Mailservice</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col justify-between">
+
+    <!-- Top Navigation Bar -->
+    <header class="glass-panel sticky top-0 z-40 w-full border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+            <div class="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                <i class="fa-solid fa-cat text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-black tracking-wider text-white">Saltycat Mailservice</h1>
+                <p class="text-xs text-slate-400 font-medium">閒貓電郵</p>
+            </div>
+        </div>
+        
+        <div>
+            <button onclick="window.location.href='index.html'" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-xs transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>返回首頁</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-6 py-12 max-w-6xl">
+        
+        <div class="glass-panel rounded-3xl p-8 md:p-12 shadow-2xl space-y-8">
+            <!-- Header Section -->
+            <div class="border-b border-slate-800 pb-6 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start space-x-3 text-indigo-400 mb-2">
+                    <i class="fa-solid fa-gavel text-2xl"></i>
+                    <span class="text-xs uppercase font-bold tracking-widest">Saltycat Legal Department</span>
+                </div>
+                <h2 class="text-3xl font-black text-white">使用與服務條款 (Terms of Service)</h2>
+                <p class="text-xs text-slate-500 mt-2">最後更新日期：2026 年 6 月 3 日</p>
+            </div>
+
+            <!-- Dual-Language Grid Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 text-xs leading-relaxed text-slate-300">
+                
+                <!-- ================= LEFT COLUMN: TRADITIONAL CHINESE (zh_TW) ================= -->
+                <div class="space-y-8 border-r border-slate-800/80 pr-0 lg:pr-12">
+                    <div class="border-b border-indigo-500/20 pb-2">
+                        <span class="text-indigo-400 font-black uppercase tracking-wider text-[11px]"><i class="fa-solid fa-language mr-1"></i> 繁體中文 (zh_TW)</span>
+                    </div>
+
+                    <!-- 1. Operating Entity -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-black text-white">一、 營運主體與服務定義</h3>
+                        <p class="text-slate-300">
+                            「閒貓電郵」（Saltycat Mailservice，以下簡稱「本服務」）是由 <strong>陞和姍科技商號 (https://shengshan.tw/)</strong> 營運之專業自訂域名電子郵件（MX）轉寄中繼服務。本服務係依據本使用使用條款（以下簡稱「本條款」）為使用者提供自訂網域進站郵件轉寄、暫存、並完美對齊 SPF/DKIM 加密安全機制之非同步路由投遞。
+                        </p>
+                        <p class="text-slate-300">
+                            當您註冊、登入、付費或以任何方式開始使用本服務時，即視為您已閱讀、理解並完全同意受本條款所有細則之拘束。本服務保留隨時修改或變更本條約內容之權利，修改後條款一經於本網頁公告即時生效，不另行個別通知。
+                        </p>
+                    </div>
+
+                    <!-- 2. S3 & Privacy -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-black text-white">二、 暫存緩衝區與零殘留隱私保護</h3>
+                        <p class="text-slate-300">
+                            本服務秉持極致數據隱私保護原則，特此聲明本服務之技術架構流程：
+                        </p>
+                        <ul class="list-disc pl-4 space-y-2 text-slate-400">
+                            <li><strong>物理暫存緩衝區：</strong> 進站郵件會短暫寫入 Amazon S3 的緩衝區（`saltycat-mailservice-buffer`）以供 Lambda 轉寄引擎讀取。</li>
+                            <li><strong>零留底政策（Zero-Retention）：</strong> 轉寄任務投遞完成後，系統會立即從 S3 中物理刪除該原始郵件。任何未處理完成的臨時檔案，亦設有 24 小時強制自動過期刪除機制，絕不在伺服器或本機上保留任何郵件備份或內容紀錄。</li>
+                            <li><strong>不讀取與分析內容：</strong> 閒貓電郵絕不讀取、儲存、分析或將您的郵件主體內容、附件與收發件人名單轉售予任何第三方。</li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. Refunds & Cancellation -->
+                    <div class="space-y-3 bg-indigo-950/20 border border-indigo-500/10 p-5 rounded-2xl">
+                        <h3 class="text-sm font-black text-white text-indigo-400"><i class="fa-solid fa-credit-card mr-1.5"></i> 三、 退款與取消訂閱條件 (Refund Policy)</h3>
+                        <p class="text-slate-300 font-semibold">
+                            本服務全力保障使用者權益，退款與取消訂閱均可無條件執行。
+                        </p>
+                        <p class="text-slate-300">
+                            <strong>退款金額折算原則（僅退還未使用的月份）：</strong><br>
+                            所有的退款金額計算，均以本服務的<strong>「標準月費（NT$ 120 元 / 月）」</strong>作為已使用服務費之扣除基準，退還剩餘未使用之費用。
+                        </p>
+                        <div class="space-y-3 text-slate-400 border-t border-slate-800/80 pt-3">
+                            <p>
+                                <strong>1. 年繳方案退費範例：</strong><br>
+                                假設標準月費為 NT$ 120 元，使用者以年繳特價優惠 NT$ 1,200 元訂閱。若使用者在使用 6 個月後提出退訂與退款申請，則已使用期間之服務費按標準月費折算（6 個月 × NT$ 120 元 = NT$ 720 元）。
+                                最終應退費金額為：已繳總額扣除已使用服務費（<strong>NT$ 1,200 元 - NT$ 720 元 = NT$ 480 元</strong>）。
+                            </p>
+                            <p>
+                                <strong>2. 終身方案退費範例（預留條款）：</strong><br>
+                                <em>（註：本服務目前尚未推出終身方案，本條款為預先規劃載明。）</em><br>
+                                若使用者日後選擇購買一次性付費之「終身服務方案」（例如一次性繳納 NT$ 10,000 元終身費），後續若提出退款申請，亦比照標準月費（NT$ 120 元 / 月）折算扣除已使用的月份。
+                                例如：使用者在使用 2 年（24 個月）後申請退款，則已使用服務費為 NT$ 120 元 × 24 = NT$ 2,880 元，退還金額為 <strong>NT$ 10,000 元 - NT$ 2,880 元 = NT$ 7,120 元</strong>。
+                                依此折算公式，<strong>若使用年限已達 6.9 年（約 83.3 個月）以上，則不再退還任何費用</strong>。
+                            </p>
+                            <p class="text-amber-400 font-bold">
+                                <strong>3. 退款處理天數：</strong><br>
+                                當您提出退訂與退款申請並提供收款資訊後，本服務承諾於兩週內（14 個工作天）完成所有內部核銷並將剩餘款項匯回您的指定帳戶。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 4. Acceptable Use -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-black text-white">四、 限制使用與反垃圾郵件（Abuse）政策</h3>
+                        <p class="text-slate-300">
+                            您同意僅將本服務用於合法的通訊。我們對任何惡意或濫用行為採取<strong>零容忍政策</strong>：
+                        </p>
+                        <ul class="list-disc pl-4 space-y-1.5 text-slate-400">
+                            <li>嚴禁利用本服務綁定的任何域名發送或中繼垃圾郵件（Spam）、釣魚郵件、詐騙郵件、未經授權的群發行銷信。</li>
+                            <li>若經系統安全指標監控或外部投訴檢舉有上述濫用行為，系統管理員有權在不經通知的情況下，立即將您的帳號狀態變更為「停用 (Suspended)」，並註銷所有綁定之 AWS SES 網域與轉寄對照規則。</li>
+                        </ul>
+                    </div>
+
+                    <!-- 5. Indemnification cap -->
+                    <div class="space-y-3 bg-slate-950/50 border border-slate-800 p-5 rounded-2xl">
+                        <h3 class="text-sm font-black text-white text-rose-400"><i class="fa-solid fa-shield-halved mr-1.5"></i> 五、 損害賠償上限與責任限制</h3>
+                        <p class="text-slate-300 font-semibold italic">
+                            【以專業法律口吻撰寫之限制責任條款】
+                        </p>
+                        <p class="text-slate-300 leading-relaxed">
+                            本服務係依「現況」及「現有」基礎提供，不保證轉寄 100% 絕無中斷、延遲、遺失或安全漏洞。
+                        </p>
+                        <p class="text-slate-300 leading-relaxed font-bold">
+                            在法律允許的最大範圍內，因使用或無法使用本服務所引發之任何形式的直接、間接、附隨、特別、懲罰性或衍生性損害（包括但不限於商務利潤損失、營運中斷、資料遺失、商譽受損或其他財產上損害），本服務之所有者、營運主體陞和姍科技商號之全部累計損害賠償責任，不論其請求之法律基礎為何（包括合約違約、侵權行為、過失責任或無過失責任等），其最高累計賠償上限，在任何情況下皆不得超過該使用者已向本服務實際支付之累計服務費用總額（亦即以收受之費用全額退還為上限）。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- ================= RIGHT COLUMN: ENGLISH (en_US) ================= -->
+                <div class="space-y-8">
+                    <div class="border-b border-indigo-500/20 pb-2">
+                        <span class="text-indigo-400 font-black uppercase tracking-wider text-[11px]"><i class="fa-solid fa-language mr-1"></i> English (en_US)</span>
+                    </div>
+
+                    <!-- 1. Operating Entity -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-black text-white">1. Operating Entity & Scope of Service</h3>
+                        <p class="text-slate-300">
+                            "Saltycat Mailservice" (operating in Chinese as "閒貓電郵", and referred to as the "Service") is a professional custom domain email forwarding and relay service operated by <strong>Sheng Shan Technology Co. (https://shengshan.tw/)</strong>. The Service provides users with custom domain incoming email (MX) forwarding, transient buffering, and cryptographic SPF/DKIM alignment to enable seamless delivery to third-party destination mailboxes (primarily Gmail).
+                        </p>
+                        <p class="text-slate-300">
+                            By registering, logging in, purchasing, or using any aspect of the Service, you acknowledge that you have read, understood, and agreed to be legally bound by these Terms of Service. We reserve the right to modify these terms at any time, with modified terms immediately becoming effective upon publication on this page, without individual notice.
+                        </p>
+                    </div>
+
+                    <!-- 2. S3 & Privacy -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-black text-white">2. S3 Transient Buffering & Zero-Retention Privacy</h3>
+                        <p class="text-slate-300">
+                            To ensure absolute data privacy, the technical architecture of the Service complies with the following standards:
+                        </p>
+                        <ul class="list-disc pl-4 space-y-2 text-slate-400">
+                            <li><strong>Transient S3 Buffer:</strong> Incoming emails are transiently saved to an Amazon S3 bucket (`saltycat-mailservice-buffer`) to be parsed by our Lambda routing engine.</li>
+                            <li><strong>Zero-Retention Policy:</strong> Raw email data is permanently deleted from the S3 bucket immediately upon successful forwarding. All pending files are governed by a 24-hour expiration lifecycle rule to enforce absolute physical deletion.</li>
+                            <li><strong>No Content Inspection:</strong> We never read, inspect, store, harvest, analyze, or monetize your email contents, attachments, metadata, or recipient logs.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. Refunds & Cancellation -->
+                    <div class="space-y-3 bg-indigo-950/20 border border-indigo-500/10 p-5 rounded-2xl">
+                        <h3 class="text-sm font-black text-indigo-400"><i class="fa-solid fa-credit-card mr-1.5"></i> 3. Refunds and Cancellation Policy</h3>
+                        <p class="text-slate-300 font-semibold">
+                            We support unconditional refunds and subscription cancellations at any time.
+                        </p>
+                        <p class="text-slate-300">
+                            <strong>Deduction Principle (Unused Months Only):</strong><br>
+                            All refund calculations are calculated by deducting used calendar months at the **standard monthly rate of NT$ 120 per month**, returning the remaining unused balance.
+                        </p>
+                        <div class="space-y-3 text-slate-400 border-t border-slate-800/80 pt-3">
+                            <p>
+                                <strong>1. Annual Subscription Example:</strong><br>
+                                Assuming the standard monthly fee is NT$ 120, and the user subscribes under the discounted annual rate of NT$ 1,200. If the user cancels after 6 months of usage, the billed cost for the used period will be calculated at the standard rate (6 months × NT$ 120 = NT$ 720).
+                                The final refund amount will be: total paid minus used services (<strong>NT$ 1,200 - NT$ 720 = NT$ 480</strong>).
+                            </p>
+                            <p>
+                                <strong>2. Lifetime Subscription Example (Preemptive Clause):</strong><br>
+                                <em>(Note: We currently do not offer a Lifetime plan. This clause is preemptively included for future planning.)</em><br>
+                                In the event that a lifetime subscription is purchased for a one-time fee (e.g., NT$ 10,000), any subsequent refund requests will also be calculated by deducting used months at the standard rate (NT$ 120 / month).
+                                For example, if a user cancels after 2 years (24 months) of usage, the deducted service fee is NT$ 120 × 24 = NT$ 2,880. The refund is <strong>NT$ 10,000 - NT$ 2,880 = NT$ 7,120</strong>.
+                                Under this formula, <strong>no refund will be issued if the service has been used for 6.9 years (approx. 83.3 months) or more</strong>.
+                            </p>
+                            <p class="text-amber-400 font-bold">
+                                <strong>3. Refund Processing Window:</strong><br>
+                                All approved refund operations will be fully processed and returned to your specified payment account within two weeks (14 business days) from the date of the written refund request.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 4. Acceptable Use -->
+                    <div class="space-y-3">
+                        <h3 class="text-sm font-black text-white">4. Acceptable Use & Anti-Spam (Abuse)</h3>
+                        <p class="text-slate-300">
+                            You agree to use the Service strictly for lawful communications. We enforce a <strong>strict zero-tolerance policy</strong> against abuse:
+                        </p>
+                        <ul class="list-disc pl-4 space-y-1.5 text-slate-400">
+                            <li>Sending or relaying unsolicited spam, bulk marketing campaigns, phishing, fraudulent scams, or other illegal materials using domains registered on our platform is strictly prohibited.</li>
+                            <li>If abuse is detected or reported, the system administrator reserves the right to immediately suspend the account, delete all custom domain SES identities, and purge routing rules without prior warning.</li>
+                        </ul>
+                    </div>
+
+                    <!-- 5. Indemnification cap -->
+                    <div class="space-y-3 bg-slate-950/50 border border-slate-800 p-5 rounded-2xl">
+                        <h3 class="text-sm font-black text-rose-400"><i class="fa-solid fa-shield-halved mr-1.5"></i> 5. Limitation of Liability & Indemnification</h3>
+                        <p class="text-slate-300 font-semibold italic">
+                            [Limitation of Liability in a Strict Legal Tone]
+                        </p>
+                        <p class="text-slate-300 leading-relaxed">
+                            The Service is provided on an "as is" and "as available" basis. We do not warrant that the email routing will be uninterrupted, timely, secure, or completely error-free.
+                        </p>
+                        <p class="text-slate-300 leading-relaxed font-bold">
+                            To the maximum extent permitted by applicable law, in no event shall the Service, its operators, or Sheng Shan Technology Co. be liable for any direct, indirect, incidental, special, consequential, or exemplary damages (including but not limited to loss of business, loss of profits, loss of data, loss of goodwill, or other monetary damages) arising from the use or inability to use the Service. The total cumulative liability of the Service for all claims, losses, damages, or causes of action, whether in contract, tort (including negligence), strict liability, or otherwise, shall in no event exceed the total amount of cumulative fees actually paid by the user to the Service (i.e., capped strictly at refunding the exact amount received from the user).
+                        </p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="glass-panel border-t border-slate-800/50 py-6 px-6 text-center text-xs text-slate-500">
+        <p>© 2026 Saltycat Mailservice 閒貓電郵. All rights reserved.</p>
+        <p class="mt-1">如有任何商務合作或帳號疑問，請發信至 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a></p>
+    </footer>
+
+</body>
+</html>
