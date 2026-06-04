@@ -57,6 +57,7 @@
                         <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider">登入帳戶</p>
                         <p id="dropdown-user-email" class="text-xs text-slate-200 font-semibold truncate font-mono mt-0.5">user@example.com</p>
                         <span id="dropdown-user-tier" class="inline-flex items-center rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-indigo-400 ring-1 ring-inset ring-indigo-500/30 mt-1.5">LITE 方案</span>
+                        <p id="dropdown-user-expiry" class="text-[9px] text-slate-500 mt-1 font-semibold">到期日：無</p>
                     </div>
                     <div class="space-y-1 text-xs">
                         <button onclick="showSection('dashboard-section'); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
@@ -201,11 +202,15 @@
                     <div class="space-y-6">
                         <div class="space-y-2">
                             <h4 class="text-xl font-bold text-white">Lite 體驗版</h4>
-                            <p class="text-xs text-slate-500">適合個人工作室、自由職業者，免費體驗轉寄服務。</p>
+                            <p class="text-xs text-slate-500">適合個人工作室，免費體驗轉寄服務。</p>
                         </div>
-                        <div class="flex items-baseline text-white">
-                            <span class="text-4xl font-extrabold tracking-tight">NT$ 0</span>
-                            <span class="ml-1 text-sm font-semibold text-slate-500">/ 註冊享首月免費體驗</span>
+                        <div class="flex flex-col justify-start text-white space-y-1">
+                            <div class="flex items-baseline">
+                                <span class="text-4xl font-extrabold tracking-tight">NT$ 39</span>
+                                <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                            </div>
+                            <span class="text-[10px] text-indigo-400 font-bold">✨ 試營運期完全免費！</span>
+                            <span class="text-[10px] text-slate-500">試營運結束後 NT$ 39/月，年繳特價 NT$ 400/年 (相當於 NT$ 33/月)</span>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>1 個</strong> 自訂域名綁定</li>
@@ -229,9 +234,12 @@
                             <h4 class="text-xl font-bold text-white">Starter 方案</h4>
                             <p class="text-xs text-slate-500">適合小型企業或個人品牌，解鎖更靈活的郵件接收配置。</p>
                         </div>
-                        <div class="flex items-baseline text-white">
-                            <span class="text-4xl font-extrabold tracking-tight">NT$ 99</span>
-                            <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                        <div class="flex flex-col justify-start text-white space-y-1">
+                            <div class="flex items-baseline">
+                                <span class="text-4xl font-extrabold tracking-tight">NT$ 120</span>
+                                <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                            </div>
+                            <span class="text-[10px] text-slate-500">年繳特價 NT$ 1,200/年 (相當於 NT$ 100/月)</span>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
@@ -252,9 +260,12 @@
                             <h4 class="text-xl font-bold text-white">Pro 方案</h4>
                             <p class="text-xs text-slate-500">適合專業團隊與企業營運，具備極致的域名自主管理能力。</p>
                         </div>
-                        <div class="flex items-baseline text-white">
-                            <span class="text-4xl font-extrabold tracking-tight">NT$ 299</span>
-                            <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                        <div class="flex flex-col justify-start text-white space-y-1">
+                            <div class="flex items-baseline">
+                                <span class="text-4xl font-extrabold tracking-tight">NT$ 600</span>
+                                <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                            </div>
+                            <span class="text-[10px] text-slate-500">年繳特價 NT$ 6,000/年 (相當於 NT$ 500/月)</span>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 個</strong> 自訂網域綁定</li>
@@ -624,6 +635,30 @@
                 </div>
             </div>
 
+            <!-- Subscription Dates Management -->
+            <div class="bg-slate-950/45 rounded-2xl p-5 border border-slate-800/80 space-y-4">
+                <h4 class="text-sm font-bold text-slate-300 tracking-wider uppercase flex items-center gap-1.5"><i class="fa-solid fa-calendar-days text-indigo-400"></i> 編輯帳戶訂閱期程 (Subscription Period)</h4>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                    <!-- Start Date -->
+                    <div class="md:col-span-5 text-xs">
+                        <label class="block text-slate-500 font-bold mb-1.5">方案開始日期 Start Date</label>
+                        <input id="admin-edit-start-date" type="date" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer">
+                    </div>
+                    <!-- End Date -->
+                    <div class="md:col-span-5 text-xs">
+                        <label class="block text-slate-500 font-bold mb-1.5">方案到期日期 Expiry Date</label>
+                        <input id="admin-edit-end-date" type="date" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer">
+                    </div>
+                    <!-- Save Button -->
+                    <div class="md:col-span-2">
+                        <button onclick="saveUserSubscriptionDates()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-1">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>儲存日期</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Domains & Mappings breakdown -->
             <div class="space-y-4">
                 <h4 class="text-sm font-bold text-slate-300 tracking-wider uppercase"><i class="fa-solid fa-globe text-indigo-400 mr-1"></i> 已綁定的自訂網域與轉寄規則</h4>
@@ -782,6 +817,7 @@
                 const profile = await initUserProfile();
                 if (profile) {
                     document.getElementById("dropdown-user-tier").innerText = (profile.tier || "lite").toUpperCase() + " 方案";
+                    document.getElementById("dropdown-user-expiry").innerText = "到期日：" + (profile.tier_end_date || "無");
                 }
                 if (profile && profile.account_status === "pending_verification") {
                     document.getElementById("email-verification-modal").classList.remove("hidden");
@@ -1878,6 +1914,12 @@
                     document.getElementById("admin-detail-email").innerText = data.email || "無";
                     document.getElementById("admin-detail-tier").innerText = data.tier.toUpperCase();
                     
+                    // Fill in subscription dates
+                    const startDateInput = document.getElementById("admin-edit-start-date");
+                    const endDateInput = document.getElementById("admin-edit-end-date");
+                    startDateInput.value = (data.tier_start_date && data.tier_start_date !== "無") ? data.tier_start_date : "";
+                    endDateInput.value = (data.tier_end_date && data.tier_end_date !== "無") ? data.tier_end_date : "";
+                    
                     const statusEl = document.getElementById("admin-detail-status");
                     statusEl.innerText = data.account_status === "active" ? "啟用中 (Active)" : "已停用 (Suspended)";
                     statusEl.className = data.account_status === "active" 
@@ -1940,6 +1982,40 @@
         
         function closeAdminUserDetailsModal() {
             document.getElementById("admin-user-details-modal").classList.add("hidden");
+        }
+
+        async function saveUserSubscriptionDates() {
+            const uid = document.getElementById("admin-detail-uid").innerText;
+            const startDate = document.getElementById("admin-edit-start-date").value;
+            const endDate = document.getElementById("admin-edit-end-date").value;
+            
+            if (!startDate || !endDate) {
+                Swal.fire({ icon: "warning", title: "欄位未填滿", text: "請先選擇方案開始日期與到期日期！" });
+                return;
+            }
+            
+            Swal.fire({ title: "正在儲存訂閱期程...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/admin/users/${uid}/dates`, {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ start_date: startDate, end_date: endDate })
+                });
+                
+                if (res.ok) {
+                    Swal.fire({ icon: "success", title: "訂閱期程更新成功！", text: "該用戶的合約生效期與過期日已成功變更。", timer: 1500, showConfirmButton: false });
+                    fetchAdminUsers(); // Reload list
+                } else {
+                    const err = await res.json();
+                    Swal.fire({ icon: "error", title: "更新失敗", text: err.detail });
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+            }
         }
 
         async function handleVerifyCode() {
