@@ -235,7 +235,7 @@
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>10 組</strong> 郵件對照規則</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 組</strong> 郵件對照規則</li>
                             <li class="flex items-center font-bold text-white"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 包含 Lite 版所有核心安全技術</li>
                         </ul>
@@ -257,8 +257,8 @@
                             <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>無限個</strong> 自訂網域綁定</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>無限組</strong> 郵件對照規則</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 個</strong> 自訂網域綁定</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2000 組</strong> 郵件對照規則</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
                         </ul>
                     </div>
@@ -779,6 +779,9 @@
 
                 // Load server data and transition to dashboard section
                 const profile = await initUserProfile();
+                if (profile) {
+                    document.getElementById("dropdown-user-tier").innerText = (profile.tier || "lite").toUpperCase() + " 方案";
+                }
                 if (profile && profile.account_status === "pending_verification") {
                     document.getElementById("email-verification-modal").classList.remove("hidden");
                     return;
