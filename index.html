@@ -1731,9 +1731,11 @@
                                     <span class="block text-slate-200 font-semibold">${u.email}</span>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-xs">
-                                    <span class="inline-flex items-center rounded-md bg-indigo-500/10 px-2 py-1 font-semibold text-indigo-400 ring-1 ring-inset ring-indigo-500/30">
-                                        ${u.tier.toUpperCase()}
-                                    </span>
+                                    <select onchange="changeUserTier('${u.uid}', this.value)" class="bg-slate-950/80 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-indigo-400 font-bold focus:outline-none focus:ring-1 focus:ring-indigo-500 transition cursor-pointer">
+                                        <option value="lite" ${u.tier === 'lite' || u.tier === 'free' ? 'selected' : ''}>LITE (FREE)</option>
+                                        <option value="starter" ${u.tier === 'starter' ? 'selected' : ''}>STARTER</option>
+                                        <option value="pro" ${u.tier === 'pro' ? 'selected' : ''}>PRO</option>
+                                    </select>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-4 text-xs">
                                     <span class="inline-flex items-center rounded-md px-2 py-1 font-semibold ring-1 ring-inset ${statusBadge}">
@@ -1750,6 +1752,31 @@
                 }
             } catch (e) {
                 body.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-xs text-rose-400">無法獲取用戶列表：${e.message}</td></tr>`;
+            }
+        }
+
+        async function changeUserTier(uid, new_tier) {
+            Swal.fire({ title: "正在變更方案等級...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/admin/users/${uid}/tier`, {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ tier: new_tier })
+                });
+                if (res.ok) {
+                    Swal.fire({ icon: "success", title: "方案變更成功！", text: `已成功將該帳戶等級設定為 ${new_tier.toUpperCase()}。`, timer: 1500, showConfirmButton: false });
+                    fetchAdminUsers();
+                } else {
+                    const err = await res.json();
+                    Swal.fire({ icon: "error", title: "方案變更失敗", text: err.detail });
+                    fetchAdminUsers(); // Reload to restore correct selection
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: "網路異常", text: e.message });
+                fetchAdminUsers();
             }
         }
 
