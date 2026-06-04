@@ -245,7 +245,7 @@
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>1 個</strong> 自訂域名綁定</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 組</strong> 郵件對照規則 (Mappings)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 100% 附件保存、零留底傳輸</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 信件數量無上限 <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                             <li class="flex items-center text-slate-500"><i class="fa-solid fa-xmark mr-2.5"></i> Catch-all 萬用轉寄</li>
                         </ul>
                     </div>
@@ -2222,6 +2222,15 @@
                 }
                 Swal.fire({ icon: "error", title: "變更密碼失敗", text: errorMsg });
             }
+        }
+
+        function showFairUseInfo() {
+            Swal.fire({
+                icon: "info",
+                title: "郵件量使用政策",
+                text: "日常用量無上限，但違反公平使用原則會進行限縮",
+                confirmButtonText: "關閉"
+            });
         }
     </script>
 </body>
