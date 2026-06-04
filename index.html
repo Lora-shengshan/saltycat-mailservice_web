@@ -94,7 +94,7 @@
         <i class="fa-solid fa-triangle-exclamation"></i>
         <span>您目前正在使用「免註冊體驗模式」。此時域名及轉寄僅為網頁預覽模擬，點此 </span>
         <button onclick="openAuthModal('signup')" class="underline hover:text-white transition">註冊一個免費帳號</button>
-        <span>即可正式啟用 AWS SES 雲端轉寄服務！</span>
+        <span>即可正式啟用雲端郵件轉寄服務！</span>
     </div>
 
     <!-- Main Content Area -->
@@ -544,7 +544,7 @@
 
             <!-- MX Records -->
             <div class="space-y-4 border-t border-slate-800/80 pt-4">
-                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第二步：配置 AWS SES 郵件進站路徑 (MX Record)</h4>
+                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第二步：配置郵件進站路徑 (MX Record)</h4>
                 <div id="dns-mx-row-container" class="space-y-3">
                     <!-- Dynamic MX Row -->
                 </div>
@@ -1085,7 +1085,7 @@
             }
 
             // REAL MODE API HANDSHAKE
-            Swal.fire({ title: "AWS SES 手續連線中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            Swal.fire({ title: "安全連線手續處理中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/domains/register`, {
@@ -1305,7 +1305,7 @@
             if (isGuestMode) {
                 const btn = document.getElementById("verify-dns-btn");
                 btn.disabled = true;
-                btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在對接 AWS SES 驗證主機中...</span>`;
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在驗證主機中...</span>`;
                 setTimeout(() => {
                     btn.disabled = false;
                     btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>我已在 GoDaddy 設定完畢，立即檢查驗證狀態！</span>`;
@@ -1330,7 +1330,7 @@
 
             const btn = document.getElementById("verify-dns-btn");
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在對接 AWS SES 驗證主機中...</span>`;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在驗證主機中...</span>`;
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/domains/${activeVerifyDomain}/verify`, {
@@ -1343,7 +1343,7 @@
                         closeDnsModal();
                         fetchDomains();
                     } else {
-                        Swal.fire({ icon: "info", title: "DNS 尚未生效", text: "AWS SES 尚未偵測到您的 DNS 更新。GoDaddy DNS 傳播通常需要數分鐘，請耐心等待後再點擊檢查。" });
+                        Swal.fire({ icon: "info", title: "DNS 尚未生效", text: "系統尚未偵測到您的 DNS 更新。GoDaddy DNS 傳播通常需要數分鐘，請耐心等待後再點擊檢查。" });
                     }
                 }
             } catch (e) {
