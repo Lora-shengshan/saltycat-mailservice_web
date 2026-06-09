@@ -30,19 +30,19 @@
 <body class="h-full flex flex-col justify-between">
 
     <!-- Top Navigation Bar -->
-    <header class="glass-panel sticky top-0 z-40 w-full border-b border-slate-800 px-6 py-4 flex items-center justify-between">
-        <div class="flex items-center space-x-3 cursor-pointer" onclick="handleLogoClick()">
-            <div class="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
-                <i class="fa-solid fa-cat text-white text-xl"></i>
+    <header class="glass-panel sticky top-0 z-40 w-full border-b border-slate-800 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onclick="handleLogoClick()">
+            <div class="bg-indigo-600 p-2 sm:p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                <i class="fa-solid fa-cat text-white text-lg sm:text-xl"></i>
             </div>
             <div>
-                <h1 class="text-lg font-black tracking-wider text-white">Saltycat Mailservice</h1>
-                <p class="text-xs text-slate-400 font-medium" data-i18n="Saltycat Mailservice">閒貓電郵</p>
+                <h1 class="text-sm sm:text-base md:text-lg font-black tracking-wider text-white">Saltycat Mailservice</h1>
+                <p class="text-[10px] sm:text-xs text-slate-400 font-medium" data-i18n="Saltycat Mailservice">閒貓電郵</p>
             </div>
         </div>
         
         <!-- Navigation Buttons & User Info -->
-        <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-2 sm:space-x-4 md:space-x-6">
             <nav class="hidden md:flex space-x-6 text-sm font-semibold text-slate-300">
                 <a href="#" onclick="showSection('landing-section')" class="hover:text-white transition" data-i18n="Home">首頁</a>
                 <a href="#" onclick="showSection('pricing-section')" class="hover:text-white transition" data-i18n="Pricing">方案定價</a>
@@ -97,8 +97,8 @@
             </div>
 
             <!-- Login/Register Trigger when logged out -->
-            <div id="nav-guest-area" class="flex items-center space-x-3">
-                <div class="flex items-center space-x-1.5 bg-slate-800/40 px-2.5 py-1.5 rounded-xl border border-slate-800/50">
+            <div id="nav-guest-area" class="flex items-center space-x-1.5 sm:space-x-3">
+                <div class="hidden sm:flex items-center space-x-1.5 bg-slate-800/40 px-2.5 py-1.5 rounded-xl border border-slate-800/50">
                     <i class="fa-solid fa-globe text-slate-400 text-xs"></i>
                     <select onchange="changeLanguage(this.value)" id="guest-user-lang" class="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer">
                         <option value="en_US" class="bg-slate-950 text-white" data-i18n="English">English</option>
@@ -107,8 +107,34 @@
                         <option value="kr_KR" class="bg-slate-950 text-white" data-i18n="Korean">한국어</option>
                     </select>
                 </div>
-                <button onclick="openAuthModal()" class="text-sm font-semibold text-slate-300 hover:text-white transition px-3 py-2" data-i18n="Sign In">登入</button>
-                <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-xl text-sm transition" data-i18n="Register for free">註冊免費體驗</button>
+                <button onclick="openAuthModal()" class="text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition px-2 sm:px-3 py-1.5 sm:py-2" data-i18n="Sign In">登入</button>
+                <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-1.5 px-3 sm:py-2 sm:px-4 rounded-xl text-xs sm:text-sm transition" data-i18n="Register for free">註冊免費體驗</button>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="md:hidden flex items-center justify-center p-2 rounded-xl bg-slate-800/60 border border-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 transition">
+                <i class="fa-solid fa-bars text-base"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobile-navigation-menu" class="hidden absolute top-full left-0 w-full glass-panel border-b border-slate-800 bg-slate-950/95 shadow-2xl p-5 flex flex-col space-y-4 md:hidden z-30 transition-all duration-300">
+            <a href="#" onclick="showSection('landing-section'); closeMobileMenu();" class="text-sm font-semibold text-slate-300 hover:text-white transition py-2 border-b border-slate-800/40" data-i18n="Home">首頁</a>
+            <a href="#" onclick="showSection('pricing-section'); closeMobileMenu();" class="text-sm font-semibold text-slate-300 hover:text-white transition py-2 border-b border-slate-800/40" data-i18n="Pricing">方案定價</a>
+            <a href="faq.html" target="_blank" class="text-sm font-semibold text-slate-300 hover:text-white transition py-2 border-b border-slate-800/40" data-i18n="FAQ">常見問題 (FAQ)</a>
+            
+            <!-- Language Select for Mobile (Guest/Fallback) -->
+            <div id="mobile-lang-section" class="pt-2 sm:hidden flex flex-col space-y-1.5">
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="Language">語言設定</p>
+                <div class="flex items-center space-x-1.5 bg-slate-900 border border-slate-800 px-2.5 py-2 rounded-xl">
+                    <i class="fa-solid fa-globe text-slate-400 text-xs"></i>
+                    <select onchange="changeLanguage(this.value); closeMobileMenu();" id="mobile-guest-user-lang" class="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer w-full">
+                        <option value="en_US" class="bg-slate-950 text-white" data-i18n="English">English</option>
+                        <option value="zh_TW" class="bg-slate-950 text-white" data-i18n="Traditional Chinese">繁體中文</option>
+                        <option value="jp_JP" class="bg-slate-950 text-white" data-i18n="Japanese">日本語</option>
+                        <option value="kr_KR" class="bg-slate-950 text-white" data-i18n="Korean">한국어</option>
+                    </select>
+                </div>
             </div>
         </div>
     </header>
@@ -2226,12 +2252,34 @@
             dropdown.classList.add("hidden");
         }
         
+        // ================= MOBILE DROPDOWN MENU PROCESS =================
+        function toggleMobileMenu() {
+            const menu = document.getElementById("mobile-navigation-menu");
+            if (menu) {
+                menu.classList.toggle("hidden");
+            }
+        }
+        
+        function closeMobileMenu() {
+            const menu = document.getElementById("mobile-navigation-menu");
+            if (menu) {
+                menu.classList.add("hidden");
+            }
+        }
+        
         // Close dropdown when clicking outside
         window.addEventListener("click", (e) => {
             const dropdown = document.getElementById("user-dropdown-menu");
             const btn = document.getElementById("user-avatar-btn");
             if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
                 dropdown.classList.add("hidden");
+            }
+            
+            // Also close mobile menu when clicking outside
+            const mobileMenu = document.getElementById("mobile-navigation-menu");
+            const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+            if (mobileMenu && mobileMenuBtn && !mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                mobileMenu.classList.add("hidden");
             }
         });
         
@@ -2314,8 +2362,10 @@
             const lang = e.detail;
             const dropdownLang = document.getElementById("dropdown-user-lang");
             const guestLang = document.getElementById("guest-user-lang");
+            const mobileGuestLang = document.getElementById("mobile-guest-user-lang");
             if (dropdownLang) dropdownLang.value = lang;
             if (guestLang) guestLang.value = lang;
+            if (mobileGuestLang) mobileGuestLang.value = lang;
         });
     </script>
 </body>
