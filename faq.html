@@ -154,26 +154,72 @@
                         <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
                             <i class="fa-solid fa-paper-plane"></i>
                         </div>
-                        <div class="space-y-2">
+                        <div class="space-y-2 w-full">
                             <h3 class="text-base font-bold text-white">Q3. 我除了收信之外，如果也想要用自訂域名「送信」應該怎麼辦？</h3>
-                            <div class="text-xs text-slate-300 leading-relaxed space-y-3">
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-4">
                                 <p>
-                                    這是非常常見的需求！通常大家會使用 Gmail 免費版設定中的「選擇寄件地址」功能來寄信。然而，這種發信模式存在很大的技術隱憂：
+                                    這是非常常見的需求！為了使用自訂網域（例如 <code class="text-indigo-300 bg-slate-800 px-1 rounded">ceo@yourdomain.tw</code>）對外發信，您可以選擇以下兩種主要的發信設定模式：
                                 </p>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-                                    <div class="bg-rose-950/15 border border-rose-500/10 p-4 rounded-xl space-y-1.5">
-                                        <p class="font-bold text-rose-400 text-xs flex items-center"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> 情況 A：使用 Gmail 免費轉寄直接發信</p>
-                                        <p class="text-[11px] text-slate-400 leading-relaxed">
-                                            如果您在 Gmail 中直接新增寄件地址，由於 Gmail 是以其伺服器名義代發，沒有通過您網域的 SPF/DKIM 加密簽章，此時發信出去<strong>「幾乎 100% 會被收件端判定為垃圾信 (Spam) 或退信」</strong>。
-                                        </p>
+
+                                <!-- Option A -->
+                                <div class="bg-slate-950/40 border border-slate-800/80 p-5 rounded-xl space-y-3">
+                                    <p class="font-bold text-amber-400 text-xs flex items-center">
+                                        <i class="fa-brands fa-google mr-1.5"></i> 方案 A：使用 Gmail 免費外寄伺服器直接發信 (適合個人與基礎發信)
+                                    </p>
+                                    <p class="text-slate-300 leading-relaxed text-[11px]">
+                                        您可以利用您個人的免費 Gmail 帳戶，透過設定讓 Gmail 代理您的自訂網域外寄信件。為了確保能順利透過 Google 外寄伺服器發信，請按照以下步驟進行設定：
+                                    </p>
+                                    <div class="space-y-2 text-[11px] text-slate-400 pl-2 border-l border-indigo-500/30">
+                                        <div>
+                                            <span class="text-indigo-300 font-bold">第一步：取得 Google 專屬「應用程式密碼」金鑰 (App Password Key)</span>
+                                            <ul class="list-disc pl-4 space-y-1 mt-1 text-slate-400">
+                                                <li>前往並登入您的 <a href="https://myaccount.google.com/" target="_blank" class="text-indigo-400 hover:underline">Google 帳戶管理後台</a>。</li>
+                                                <li>點選左側選單的 <strong>「安全性」</strong> (Security)。</li>
+                                                <li>確認已啟用 <strong>「兩步驟驗證」</strong> (2-Step Verification)（若未啟用，請依引導啟用）。</li>
+                                                <li>在兩步驟驗證啟用後，回到該頁面點選「兩步驟驗證」進去，拉到最底部會看到 <strong>「應用程式密碼」</strong> (App Passwords)。</li>
+                                                <li>在「應用程式名稱」中輸入自訂名稱（例如：<code class="text-slate-300 bg-slate-800 px-1 rounded">Saltycat-SMTP</code>），點擊「建立」。</li>
+                                                <li>系統會彈出一個視窗，顯示一組 **16 個字元** 的黃色安全密碼金鑰（例如：<code class="text-amber-400 font-bold bg-slate-900 px-1 rounded">abcd efgh ijkl mnop</code>）。請先將此 16 位金鑰複製保存（這就是您的專屬 SMTP 密碼）。</li>
+                                            </ul>
+                                        </div>
+                                        <div class="pt-1.5">
+                                            <span class="text-indigo-300 font-bold">第二步：於 Gmail 後台「新增另一個電子郵件地址」</span>
+                                            <ul class="list-disc pl-4 space-y-1 mt-1 text-slate-400">
+                                                <li>開啟您的 Gmail 網頁版，點選右上角的 <strong>「設定齒輪」</strong> -> <strong>「查看所有設定」</strong>。</li>
+                                                <li>點選上方分頁的 <strong>「帳戶和匯入」</strong> (Accounts and Import)。</li>
+                                                <li>在「從其他地址傳送郵件」區段中，點選 <strong>「新增另一個電子郵件地址」</strong>。</li>
+                                                <li>在彈出的視窗中，輸入您的名稱與您要用來寄信的**自訂域名信箱**（例如：<code class="text-slate-300 bg-slate-800 px-1 rounded">ceo@yourdomain.tw</code>），並<span class="text-rose-400 font-semibold">取消勾選</span>「視為別名」 (Treat as an alias)，點擊下一步。</li>
+                                            </ul>
+                                        </div>
+                                        <div class="pt-1.5">
+                                            <span class="text-indigo-300 font-bold">第三步：設定 Google SMTP 外寄伺服器</span>
+                                            <ul class="list-disc pl-4 space-y-1 mt-1 text-slate-400">
+                                                <li>在 SMTP 伺服器欄位中輸入：<code class="text-amber-400 font-bold">smtp.gmail.com</code></li>
+                                                <li>通訊埠 (Port) 選擇：<code class="text-amber-400 font-bold">587</code></li>
+                                                <li>使用者名稱 (Username)：輸入您的**完整 Gmail 帳號**（例如：<code class="text-slate-300 bg-slate-800 px-1 rounded">yourname@gmail.com</code>）</li>
+                                                <li>密碼 (Password)：貼上您在第一步中取得的 **16 字元「應用程式密碼」** (中間不需留空格)</li>
+                                                <li>選擇安全連線：勾選 <strong>「採用 TLS 的安全連線 (建議)」</strong></li>
+                                                <li>點擊「新增帳戶」，接著去收件匣收取 Google 寄送的驗證信，點擊連結或輸入驗證碼完成驗證即設定成功！</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="bg-emerald-950/15 border border-emerald-500/10 p-4 rounded-xl space-y-1.5">
-                                        <p class="font-bold text-emerald-400 text-xs flex items-center"><i class="fa-solid fa-circle-check mr-1.5"></i> 情況 B：使用 Saltycat 服務專屬 SMTP</p>
-                                        <p class="text-[11px] text-slate-400 leading-relaxed">
-                                            閒貓電郵備有高送達率的<strong>專屬發信專用 SMTP Proxy 伺服器</strong>，支援在發信時為您完美簽署 DKIM 安全認證金鑰。如果您有商業發信或代發信需求，請直接聯繫客服信箱 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a>，我們將由專人手動為您的帳戶解鎖發信權限。
-                                        </p>
-                                    </div>
+                                    <p class="text-[10px] text-slate-500 italic mt-2">
+                                        * 注意：雖然此方案完全免費且使用 Google 穩定的發信伺服器，但因為是使用個人 Gmail 帳號代發，若您沒有自行在 DNS 中為您的域名對齊 Google 的專屬 DKIM 認證，信件在寄給 Yahoo! 或企業信箱時，仍有一定機率被判定為垃圾信。
+                                    </p>
                                 </div>
+
+                                <!-- Option B -->
+                                <div class="bg-indigo-950/20 border border-indigo-500/10 p-5 rounded-xl space-y-2">
+                                    <p class="font-bold text-emerald-400 text-xs flex items-center">
+                                        <i class="fa-solid fa-circle-check mr-1.5"></i> 方案 B：使用 Saltycat 服務專屬 SMTP Proxy (適合專業、商業發信)
+                                    </p>
+                                    <p class="text-slate-300 text-[11px]">
+                                        閒貓電郵備有經過嚴格信譽維護、高送達率的<strong>專屬發信 SMTP 伺服器</strong>，支援在發信時為您的信件完美簽署您網域的專屬 DKIM 安全認證金鑰，保障發信極致送達率，絕不進垃圾信！
+                                    </p>
+                                    <p class="text-[11px] text-slate-400">
+                                        如果您有商業發信、交易信件（如系統註冊信、購物車通知等）或想要最佳的信譽保障，請直接點擊下方按鈕或發信至官方客服信箱 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a> 與我們聯繫，我們將由專員為您免費對齊並開通專屬外寄 SMTP 發信伺服器權限。
+                                    </p>
+                                </div>
+
                             </div>
                         </div>
                     </div>
