@@ -242,8 +242,8 @@
         <!-- ================= SECTION 2: PRICING PLANS ================= -->
         <section id="pricing-section" class="py-8 space-y-12">
             <div class="text-center max-w-2xl mx-auto space-y-4">
-                <h3 class="text-3xl font-black text-white">透明、簡單、划算的定價方案</h3>
-                <p class="text-sm text-slate-400">Lite 體驗版免費直接用。當您需要正式將網域連線、並在雲端運行真正郵件轉寄時，才需要註冊帳號。</p>
+                <h3 class="text-3xl font-black text-white" data-i18n="Pricing Title">透明、簡單、划算的定價方案</h3>
+                <p class="text-sm text-slate-400" data-i18n="Pricing Desc">Lite 體驗版免費直接用。當您需要正式將網域連線、並在雲端運行真正郵件轉寄時，才需要註冊帳號。</p>
             </div>
 
             <!-- 3 Column Pricing Grid -->
@@ -253,8 +253,8 @@
                 <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between border border-slate-800/80 hover:border-slate-700 transition relative">
                     <div class="space-y-6">
                         <div class="space-y-2">
-                            <h4 class="text-xl font-bold text-white">Lite 體驗版</h4>
-                            <p class="text-xs text-slate-500">適合個人工作室，免費體驗轉寄服務。</p>
+                            <h4 class="text-xl font-bold text-white" data-i18n="Lite Plan">Lite 體驗版</h4>
+                            <p class="text-xs text-slate-500" data-i18n="Lite Plan Desc">適合個人工作室，免費體驗轉寄服務。</p>
                         </div>
                         <div class="flex flex-col justify-start text-white space-y-1.5">
                             <div class="flex items-baseline">
@@ -270,26 +270,26 @@
                             </div>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>1 個</strong> 自訂域名綁定</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 組</strong> email郵件轉寄 (Mappings)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 信件數量無上限 <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
-                            <li class="flex items-center text-slate-500"><i class="fa-solid fa-xmark mr-2.5"></i> Catch-all 萬用轉寄</li>
+                            <li class="flex items-center" data-i18n="1 Custom Domain"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>1 個</strong> 自訂域名綁定</li>
+                            <li class="flex items-center" data-i18n="2 Mappings"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 組</strong> email郵件轉寄 (Mappings)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
+                            <li class="flex items-center text-slate-500"><i class="fa-solid fa-xmark mr-2.5"></i> <span data-i18n="No Catchall">Catch-all 萬用轉寄</span></li>
                         </ul>
                     </div>
                     <button onclick="openAuthModal('signup')" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
-                        註冊即可免費體驗 <i class="fa-solid fa-arrow-right ml-1"></i>
+                        <span data-i18n="Register to Try Free">註冊即可免費體驗</span> <i class="fa-solid fa-arrow-right ml-1"></i>
                     </button>
                 </div>
 
                 <!-- 2. Starter Plan (Most Popular) -->
                 <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between border-2 border-indigo-500 hover:border-indigo-400 transition relative shadow-2xl shadow-indigo-500/10">
-                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase shadow-lg shadow-indigo-500/20">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-500 text-white px-3 py-1 rounded-full text-[10px] font-black tracking-wider uppercase shadow-lg shadow-indigo-500/20" data-i18n="Most Popular">
                         Most Popular 熱門推薦
                     </div>
                     <div class="space-y-6">
                         <div class="space-y-2">
-                            <h4 class="text-xl font-bold text-white">Starter 方案</h4>
-                            <p class="text-xs text-slate-500">適合小型企業或個人品牌，解鎖更靈活的郵件接收配置。</p>
+                            <h4 class="text-xl font-bold text-white" data-i18n="Starter Plan">Starter 方案</h4>
+                            <p class="text-xs text-slate-500" data-i18n="Starter Plan Desc">適合小型企業或個人品牌，解鎖更靈活的郵件接收配置。</p>
                         </div>
                         <div class="flex flex-col justify-start text-white space-y-1.5">
                             <div class="flex items-baseline">
@@ -303,14 +303,14 @@
                             </div>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 組</strong> email郵件轉寄</li>
-                            <li class="flex items-center font-bold text-white"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 信件數量無上限 <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
+                            <li class="flex items-center" data-i18n="2 Custom Domains"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
+                            <li class="flex items-center" data-i18n="20 Mappings"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 組</strong> email郵件轉寄</li>
+                            <li class="flex items-center font-bold text-white" data-i18n="Catchall Support"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                         </ul>
                     </div>
                     <button onclick="openUpgradeModal()" class="mt-8 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-500/20">
-                        聯繫客服升級 Starter
+                        <span data-i18n="Upgrade Starter">聯繫客服升級 Starter</span>
                     </button>
                 </div>
 
@@ -318,8 +318,8 @@
                 <div class="glass-panel rounded-3xl p-8 flex flex-col justify-between border border-slate-800/80 hover:border-slate-700 transition relative">
                     <div class="space-y-6">
                         <div class="space-y-2">
-                            <h4 class="text-xl font-bold text-white">Pro 方案</h4>
-                            <p class="text-xs text-slate-500">適合專業團隊與企業營運，具備極致的域名自主管理能力。</p>
+                            <h4 class="text-xl font-bold text-white" data-i18n="Pro Plan">Pro 方案</h4>
+                            <p class="text-xs text-slate-500" data-i18n="Pro Plan Desc">適合專業團隊與企業營運，具備極致的域名自主管理能力。</p>
                         </div>
                         <div class="flex flex-col justify-start text-white space-y-1.5">
                             <div class="flex items-baseline">
@@ -333,14 +333,14 @@
                             </div>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 個</strong> 自訂網域綁定</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2000 組</strong> email郵件轉寄</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
-                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 信件數量無上限 <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
+                            <li class="flex items-center" data-i18n="20 Custom Domains"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 個</strong> 自訂網域綁定</li>
+                            <li class="flex items-center" data-i18n="2000 Mappings"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2000 組</strong> email郵件轉寄</li>
+                            <li class="flex items-center" data-i18n="Catchall Support"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                         </ul>
                     </div>
                     <button onclick="openUpgradeModal()" class="mt-8 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
-                        聯繫客服升級 Pro
+                        <span data-i18n="Upgrade Pro">聯繫客服升級 Pro</span>
                     </button>
                 </div>
             </div>
@@ -556,8 +556,8 @@
     <div id="auth-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
         <div class="glass-panel rounded-3xl max-w-sm w-full p-8 shadow-2xl relative">
             <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
-            <h3 id="auth-modal-title" class="text-xl font-bold text-white mb-2">登入您的帳戶</h3>
-            <p class="text-xs text-slate-400 mb-6">請選擇以下登入或註冊方式正式啟用雲端轉寄功能</p>
+            <h3 id="auth-modal-title" class="text-xl font-bold text-white mb-2" data-i18n="Sign In to Your Account">登入您的帳戶</h3>
+            <p class="text-xs text-slate-400 mb-6" data-i18n="Auth Modal Desc">請選擇以下登入或註冊方式正式啟用雲端轉寄功能</p>
             
             <!-- Google Login Button -->
             <button onclick="handleGoogleLogin()" class="w-full bg-white text-slate-900 font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-3 hover:bg-slate-100 transition duration-200 shadow-lg shadow-white/5 mb-4">
@@ -567,33 +567,33 @@
                     <path fill="#FBBC05" d="M5.21 10.5c-.24-.72-.38-1.49-.38-2.3s.14-1.58.38-2.3L1.42 2.97C.52 4.77 0 6.82 0 9s.52 4.23 1.42 6.03l3.79-2.53z"/>
                     <path fill="#34A853" d="M12 23c3.24 0 5.97-1.07 7.96-2.92l-3.74-2.9c-1.1.74-2.51 1.18-4.22 1.18-3.28 0-5.87-1.7-6.79-4.46L1.42 16.37C3.37 20.32 7.35 23 12 23z"/>
                 </svg>
-                <span>使用 Google 帳號登入</span>
+                <span data-i18n="Sign In with Google">使用 Google 帳號登入</span>
             </button>
 
             <div class="relative flex py-3 items-center">
                 <div class="flex-grow border-t border-slate-800"></div>
-                <span class="flex-shrink mx-4 text-xs text-slate-600 font-bold">或電子信箱登入</span>
+                <span class="flex-shrink mx-4 text-xs text-slate-600 font-bold" data-i18n="Or sign in with email">或電子信箱登入</span>
                 <div class="flex-grow border-t border-slate-800"></div>
             </div>
 
             <!-- Traditional Login Form -->
             <form id="email-login-form" onsubmit="handleEmailAuth(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">電子信箱 Address</label>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" data-i18n="Email Address Label">電子信箱 Address</label>
                     <input id="auth-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">密碼 Password</label>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5" data-i18n="Password Label">密碼 Password</label>
                     <input id="auth-password" type="password" required placeholder="••••••••" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
                 </div>
                 
                 <div class="flex items-center justify-between pt-1">
-                    <button type="button" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-xs text-indigo-400 hover:underline">
+                    <button type="button" onclick="toggleAuthMode()" id="auth-toggle-btn" class="text-xs text-indigo-400 hover:underline" data-i18n="No account? Register Now">
                         沒有帳號？立即註冊
                     </button>
                 </div>
 
-                <button type="submit" id="auth-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition duration-200 shadow-lg shadow-indigo-600/20">
+                <button type="submit" id="auth-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition duration-200 shadow-lg shadow-indigo-600/20" data-i18n="Sign In">
                     立即登入
                 </button>
             </form>
@@ -766,22 +766,22 @@
             </div>
             
             <div class="space-y-2">
-                <h3 class="text-xl font-black text-white">輸入電子信箱驗證碼</h3>
-                <p class="text-xs text-slate-400">已發送一組 6 位數臨時驗證碼至您的信箱，請查看您的郵件並填入下方以完成註冊。</p>
+                <h3 class="text-xl font-black text-white" data-i18n="Verify Code Title">輸入電子信箱驗證碼</h3>
+                <p class="text-xs text-slate-400" data-i18n="Verify Code Desc">已發送一組 6 位數臨時驗證碼至您的信箱，請查看您的郵件並填入下方以完成註冊。</p>
             </div>
 
             <!-- Code input fields -->
             <div class="space-y-4">
-                <input id="verification-code-input" type="text" maxlength="6" placeholder="例如: 123456" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3.5 text-center text-lg font-mono font-black tracking-[8px] text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                <input id="verification-code-input" type="text" maxlength="6" placeholder="例如: 123456" data-i18n-placeholder="e.g., 123456" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3.5 text-center text-lg font-mono font-black tracking-[8px] text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
                 
                 <div class="flex items-center justify-between text-xs px-1">
-                    <button onclick="handleResendCode()" class="text-indigo-400 hover:underline">重新發送驗證碼</button>
-                    <button onclick="handleCancelVerification()" class="text-slate-500 hover:underline">取消註冊</button>
+                    <button onclick="handleResendCode()" class="text-indigo-400 hover:underline" data-i18n="Resend Code">重新發送驗證碼</button>
+                    <button onclick="handleCancelVerification()" class="text-slate-500 hover:underline" data-i18n="Cancel Registration">取消註冊</button>
                 </div>
             </div>
 
             <div class="flex flex-col gap-3">
-                <button onclick="handleVerifyCode()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20">
+                <button onclick="handleVerifyCode()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20" data-i18n="Submit Verification">
                     送出驗證
                 </button>
             </div>
@@ -989,13 +989,13 @@
             const submitBtn = document.getElementById("auth-submit-btn");
             const modalTitle = document.getElementById("auth-modal-title");
             if (isSignupMode) {
-                modalTitle.innerText = "註冊全新帳戶";
-                toggleBtn.innerText = "已有帳號？立即登入";
-                submitBtn.innerText = "註冊新帳號";
+                modalTitle.innerText = t("Register New Account");
+                toggleBtn.innerText = t("Already have an account? Sign In");
+                submitBtn.innerText = t("Sign Up");
             } else {
-                modalTitle.innerText = "登入您的帳戶";
-                toggleBtn.innerText = "沒有帳號？立即註冊";
-                submitBtn.innerText = "立即登入";
+                modalTitle.innerText = t("Sign In to Your Account");
+                toggleBtn.innerText = t("No account? Register Now");
+                submitBtn.innerText = t("Sign In");
             }
         }
 
