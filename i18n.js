@@ -43,14 +43,13 @@ async function initI18n() {
 function t(key, variables = {}) {
     const lang = localStorage.getItem('preferred_language') || 'en_US';
     
-    // For English or if dictionary fails to load, fallback to the English key directly
-    if (lang === 'en_US' || !window.TRANSLATIONS) {
-        return replaceVariables(key, variables);
+    // If dictionary exists and has the translation for the selected language
+    if (window.TRANSLATIONS && window.TRANSLATIONS[lang] && window.TRANSLATIONS[lang][key]) {
+        return replaceVariables(window.TRANSLATIONS[lang][key], variables);
     }
     
     // Lookup translated string; fallbacks gracefully to the English key
-    const translated = (window.TRANSLATIONS[lang] && window.TRANSLATIONS[lang][key]) || key;
-    return replaceVariables(translated, variables);
+    return replaceVariables(key, variables);
 }
 
 function replaceVariables(text, variables) {
