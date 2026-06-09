@@ -258,14 +258,15 @@
                         </div>
                         <div class="flex flex-col justify-start text-white space-y-1.5">
                             <div class="flex items-baseline">
-                                <span class="text-4xl font-extrabold tracking-tight">NT$ 39</span>
+                                <span class="text-4xl font-extrabold tracking-tight" data-i18n="Lite Monthly Price">NT$ 39</span>
                                 <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                                <button onclick="showCurrencyDisclaimer()" class="text-indigo-400/80 hover:text-indigo-300 ml-2 text-[11px] cursor-pointer inline-flex items-center" title="Currency Conversion Notice"><i class="fa-solid fa-circle-info"></i></button>
                             </div>
-                            <span class="text-[10px] text-indigo-400 font-bold">✨ 試營運期完全免費！</span>
-                            <span class="text-[10px] text-slate-500 block">試營運結束後 NT$ 39/月</span>
+                            <span class="text-[10px] text-indigo-400 font-bold" data-i18n="Free Option">✨ 試營運期完全免費！</span>
+                            <span class="text-[10px] text-slate-500 block" data-i18n="Lite Price Text">試營運結束後 NT$ 39/月</span>
                             <div class="mt-1 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-2.5 space-y-1">
-                                <span class="text-[11px] text-emerald-400 font-bold block"><i class="fa-solid fa-gift mr-1"></i>年繳超值優惠價 NT$ 400/年</span>
-                                <span class="text-sm md:text-base text-emerald-300 font-extrabold block">🔥 相當於只要 NT$ 33 / 月！</span>
+                                <span class="text-[11px] text-emerald-400 font-bold block" data-i18n="Lite Annual Promo"><i class="fa-solid fa-gift mr-1"></i>年繳超值優惠價 NT$ 400/年</span>
+                                <span class="text-sm md:text-base text-emerald-300 font-extrabold block" data-i18n="Lite Monthly Equiv">🔥 相當於只要 NT$ 33 / 月！</span>
                             </div>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
@@ -292,12 +293,13 @@
                         </div>
                         <div class="flex flex-col justify-start text-white space-y-1.5">
                             <div class="flex items-baseline">
-                                <span class="text-4xl font-extrabold tracking-tight">NT$ 120</span>
+                                <span class="text-4xl font-extrabold tracking-tight" data-i18n="Starter Monthly Price">NT$ 120</span>
                                 <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                                <button onclick="showCurrencyDisclaimer()" class="text-indigo-400/80 hover:text-indigo-300 ml-2 text-[11px] cursor-pointer inline-flex items-center" title="Currency Conversion Notice"><i class="fa-solid fa-circle-info"></i></button>
                             </div>
                             <div class="mt-1 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-2.5 space-y-1">
-                                <span class="text-[11px] text-emerald-400 font-bold block"><i class="fa-solid fa-gift mr-1"></i>年繳超值優惠價 NT$ 1,200/年</span>
-                                <span class="text-sm md:text-base text-emerald-300 font-extrabold block">🔥 相當於只要 NT$ 100 / 月！</span>
+                                <span class="text-[11px] text-emerald-400 font-bold block" data-i18n="Starter Annual Promo"><i class="fa-solid fa-gift mr-1"></i>年繳超值優惠價 NT$ 1,200/年</span>
+                                <span class="text-sm md:text-base text-emerald-300 font-extrabold block" data-i18n="Starter Monthly Equiv">🔥 相當於只要 NT$ 100 / 月！</span>
                             </div>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
@@ -321,12 +323,13 @@
                         </div>
                         <div class="flex flex-col justify-start text-white space-y-1.5">
                             <div class="flex items-baseline">
-                                <span class="text-4xl font-extrabold tracking-tight">NT$ 600</span>
+                                <span class="text-4xl font-extrabold tracking-tight" data-i18n="Pro Monthly Price">NT$ 600</span>
                                 <span class="ml-1 text-sm font-semibold text-slate-500">/ 月</span>
+                                <button onclick="showCurrencyDisclaimer()" class="text-indigo-400/80 hover:text-indigo-300 ml-2 text-[11px] cursor-pointer inline-flex items-center" title="Currency Conversion Notice"><i class="fa-solid fa-circle-info"></i></button>
                             </div>
                             <div class="mt-1 bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-2.5 space-y-1">
-                                <span class="text-[11px] text-emerald-400 font-bold block"><i class="fa-solid fa-gift mr-1"></i>年繳超值優惠價 NT$ 6,000/年</span>
-                                <span class="text-sm md:text-base text-emerald-300 font-extrabold block">🔥 相當於只要 NT$ 500 / 月！</span>
+                                <span class="text-[11px] text-emerald-400 font-bold block" data-i18n="Pro Annual Promo"><i class="fa-solid fa-gift mr-1"></i>年繳超值優惠價 NT$ 6,000/年</span>
+                                <span class="text-sm md:text-base text-emerald-300 font-extrabold block" data-i18n="Pro Monthly Equiv">🔥 相當於只要 NT$ 500 / 月！</span>
                             </div>
                         </div>
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
@@ -2294,6 +2297,15 @@
                 title: "郵件量使用政策",
                 text: "日常用量無上限，但違反公平使用原則會進行限縮",
                 confirmButtonText: "關閉"
+            });
+        }
+
+        function showCurrencyDisclaimer() {
+            Swal.fire({
+                icon: "info",
+                title: t("Currency Title"),
+                html: `<p style="line-height: 1.6; font-size: 13px; text-align: left; color: #cbd5e1;">${t("Currency Text")}</p>`,
+                confirmButtonText: t("Close")
             });
         }
 
