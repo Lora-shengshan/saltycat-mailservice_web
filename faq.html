@@ -70,22 +70,31 @@
                             <h3 class="text-base font-bold text-white">Q1. 如何為我的自訂域名設定 DNS 紀錄？</h3>
                             <div class="text-xs text-slate-300 leading-relaxed space-y-2">
                                 <p>
-                                    要讓自訂域名信箱能順利透過閒貓電郵進行轉寄，您需要前往您的域名註冊商（例如 Cloudflare, Namecheap, GoDaddy, Gandi 等）的管理後台，為您的網域配置以下兩條核心 DNS 紀錄：
+                                    要讓您的自訂網域信箱能順利透過閒貓電郵接收郵件並驗證所有權，您需要前往您的域名註冊商（如 GoDaddy, Cloudflare, Namecheap 等）管理後台，為您的網域配置以下核心 DNS 紀錄：
                                 </p>
-                                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/80 space-y-3 font-mono text-[11px]">
+                                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/80 space-y-4 font-mono text-[11px]">
                                     <div>
-                                        <p class="text-indigo-400 font-bold text-[10px] uppercase">1. MX 紀錄 (郵件交換伺服器)</p>
-                                        <p class="text-slate-400 mt-1">這會將寄給您網域的郵件路由到本服務：</p>
+                                        <p class="text-indigo-400 font-bold text-[10px] uppercase">1. MX 紀錄 (郵件接收路由 - 必填)</p>
+                                        <p class="text-slate-400 mt-1">這會將您網域的進站郵件安全導向至 AWS SES 接收伺服器：</p>
                                         <ul class="list-disc pl-4 space-y-1 mt-1 text-slate-300">
                                             <li>類型 (Type): <span class="text-amber-400">MX</span></li>
                                             <li>名稱 (Name/Host): <span class="text-amber-400">@</span> (或留空)</li>
-                                            <li>值 (Value/Mail Server): <span class="text-amber-400">mx.saltycat.tw</span></li>
+                                            <li>值 (Value/Mail Server): <span class="text-amber-400">inbound-smtp.us-east-1.amazonaws.com.</span></li>
                                             <li>優先級 (Priority): <span class="text-amber-400">10</span></li>
                                         </ul>
                                     </div>
-                                    <div class="border-t border-slate-900 pt-2.5">
-                                        <p class="text-indigo-400 font-bold text-[10px] uppercase">2. TXT 紀錄 (SPF 寄件者原則架構)</p>
-                                        <p class="text-slate-400 mt-1">這用於防止他人冒用您的域名：</p>
+                                    <div class="border-t border-slate-800/60 pt-3">
+                                        <p class="text-indigo-400 font-bold text-[10px] uppercase">2. CNAME 紀錄 (Easy DKIM 金鑰認證 - 必填共 3 筆)</p>
+                                        <p class="text-slate-400 mt-1">這是 AWS SES 為您的域名產生的專屬安全 DKIM 驗證金鑰：</p>
+                                        <ul class="list-disc pl-4 space-y-1 mt-1 text-slate-300">
+                                            <li>類型 (Type): <span class="text-amber-400">CNAME</span></li>
+                                            <li>名稱 (Name/Host): <span class="text-amber-400">{您的專屬權杖值}._domainkey</span></li>
+                                            <li>值 (Value/Destination): <span class="text-amber-400">{您的專屬權杖值}.dkim.amazonses.com.</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-t border-slate-800/60 pt-3">
+                                        <p class="text-indigo-400 font-bold text-[10px] uppercase">3. TXT 紀錄 (SPF 寄件者原則架構 - 建議配置)</p>
+                                        <p class="text-slate-400 mt-1">這能向各大郵件服務商（如 Gmail）證明閒貓電郵是您授權的轉寄路由：</p>
                                         <ul class="list-disc pl-4 space-y-1 mt-1 text-slate-300">
                                             <li>類型 (Type): <span class="text-amber-400">TXT</span></li>
                                             <li>名稱 (Name/Host): <span class="text-amber-400">@</span> (或留空)</li>
@@ -93,8 +102,16 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <p class="text-slate-400">
-                                    * 提示：如果您在設定前已存在舊的 MX 紀錄，請務必將其刪除，否則可能會造成收信延遲或遺失信件。DNS 設定生效時間視各地網路供應商而定，通常在 5 到 30 分鐘內生效。
+                                <div class="bg-indigo-950/40 border border-indigo-500/20 p-4 rounded-xl space-y-1 mt-3">
+                                    <p class="font-bold text-indigo-300 text-[11px] flex items-center">
+                                        <i class="fa-solid fa-circle-info mr-1.5"></i> 如何取得我專屬的 DNS 設定值？
+                                    </p>
+                                    <p class="text-[10px] text-slate-400 leading-relaxed">
+                                        當您在控制台新增網域後，該網域卡片上會顯示一個 <strong>「DNS 設定值」</strong> 按鈕。點選此按鈕後，系統將直接列出您的 <strong>1 筆 MX 紀錄、3 筆專屬 CNAME 紀錄與 1 筆 TXT 紀錄</strong> 的主機名稱與數值，並提供方便的一鍵複製功能，直接貼入您的 DNS 後台即可！
+                                    </p>
+                                </div>
+                                <p class="text-slate-400 mt-2">
+                                    * 提示：請務必刪除該網域先前存在的任何舊 MX 紀錄，否則可能導致收信混亂。DNS 設定完成後約需 5-30 分鐘生效，您可回到控制台點選「驗證」啟用網域。
                                 </p>
                             </div>
                         </div>
