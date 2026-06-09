@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常見問題 (FAQ) - 閒貓電郵 Saltycat Mailservice</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col justify-between">
+
+    <!-- Top Navigation Bar -->
+    <header class="glass-panel sticky top-0 z-40 w-full border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+            <div class="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                <i class="fa-solid fa-cat text-white text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-lg font-black tracking-wider text-white">Saltycat Mailservice</h1>
+                <p class="text-xs text-slate-400 font-medium">閒貓電郵</p>
+            </div>
+        </div>
+        
+        <div>
+            <button onclick="window.location.href='index.html'" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-xs transition flex items-center space-x-1.5">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>返回首頁</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-6 py-12 max-w-4xl">
+        
+        <div class="glass-panel rounded-3xl p-8 md:p-12 shadow-2xl space-y-10">
+            <!-- Header Section -->
+            <div class="border-b border-slate-800 pb-6 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start space-x-3 text-indigo-400 mb-2">
+                    <i class="fa-solid fa-circle-question text-2xl"></i>
+                    <span class="text-xs uppercase font-bold tracking-widest">Help & Support</span>
+                </div>
+                <h2 class="text-3xl font-black text-white">常見問題 (FAQ)</h2>
+                <p class="text-xs text-slate-400 mt-2">關於自訂域名、郵件轉寄、DNS 設定與收發信件的完整指南與解答。</p>
+            </div>
+
+            <!-- FAQ List -->
+            <div class="space-y-6">
+                
+                <!-- Q1 -->
+                <div class="space-y-3 bg-slate-950/20 border border-slate-800 p-6 rounded-2xl">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
+                            <i class="fa-solid fa-dns"></i>
+                        </div>
+                        <div class="space-y-2 w-full">
+                            <h3 class="text-base font-bold text-white">Q1. 如何為我的自訂域名設定 DNS 紀錄？</h3>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+                                <p>
+                                    要讓自訂域名信箱能順利透過閒貓電郵進行轉寄，您需要前往您的域名註冊商（例如 Cloudflare, Namecheap, GoDaddy, Gandi 等）的管理後台，為您的網域配置以下兩條核心 DNS 紀錄：
+                                </p>
+                                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/80 space-y-3 font-mono text-[11px]">
+                                    <div>
+                                        <p class="text-indigo-400 font-bold text-[10px] uppercase">1. MX 紀錄 (郵件交換伺服器)</p>
+                                        <p class="text-slate-400 mt-1">這會將寄給您網域的郵件路由到本服務：</p>
+                                        <ul class="list-disc pl-4 space-y-1 mt-1 text-slate-300">
+                                            <li>類型 (Type): <span class="text-amber-400">MX</span></li>
+                                            <li>名稱 (Name/Host): <span class="text-amber-400">@</span> (或留空)</li>
+                                            <li>值 (Value/Mail Server): <span class="text-amber-400">mx.saltycat.tw</span></li>
+                                            <li>優先級 (Priority): <span class="text-amber-400">10</span></li>
+                                        </ul>
+                                    </div>
+                                    <div class="border-t border-slate-900 pt-2.5">
+                                        <p class="text-indigo-400 font-bold text-[10px] uppercase">2. TXT 紀錄 (SPF 寄件者原則架構)</p>
+                                        <p class="text-slate-400 mt-1">這用於防止他人冒用您的域名：</p>
+                                        <ul class="list-disc pl-4 space-y-1 mt-1 text-slate-300">
+                                            <li>類型 (Type): <span class="text-amber-400">TXT</span></li>
+                                            <li>名稱 (Name/Host): <span class="text-amber-400">@</span> (或留空)</li>
+                                            <li>值 (Value): <span class="text-amber-400">v=spf1 include:saltycat.tw ~all</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <p class="text-slate-400">
+                                    * 提示：如果您在設定前已存在舊的 MX 紀錄，請務必將其刪除，否則可能會造成收信延遲或遺失信件。DNS 設定生效時間視各地網路供應商而定，通常在 5 到 30 分鐘內生效。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="space-y-3 bg-slate-950/20 border border-slate-800 p-6 rounded-2xl">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-bold text-white">Q2. _dmarc 需要設定嗎？應該怎麼設定？</h3>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+                                <p>
+                                    <strong>是的，強烈建議設定！</strong> 現今主流信箱服務商（如 Gmail、Yahoo!）對於收信的安全標準極為嚴苛。如果您的網域沒有配置 DMARC 紀錄，極有可能會被判定為高風險信件，進而導致寄給您的信件直接進到收件人的垃圾郵件匣。
+                                </p>
+                                <p>
+                                    請前往您的 DNS 設定後台，新增一筆 TXT 紀錄，其設定參數如下：
+                                </p>
+                                <div class="bg-slate-950/40 p-4 rounded-xl border border-slate-800/80 font-mono text-[11px]">
+                                    <ul class="list-disc pl-4 space-y-1 text-slate-300">
+                                        <li>類型 (Type): <span class="text-amber-400">TXT</span></li>
+                                        <li>主機名稱 (Host/Name): <span class="text-amber-400">_dmarc</span> (或完整的 <span class="text-amber-400">_dmarc.yourdomain.tw</span>)</li>
+                                        <li>TXT 內容 (Value): <span class="text-amber-400">v=DMARC1; p=none;</span></li>
+                                    </ul>
+                                </div>
+                                <p class="text-slate-400">
+                                    * 此處的 <code class="text-indigo-300 bg-slate-800 px-1 rounded">p=none</code> 為監控模式，這既可以通過各大信箱的安全檢查，又不會因為其他非同步轉寄而誤擋您的正常信件。這是一筆極低風險、卻能顯著提升收信送達率的最佳配置。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="space-y-3 bg-slate-950/20 border border-slate-800 p-6 rounded-2xl">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-bold text-white">Q3. 我除了收信之外，如果也想要用自訂域名「送信」應該怎麼辦？</h3>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-3">
+                                <p>
+                                    這是非常常見的需求！通常大家會使用 Gmail 免費版設定中的「選擇寄件地址」功能來寄信。然而，這種發信模式存在很大的技術隱憂：
+                                </p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+                                    <div class="bg-rose-950/15 border border-rose-500/10 p-4 rounded-xl space-y-1.5">
+                                        <p class="font-bold text-rose-400 text-xs flex items-center"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> 情況 A：使用 Gmail 免費轉寄直接發信</p>
+                                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                                            如果您在 Gmail 中直接新增寄件地址，由於 Gmail 是以其伺服器名義代發，沒有通過您網域的 SPF/DKIM 加密簽章，此時發信出去<strong>「幾乎 100% 會被收件端判定為垃圾信 (Spam) 或退信」</strong>。
+                                        </p>
+                                    </div>
+                                    <div class="bg-emerald-950/15 border border-emerald-500/10 p-4 rounded-xl space-y-1.5">
+                                        <p class="font-bold text-emerald-400 text-xs flex items-center"><i class="fa-solid fa-circle-check mr-1.5"></i> 情況 B：使用 Saltycat 服務專屬 SMTP</p>
+                                        <p class="text-[11px] text-slate-400 leading-relaxed">
+                                            閒貓電郵備有高送達率的<strong>專屬發信專用 SMTP Proxy 伺服器</strong>，支援在發信時為您完美簽署 DKIM 安全認證金鑰。如果您有商業發信或代發信需求，請直接聯繫客服信箱 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a>，我們將由專人手動為您的帳戶解鎖發信權限。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="space-y-3 bg-slate-950/20 border border-slate-800 p-6 rounded-2xl">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
+                            <i class="fa-solid fa-envelope-open-text"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-bold text-white">Q4. 自訂網域收信有數量上限嗎？什麼是正常使用範圍？</h3>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+                                <p>
+                                    本服務對於<strong>「正常合理使用 (Fair Use)」</strong>的情況下，<strong>不設任何每月收信上限</strong>！
+                                </p>
+                                <p class="font-semibold text-white">
+                                    什麼是正常合理使用的範圍？
+                                </p>
+                                <p>
+                                    正常使用泛指一般企業的日常公務往來信件、客戶聯絡信、個人帳單收發、網站註冊通知信、非高頻的電子報訂閱等。只要您的域名並非用於以下異常情境，皆屬於無限收信的保障範疇：
+                                </p>
+                                <ul class="list-disc pl-4 space-y-1.5 text-slate-400 text-[11px]">
+                                    <li><strong>系統不當濫用：</strong> 例如將轉寄服務做為接收大規模、高頻率垃圾郵件/釣魚郵件之靶機，或遭到惡意 DDOS 攻擊之目標。</li>
+                                    <li><strong>異常超大郵件爆量：</strong> 例如單一域名在幾分鐘內湧入數萬封以上，或單月收信總量高達數十萬封等極其不尋常的自動化程式行為。</li>
+                                </ul>
+                                <p class="text-slate-400">
+                                    * 為確保整體服務器架構的穩定度，若偵測到極為異常的流量（例如被垃圾郵件爆擊），系統安全機制會先自動限制流量並通知管理員。如有特殊的超大吞吐量業務需求，建議您預先發信至 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a> 與我們溝通，我們將為您安排專屬的高效能叢集。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="glass-panel border-t border-slate-800/50 py-6 px-6 text-center text-xs text-slate-500">
+        <p class="mb-2 text-[10px] text-slate-600 space-x-3">
+            <a href="terms.html" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium">使用與服務條款 (Terms of Service)</a>
+            <span class="text-slate-800">•</span>
+            <a href="privacy_policy.html" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium">隱私權政策 (Privacy Policy)</a>
+            <span class="text-slate-800">•</span>
+            <a href="terms.html#refund-policy" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium">退款方式 (Refund Policy)</a>
+        </p>
+        <p>© 2026 Saltycat Mailservice 閒貓電郵. All rights reserved.</p>
+        <p class="mt-1 text-slate-600">陞和姍科技商號 | 統編: 61263535</p>
+        <p class="mt-1">如有任何商務合作或帳號疑問，請發信至 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a></p>
+    </footer>
+
+</body>
+</html>
