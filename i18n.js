@@ -23,7 +23,7 @@ function getBrowserLanguage() {
 // Initialise L10N dictionary loading
 async function initI18n() {
     try {
-        const response = await fetch('translations.json');
+        const response = await fetch('translations.json?v=3');
         window.TRANSLATIONS = await response.json();
         
         // If preferred_language is not in LocalStorage, check browser language
