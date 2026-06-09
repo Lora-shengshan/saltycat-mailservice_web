@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- SweetAlert2 for modern dialogs -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- L10N Native Localization Engine -->
+    <script src="i18n.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
         body {
@@ -42,9 +44,9 @@
         <!-- Navigation Buttons & User Info -->
         <div class="flex items-center space-x-6">
             <nav class="hidden md:flex space-x-6 text-sm font-semibold text-slate-300">
-                <a href="#" onclick="showSection('landing-section')" class="hover:text-white transition">首頁</a>
-                <a href="#" onclick="showSection('pricing-section')" class="hover:text-white transition">方案定價</a>
-                <a href="faq.html" target="_blank" class="hover:text-white transition">常見問題 (FAQ)</a>
+                <a href="#" onclick="showSection('landing-section')" class="hover:text-white transition" data-i18n="Home">首頁</a>
+                <a href="#" onclick="showSection('pricing-section')" class="hover:text-white transition" data-i18n="Pricing">方案定價</a>
+                <a href="faq.html" target="_blank" class="hover:text-white transition" data-i18n="FAQ">常見問題 (FAQ)</a>
             </nav>
 
             <div id="nav-user-area" class="hidden relative">
@@ -75,6 +77,16 @@
                             <span>系統管理台</span>
                         </button>
                     </div>
+                    <!-- User Preference Language Selection -->
+                    <div class="border-t border-slate-800 pt-2.5">
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1" data-i18n="Language">語言設定</p>
+                        <select onchange="changeLanguage(this.value)" id="dropdown-user-lang" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 transition cursor-pointer">
+                            <option value="en_US" data-i18n="English">English</option>
+                            <option value="zh_TW" data-i18n="Traditional Chinese">繁體中文</option>
+                            <option value="jp_JP" data-i18n="Japanese">日本語</option>
+                            <option value="kr_KR" data-i18n="Korean">한국어</option>
+                        </select>
+                    </div>
                     <div class="border-t border-slate-800 pt-2 text-xs">
                         <button onclick="handleSignOut(); closeUserDropdown();" class="w-full text-left text-slate-400 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-400"></i>
@@ -86,8 +98,17 @@
 
             <!-- Login/Register Trigger when logged out -->
             <div id="nav-guest-area" class="flex items-center space-x-3">
-                <button onclick="openAuthModal()" class="text-sm font-semibold text-slate-300 hover:text-white transition px-3 py-2">登入</button>
-                <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-xl text-sm transition">註冊免費體驗</button>
+                <div class="flex items-center space-x-1.5 bg-slate-800/40 px-2.5 py-1.5 rounded-xl border border-slate-800/50">
+                    <i class="fa-solid fa-globe text-slate-400 text-xs"></i>
+                    <select onchange="changeLanguage(this.value)" id="guest-user-lang" class="bg-transparent text-xs text-slate-300 focus:outline-none cursor-pointer">
+                        <option value="en_US" class="bg-slate-950 text-white" data-i18n="English">English</option>
+                        <option value="zh_TW" class="bg-slate-950 text-white" data-i18n="Traditional Chinese">繁體中文</option>
+                        <option value="jp_JP" class="bg-slate-950 text-white" data-i18n="Japanese">日本語</option>
+                        <option value="kr_KR" class="bg-slate-950 text-white" data-i18n="Korean">한국어</option>
+                    </select>
+                </div>
+                <button onclick="openAuthModal()" class="text-sm font-semibold text-slate-300 hover:text-white transition px-3 py-2" data-i18n="Sign In">登入</button>
+                <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded-xl text-sm transition" data-i18n="Register for free">註冊免費體驗</button>
             </div>
         </div>
     </header>
@@ -107,20 +128,20 @@
         <section id="landing-section" class="space-y-12 py-8">
             <div class="max-w-3xl mx-auto text-center space-y-6 flex flex-col items-center justify-center">
                 <div class="inline-flex items-center space-x-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 px-5 py-2 rounded-full text-sm md:text-base font-bold shadow-lg shadow-indigo-500/5 hover:scale-105 transition-transform duration-200">
-                    <span>🎉 優惠期間:註冊即免費體驗Lite方案</span>
+                    <span data-i18n="Promo Banner">🎉 優惠期間:註冊即免費體驗Lite方案</span>
                 </div>
-                <h2 class="text-4xl md:text-5xl font-black text-white leading-tight">
+                <h2 class="text-4xl md:text-5xl font-black text-white leading-tight" data-i18n="Slogan Title">
                     台灣CP值最高的<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-pink-500">自訂網域</span><br>郵件轉寄服務
                 </h2>
-                <p class="text-slate-400 leading-relaxed text-sm max-w-2xl mx-auto">
+                <p class="text-slate-400 leading-relaxed text-sm max-w-2xl mx-auto" data-i18n="Slogan Desc">
                     為什麼要為企業信箱支付昂貴的月費？使用 Saltycat Mailservice，您可以將自己的網域（如 <code class="text-indigo-300 bg-slate-800 px-1 rounded">ceo@yourdomain.tw</code>）100% 完美轉寄至您現有的免費 Gmail，免除每個月數百元按帳號收費的負擔！
                 </p>
                 <div class="flex flex-wrap gap-4 pt-2 justify-center">
                     <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-6 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20 flex items-center space-x-2">
                         <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span>註冊即可直接免費體驗</span>
+                        <span data-i18n="CTA Register">註冊即可直接免費體驗</span>
                     </button>
-                    <button onclick="showSection('pricing-section')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3.5 px-6 rounded-xl text-sm transition">
+                    <button onclick="showSection('pricing-section')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3.5 px-6 rounded-xl text-sm transition" data-i18n="CTA Pricing">
                         查看方案定價
                     </button>
                 </div>
@@ -513,15 +534,19 @@
     <!-- Footer Area -->
     <footer class="glass-panel border-t border-slate-800/50 py-6 px-6 text-center text-xs text-slate-500">
         <p class="mb-2 text-[10px] text-slate-600 space-x-3">
-            <a href="terms.html" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium">使用與服務條款 (Terms of Service)</a>
+            <a href="terms.html" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium" data-i18n="Terms of Service">使用與服務條款 (Terms of Service)</a>
             <span class="text-slate-800">•</span>
-            <a href="privacy_policy.html" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium">隱私權政策 (Privacy Policy)</a>
+            <a href="privacy_policy.html" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium" data-i18n="Privacy Policy">隱私權政策 (Privacy Policy)</a>
             <span class="text-slate-800">•</span>
-            <a href="terms.html#refund-policy" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium">退款方式 (Refund Policy)</a>
+            <a href="terms.html#refund-policy" target="_blank" rel="noopener noreferrer" class="hover:underline hover:text-slate-400 font-medium" data-i18n="Refund Policy">退款方式 (Refund Policy)</a>
         </p>
-        <p>© 2026 Saltycat Mailservice 閒貓電郵. All rights reserved.</p>
-        <p class="mt-1 text-slate-600">陞和姍科技商號 | 統編: 61263535</p>
-        <p class="mt-1">如有任何商務合作或帳號疑問，請發信至 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a></p>
+        <p>© 2026 Saltycat Mailservice <span data-i18n="Saltycat Mailservice">閒貓電郵</span>. All rights reserved.</p>
+        <p class="mt-1 text-slate-600">
+            <span data-i18n="Company Name">陞和姍科技商號</span> | <span data-i18n="Tax ID">統編: 61263535</span>
+        </p>
+        <p class="mt-1">
+            <span data-i18n="Contact Support">如有任何商務合作或帳號疑問，請發信至</span> <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a>
+        </p>
     </footer>
 
     <!-- ================= AUTH MODAL (Google / Email Password) ================= -->
@@ -834,6 +859,8 @@
 
         // On Auth state change
         auth.onAuthStateChanged(async (user) => {
+            // Expose globally for L10N engine
+            window.BACKEND_URL = BACKEND_URL;
             if (user) {
                 // Terminate guest mode if logged in
                 isGuestMode = false;
@@ -841,6 +868,7 @@
 
                 userUid = user.uid;
                 userToken = await user.getIdToken();
+                window.userToken = userToken;
                 localStorage.setItem("bearer_jwt", userToken);
                 
                 // Set navigation layout & dropdown details
@@ -873,6 +901,14 @@
                 if (profile) {
                     document.getElementById("dropdown-user-tier").innerText = (profile.tier || "lite").toUpperCase() + " 方案";
                     document.getElementById("dropdown-user-expiry").innerText = "到期日：" + (profile.tier_end_date || "無");
+                    
+                    // Sync backend-stored preferred language
+                    if (profile.preferred_language) {
+                        localStorage.setItem("preferred_language", profile.preferred_language);
+                        if (typeof applyTranslations === "function") {
+                            applyTranslations();
+                        }
+                    }
                 }
                 if (profile && profile.account_status === "pending_verification") {
                     document.getElementById("email-verification-modal").classList.remove("hidden");
@@ -885,6 +921,7 @@
             } else {
                 userUid = "";
                 userToken = "";
+                window.userToken = "";
                 localStorage.removeItem("bearer_jwt");
                 
                 // Show Guest headers if not in active guest mode
@@ -1030,9 +1067,19 @@
         // Initialise user profile on backend (Phase 5.2)
         async function initUserProfile() {
             try {
+                // Ensure globally exposed to L10N engine
+                window.BACKEND_URL = BACKEND_URL;
+                window.userToken = userToken;
+
+                const currentLang = localStorage.getItem('preferred_language') || getBrowserLanguage();
+
                 const res = await fetch(`${BACKEND_URL}/api/users/init`, {
                     method: "POST",
-                    headers: { "Authorization": `Bearer ${userToken}` }
+                    headers: { 
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ preferred_language: currentLang })
                 });
                 if (res.ok) {
                     const data = await res.json();
@@ -2249,6 +2296,15 @@
                 confirmButtonText: "關閉"
             });
         }
+
+        // L10N State Sync Listener
+        window.addEventListener('languageChanged', (e) => {
+            const lang = e.detail;
+            const dropdownLang = document.getElementById("dropdown-user-lang");
+            const guestLang = document.getElementById("guest-user-lang");
+            if (dropdownLang) dropdownLang.value = lang;
+            if (guestLang) guestLang.value = lang;
+        });
     </script>
 </body>
 </html>
