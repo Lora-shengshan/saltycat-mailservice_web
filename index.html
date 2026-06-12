@@ -701,6 +701,14 @@
                     <p>下方為此發信信箱產生的「專屬 SMTP 密碼金鑰」。<strong>此密碼在關閉視窗後將不再顯示</strong>。請務必先將其複製保存！如果遺失或忘記，您只能在此處點擊按鈕「重新產生密碼金鑰」。</p>
                 </div>
 
+                <!-- Wildcard Warning Alert -->
+                <div id="smtp-wildcard-note-container" class="hidden">
+                    <div class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-2xl p-4 text-xs font-semibold leading-relaxed">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-1 text-indigo-400"></i>
+                        <span>※ 偵測到您使用的是 <strong>Catch-all 萬用對照 (*)</strong>。在設定 Gmail 時，您可以將使用者名稱與發信地址中的 <code class="bg-slate-900 text-indigo-300 px-1 py-0.5 rounded font-mono border border-slate-800">hello</code> 自行替換成 <strong>您網域下的任何名稱</strong>（例如 <code class="bg-slate-900 text-slate-300 px-1 py-0.5 rounded font-mono border border-slate-800">ceo</code>, <code class="bg-slate-900 text-slate-300 px-1 py-0.5 rounded font-mono border border-slate-800">service</code>, <code class="bg-slate-900 text-slate-300 px-1 py-0.5 rounded font-mono border border-slate-800">sales</code> 等），它們均可透過此金鑰安全外寄發信！</span>
+                    </div>
+                </div>
+
                 <div class="space-y-3 text-xs">
                     <!-- SMTP Server -->
                     <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
@@ -1592,7 +1600,18 @@
             activeSmtpDomain = domain_name;
             activeSmtpPrefix = prefix;
 
-            const email = `${prefix}@${domain_name}`;
+            const isWildcard = prefix === "*";
+            const displayPrefix = isWildcard ? "hello" : prefix;
+            const email = `${displayPrefix}@${domain_name}`;
+
+            // Toggle wildcard notice
+            const wildcardContainer = document.getElementById("smtp-wildcard-note-container");
+            if (isWildcard) {
+                wildcardContainer.classList.remove("hidden");
+            } else {
+                wildcardContainer.classList.add("hidden");
+            }
+
             document.getElementById("smtp-source-email-notice").innerText = email;
             document.getElementById("smtp-source-email-badge").innerText = email;
             document.getElementById("smtp-username-display").innerText = email;
@@ -1815,8 +1834,8 @@
 
                 const isStarterOrPro = isGuestMode || (window.currentUserProfile && (window.currentUserProfile.tier === 'starter' || window.currentUserProfile.tier === 'pro'));
                 const smtpSettingBtn = (isVerified && isStarterOrPro)
-                    ? `<button onclick="openSmtpSettingModal('${m.domain_name}', '${m.prefix}')" class="text-[11px] bg-emerald-600/15 border border-emerald-500/20 text-emerald-400 py-1.5 px-3 rounded-lg hover:bg-emerald-600 hover:text-white transition duration-150 mr-2">
-                        <i class="fa-solid fa-paper-plane mr-1"></i>\${t("SMTP Setup")}
+                    ? `<button onclick="openSmtpSettingModal('${m.domain_name}', '${m.prefix}')" class="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/30 hover:bg-emerald-500/20 transition cursor-pointer mt-1">
+                        <i class="fa-solid fa-paper-plane mr-1 text-[9px]"></i>${t("SMTP Setup")}
                        </button>`
                     : "";
 
@@ -1829,14 +1848,16 @@
                             <i class="fa-solid fa-arrow-right-long text-slate-700"></i>
                         </td>
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-indigo-400 font-mono">
-                            <div class="flex items-center space-x-3">
-                                <span>${m.target_gmail}</span>
-                                ${statusBadge}
+                            <div class="flex flex-col items-start space-y-1.5">
+                                <div class="flex items-center space-x-3">
+                                    <span>${m.target_gmail}</span>
+                                    ${statusBadge}
+                                </div>
+                                ${smtpSettingBtn}
                             </div>
                         </td>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                             ${verifyBtn}
-                            ${smtpSettingBtn}
                             <button onclick="handleDeleteMapping('${m.domain_name}', '${m.prefix}')" class="text-rose-400 hover:text-rose-300 transition duration-150 font-medium">
                                 <i class="fa-solid fa-trash-can"></i> ${t("Delete")}
                             </button>
