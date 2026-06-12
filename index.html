@@ -786,6 +786,40 @@
                 </ul>
             </div>
 
+            <!-- Step 4: DMARC Settings -->
+            <div class="space-y-4 border-t border-slate-800/80 pt-4 text-xs text-slate-300 leading-relaxed">
+                <h4 class="text-xs font-bold text-emerald-400 tracking-wider uppercase">第四步：重要安全配置！配置 DMARC 安全政策 (TXT Record)</h4>
+                <p class="text-[11px] text-slate-400">
+                    為確保您用 Gmail 寄出的信件不會因為 DMARC 宣告缺失而被 Gmail 判定為 DMARC Fail，請前往您的 <strong>GoDaddy DNS 控制台</strong>，新增以下這條 TXT 安全政策記錄：
+                </p>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div class="truncate">
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">主機 Host / Name</span>
+                            <span id="smtp-dmarc-host" class="font-mono text-slate-200 block truncate font-bold text-emerald-400">loading...</span>
+                        </div>
+                        <button id="smtp-dmarc-host-copy-btn" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div>
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">類型 Type</span>
+                            <span class="font-mono text-slate-200 block">TXT</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div class="truncate">
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">設定值 Value</span>
+                            <span class="font-mono text-slate-200 block truncate">v=DMARC1; p=none;</span>
+                        </div>
+                        <button onclick="copyText('v=DMARC1; p=none;', 'DMARC 設定值')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="flex justify-end pt-4 border-t border-slate-800/80">
                 <button onclick="closeSmtpSettingModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-6 rounded-xl text-sm transition">
                     已複製密碼，關閉視窗
@@ -1611,6 +1645,12 @@
             } else {
                 wildcardContainer.classList.add("hidden");
             }
+
+            // Calculate DMARC host based on subdomain
+            const godaddySub = getGoDaddyHostPrefix(domain_name);
+            const dmarcHost = godaddySub ? `_dmarc${godaddySub}` : "_dmarc";
+            document.getElementById("smtp-dmarc-host").innerText = dmarcHost;
+            document.getElementById("smtp-dmarc-host-copy-btn").setAttribute("onclick", `copyText('${dmarcHost}', 'DMARC 主機')`);
 
             document.getElementById("smtp-source-email-notice").innerText = email;
             document.getElementById("smtp-source-email-badge").innerText = email;
