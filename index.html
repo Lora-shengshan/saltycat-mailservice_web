@@ -1816,7 +1816,7 @@
                 const isStarterOrPro = isGuestMode || (window.currentUserProfile && (window.currentUserProfile.tier === 'starter' || window.currentUserProfile.tier === 'pro'));
                 const smtpSettingBtn = (isVerified && isStarterOrPro)
                     ? `<button onclick="openSmtpSettingModal('${m.domain_name}', '${m.prefix}')" class="text-[11px] bg-emerald-600/15 border border-emerald-500/20 text-emerald-400 py-1.5 px-3 rounded-lg hover:bg-emerald-600 hover:text-white transition duration-150 mr-2">
-                        <i class="fa-solid fa-paper-plane mr-1"></i>送信設定
+                        <i class="fa-solid fa-paper-plane mr-1"></i>\${t("SMTP Setup")}
                        </button>`
                     : "";
 
