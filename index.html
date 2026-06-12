@@ -332,6 +332,7 @@
                             <li class="flex items-center" data-i18n="2 Custom Domains"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
                             <li class="flex items-center" data-i18n="20 Mappings"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 組</strong> email郵件轉寄</li>
                             <li class="flex items-center font-bold text-white" data-i18n="Catchall Support"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
+                            <li class="flex items-center font-bold text-emerald-400" data-i18n="Configure Gmail Outbound"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 可設定 Gmail 送信 email！</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                         </ul>
                     </div>
@@ -362,6 +363,7 @@
                             <li class="flex items-center" data-i18n="20 Custom Domains"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 個</strong> 自訂網域綁定</li>
                             <li class="flex items-center" data-i18n="2000 Mappings"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2000 組</strong> email郵件轉寄</li>
                             <li class="flex items-center" data-i18n="Catchall Support"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
+                            <li class="flex items-center font-bold text-emerald-400" data-i18n="Configure Gmail Outbound"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 可設定 Gmail 送信 email！</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                         </ul>
                     </div>
@@ -673,6 +675,117 @@
         </div>
     </div>
 
+    <!-- ================= MODERN MODAL COMPONENT (SMTP Setting overlay) ================= -->
+    <div id="smtp-setting-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
+        <div class="glass-panel rounded-3xl max-w-2xl w-full p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start border-b border-slate-800 pb-4">
+                <div>
+                    <h3 id="smtp-modal-title" class="text-xl font-black text-white">Gmail 送信設定教學 (SMTP)</h3>
+                    <p class="text-xs text-slate-400 mt-1">請依照下方說明，將此信箱設定為個人 Gmail 的外寄發信地址。</p>
+                </div>
+                <button onclick="closeSmtpSettingModal()" class="text-slate-400 hover:text-white transition text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <!-- Warning Notice -->
+            <div class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 rounded-2xl p-4 text-xs font-semibold leading-relaxed space-y-1">
+                <p class="font-bold text-white"><i class="fa-solid fa-circle-info mr-1"></i> 為什麼要設定這個？</p>
+                <p>設定後，您就可以在原本的 Gmail 裡面，直接選擇以 <span class="font-mono text-emerald-400 font-bold" id="smtp-source-email-notice">ceo@yourdomain.tw</span> 的身份發信給別人，且信件將完美簽署您網域的 DKIM 認證，保障發信極致送達率，不進垃圾信！</p>
+            </div>
+
+            <!-- Step 1: Credentials -->
+            <div class="space-y-4">
+                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第一步：獲取您的專屬 SMTP 密碼金鑰</h4>
+                
+                <div class="bg-amber-500/10 border border-amber-500/20 text-amber-400 rounded-2xl p-4 text-xs space-y-1 leading-relaxed">
+                    <p class="font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 重要安全提示</p>
+                    <p>下方為此發信信箱產生的「專屬 SMTP 密碼金鑰」。<strong>此密碼在關閉視窗後將不再顯示</strong>。請務必先將其複製保存！如果遺失或忘記，您只能在此處點擊按鈕「重新產生密碼金鑰」。</p>
+                </div>
+
+                <div class="space-y-3 text-xs">
+                    <!-- SMTP Server -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div class="truncate">
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">SMTP 伺服器 Server</span>
+                            <span class="font-mono text-slate-200 block truncate">smtp.saltycat.tw</span>
+                        </div>
+                        <button onclick="copyText('smtp.saltycat.tw', 'SMTP 伺服器')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- SMTP Port -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div>
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">通訊埠 Port / 加密協定</span>
+                            <span class="font-mono text-slate-200 block">587 / STARTTLS</span>
+                        </div>
+                        <button onclick="copyText('587', '通訊埠')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- SMTP Username -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
+                        <div class="truncate">
+                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">使用者名稱 Username</span>
+                            <span id="smtp-username-display" class="font-mono text-slate-200 block truncate font-bold text-emerald-400">loading...</span>
+                        </div>
+                        <button id="smtp-username-copy-btn" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                    </div>
+                    <!-- SMTP Password Token -->
+                    <div class="flex items-center justify-between bg-slate-900/40 p-3 rounded-xl border-2 border-dashed border-emerald-500/30 bg-emerald-500/5">
+                        <div class="truncate">
+                            <span class="text-emerald-400 block text-[10px] uppercase font-bold tracking-wider">專屬 SMTP 密碼金鑰 Password</span>
+                            <span id="smtp-password-display" class="font-mono text-emerald-300 block truncate font-black text-sm select-all">正在產生專屬安全金鑰中...</span>
+                        </div>
+                        <div class="flex items-center space-x-2 ml-3">
+                            <button id="smtp-password-copy-btn" class="bg-emerald-600 hover:bg-emerald-500 p-1.5 rounded-lg text-white transition">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex justify-end pt-1">
+                    <button onclick="regenerateSmtpToken()" class="text-xs bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 py-2 px-3.5 rounded-xl transition flex items-center space-x-1.5">
+                        <i class="fa-solid fa-key"></i>
+                        <span>重新產生密碼金鑰</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Gmail Settings -->
+            <div class="space-y-4 border-t border-slate-800/80 pt-4 text-xs text-slate-300 leading-relaxed">
+                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第二步：於 Gmail 後台「新增另一個電子郵件地址」</h4>
+                <ul class="list-disc pl-4 space-y-2 mt-1">
+                    <li>開啟您的個人 Gmail 網頁版，點選右上角的 <strong>「設定齒輪」</strong> -> <strong>「查看所有設定」</strong>。</li>
+                    <li>點選上方分頁的 <strong>「帳戶和匯入」</strong> (Accounts and Import)。</li>
+                    <li>在「從其他地址傳送郵件」區段中，點選 <strong>「新增另一個電子郵件地址」</strong>。</li>
+                    <li>在彈出的視窗中，輸入您的名稱與您要用來寄信的自訂域名信箱（例如：<code class="text-slate-300 bg-slate-800 px-1 rounded font-mono" id="smtp-source-email-badge">ceo@yourdomain.tw</code>），並<span class="text-rose-400 font-semibold">取消勾選</span>「視為別名」 (Treat as an alias)，點擊下一步。</li>
+                </ul>
+            </div>
+
+            <!-- Step 3: SMTP Connection -->
+            <div class="space-y-4 border-t border-slate-800/80 pt-4 text-xs text-slate-300 leading-relaxed">
+                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第三步：填入 Saltycat SMTP 安全設定值</h4>
+                <ul class="list-disc pl-4 space-y-2 mt-1">
+                    <li>在 SMTP 伺服器欄位中輸入：<code class="text-amber-400 font-bold font-mono">smtp.saltycat.tw</code></li>
+                    <li>通訊埠 (Port) 選擇：<code class="text-amber-400 font-bold font-mono">587</code></li>
+                    <li>使用者名稱 (Username)：輸入您的完整自訂網域信箱（與上方使用者名稱完全相同）</li>
+                    <li>密碼 (Password)：貼上第一步取得的 <strong>16 字元「專屬 SMTP 密碼金鑰」</strong>（中間不需留空格）</li>
+                    <li>選擇安全連線：勾選 <strong>「採用 TLS 的安全連線 (建議)」</strong></li>
+                    <li>點擊「新增帳戶」，接著去收件匣收取 Google 寄送的驗證信，點擊連結或輸入驗證碼完成驗證即設定成功！</li>
+                </ul>
+            </div>
+
+            <div class="flex justify-end pt-4 border-t border-slate-800/80">
+                <button onclick="closeSmtpSettingModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-6 rounded-xl text-sm transition">
+                    已複製密碼，關閉視窗
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- ================= MODERN MODAL COMPONENT (Upgrade Manual Overlay - Phase 6.4) ================= -->
     <div id="upgrade-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
         <div class="glass-panel rounded-3xl max-w-lg w-full p-8 shadow-2xl text-center space-y-6">
@@ -928,6 +1041,7 @@
                 // Load server data and transition to dashboard section
                 const profile = await initUserProfile();
                 if (profile) {
+                    window.currentUserProfile = profile;
                     document.getElementById("dropdown-user-tier").innerText = (profile.tier || "lite").toUpperCase() + " 方案";
                     document.getElementById("dropdown-user-expiry").innerText = "到期日：" + (profile.tier_end_date || "無");
                     
@@ -1471,6 +1585,117 @@
             document.getElementById("dns-modal").classList.add("hidden");
         }
 
+        let activeSmtpDomain = "";
+        let activeSmtpPrefix = "";
+
+        async function openSmtpSettingModal(domain_name, prefix) {
+            activeSmtpDomain = domain_name;
+            activeSmtpPrefix = prefix;
+
+            const email = `${prefix}@${domain_name}`;
+            document.getElementById("smtp-source-email-notice").innerText = email;
+            document.getElementById("smtp-source-email-badge").innerText = email;
+            document.getElementById("smtp-username-display").innerText = email;
+            document.getElementById("smtp-username-copy-btn").setAttribute("onclick", `copyText('${email}', '使用者名稱')`);
+
+            document.getElementById("smtp-password-display").innerText = "正在安全產生金鑰中...";
+            document.getElementById("smtp-setting-modal").classList.remove("hidden");
+
+            if (isGuestMode) {
+                // Mock App Password for Guest mode
+                setTimeout(() => {
+                    const mock_token = generateMockAppPassword();
+                    document.getElementById("smtp-password-display").innerText = mock_token;
+                    document.getElementById("smtp-password-copy-btn").setAttribute("onclick", `copyText('${mock_token}', 'SMTP 密碼')`);
+                }, 800);
+            } else {
+                try {
+                    const res = await fetch(`${BACKEND_URL}/api/mappings/${domain_name}/${prefix}/smtp-token`, {
+                        method: "POST",
+                        headers: { 
+                            "Authorization": `Bearer ${userToken}`,
+                            "Content-Type": "application/json"
+                        }
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        document.getElementById("smtp-password-display").innerText = data.raw_token;
+                        document.getElementById("smtp-password-copy-btn").setAttribute("onclick", `copyText('${data.raw_token}', 'SMTP 密碼')`);
+                    } else {
+                        const err = await res.json();
+                        document.getElementById("smtp-password-display").innerText = "❌ 產生失敗";
+                        Swal.fire({ icon: "error", title: "金鑰產生失敗", text: err.detail || "無法向後端請求金鑰。" });
+                    }
+                } catch (e) {
+                    document.getElementById("smtp-password-display").innerText = "❌ 網路異常";
+                    Swal.fire({ icon: "error", title: "連線異常", text: e.message });
+                }
+            }
+        }
+
+        function generateMockAppPassword() {
+            const chars = "abcdefghijklmnopqrstuvwxyz";
+            let raw = "";
+            for (let i = 0; i < 16; i++) {
+                raw += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return raw;
+        }
+
+        function closeSmtpSettingModal() {
+            document.getElementById("smtp-setting-modal").classList.add("hidden");
+        }
+
+        async function regenerateSmtpToken() {
+            if (!activeSmtpDomain || !activeSmtpPrefix) return;
+
+            Swal.fire({
+                title: "確定要重新產生金鑰？",
+                text: "一旦產生新金鑰，您先前在 Gmail 中設定 of 舊 SMTP 密碼將立即失效！您必須在 Gmail 重新填入新金鑰。",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#4f46e5",
+                cancelButtonColor: "#1e293b",
+                confirmButtonText: "確定，重新產生",
+                cancelButtonText: "取消"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    document.getElementById("smtp-password-display").innerText = "正在重新產生金鑰中...";
+                    if (isGuestMode) {
+                        setTimeout(() => {
+                            const mock_token = generateMockAppPassword();
+                            document.getElementById("smtp-password-display").innerText = mock_token;
+                            document.getElementById("smtp-password-copy-btn").setAttribute("onclick", `copyText('${mock_token}', 'SMTP 密碼')`);
+                            Swal.fire({ icon: "success", title: "【模擬】密碼金鑰重置成功！", text: "已模擬重置您的 SMTP 安全密碼金鑰！", timer: 1500, showConfirmButton: false });
+                        }, 800);
+                    } else {
+                        try {
+                            const res = await fetch(`${BACKEND_URL}/api/mappings/${activeSmtpDomain}/${activeSmtpPrefix}/smtp-token`, {
+                                method: "POST",
+                                headers: { 
+                                    "Authorization": `Bearer ${userToken}`,
+                                    "Content-Type": "application/json"
+                                }
+                            });
+                            if (res.ok) {
+                                const data = await res.json();
+                                document.getElementById("smtp-password-display").innerText = data.raw_token;
+                                document.getElementById("smtp-password-copy-btn").setAttribute("onclick", `copyText('${data.raw_token}', 'SMTP 密碼')`);
+                                Swal.fire({ icon: "success", title: "密碼金鑰重置成功！", text: "已成功為該信箱重新設定專屬 SMTP 密碼金鑰！", timer: 1500, showConfirmButton: false });
+                            } else {
+                                const err = await res.json();
+                                document.getElementById("smtp-password-display").innerText = "❌ 產生失敗";
+                                Swal.fire({ icon: "error", title: "重置失敗", text: err.detail || "無法向後端請求重置金鑰。" });
+                            }
+                        } catch (e) {
+                            document.getElementById("smtp-password-display").innerText = "❌ 網路異常";
+                            Swal.fire({ icon: "error", title: "連線異常", text: e.message });
+                        }
+                    }
+                }
+            });
+        }
+
         // Clipboard Copy Helper
         function copyText(text, label) {
             navigator.clipboard.writeText(text).then(() => {
@@ -1588,6 +1813,13 @@
                         <i class="fa-solid fa-envelope-shield mr-1"></i>${t("Verify Email")}
                        </button>`;
 
+                const isStarterOrPro = isGuestMode || (window.currentUserProfile && (window.currentUserProfile.tier === 'starter' || window.currentUserProfile.tier === 'pro'));
+                const smtpSettingBtn = (isVerified && isStarterOrPro)
+                    ? `<button onclick="openSmtpSettingModal('${m.domain_name}', '${m.prefix}')" class="text-[11px] bg-emerald-600/15 border border-emerald-500/20 text-emerald-400 py-1.5 px-3 rounded-lg hover:bg-emerald-600 hover:text-white transition duration-150 mr-2">
+                        <i class="fa-solid fa-paper-plane mr-1"></i>送信設定
+                       </button>`
+                    : "";
+
                 body.innerHTML += `
                     <tr class="hover:bg-slate-800/20 transition">
                         <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-slate-200 font-mono">
@@ -1604,6 +1836,7 @@
                         </td>
                         <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
                             ${verifyBtn}
+                            ${smtpSettingBtn}
                             <button onclick="handleDeleteMapping('${m.domain_name}', '${m.prefix}')" class="text-rose-400 hover:text-rose-300 transition duration-150 font-medium">
                                 <i class="fa-solid fa-trash-can"></i> ${t("Delete")}
                             </button>
