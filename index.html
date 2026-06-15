@@ -2628,6 +2628,11 @@
             const start_date = profile.tier_start_date || "無";
             const expiry_date = profile.tier_end_date || "無";
             const sub = profile.newebpay_subscription || {};
+            
+            let subs = profile.newebpay_subscriptions || [];
+            if (subs.length === 0 && sub.period_no) {
+                subs = [sub];
+            }
 
             if (tier === "free" || tier === "lite" || start_date === "無") {
                 contentArea.innerHTML = `
@@ -2640,82 +2645,76 @@
                     </div>
                 `;
             } else {
-                const isCancelled = sub.status === "cancelled";
-                const periodText = sub.period === "annual" ? "年訂閱 (Annual)" : "月訂閱 (Monthly)";
-                const priceText = tier === "starter" 
-                    ? (sub.period === "annual" ? "NT$ 2,000 / 年" : "NT$ 200 / 月")
-                    : (sub.period === "annual" ? "NT$ 9,000 / 年" : "NT$ 900 / 月");
+                let subsHtml = "";
+                subs.forEach((s, idx) => {
+                    const isCancelled = s.status === "cancelled";
+                    const periodText = s.period === "annual" ? "年訂閱 (Annual)" : "月訂閱 (Monthly)";
+                    const priceText = s.plan === "starter" 
+                        ? (s.period === "annual" ? "NT$ 2,000 / 年" : "NT$ 200 / 月")
+                        : (s.period === "annual" ? "NT$ 9,000 / 年" : "NT$ 900 / 月");
+                    
+                    const startD = s.start_date || "無";
+                    const endD = s.end_date || "無";
+                    
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const isQueued = startD > todayStr;
+                    
+                    const badgeColor = isCancelled 
+                        ? "bg-rose-500/10 text-rose-400 border-rose-500/20" 
+                        : (isQueued ? "bg-amber-500/10 text-amber-400 border-amber-500/20" : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20");
+                    const badgeText = isCancelled 
+                        ? "已取消 (Cancelled)" 
+                        : (isQueued ? "已排約 (Scheduled)" : "使用中 (Active)");
 
-                if (isCancelled) {
-                    contentArea.innerHTML = `
-                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 text-left">
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">目前方案 Plan</span>
-                                <span class="text-sm font-bold text-indigo-400">${tier.toUpperCase()} 方案</span>
+                    subsHtml += `
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3.5 text-left relative ${idx > 0 ? 'mt-4 border-t-2 border-dashed' : ''}">
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-850">
+                                <span class="text-sm font-bold text-white">${s.plan.toUpperCase()} 方案</span>
+                                <span class="text-[9px] font-bold border px-1.5 py-0.5 rounded-md ${badgeColor}">${badgeText}</span>
                             </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">訂閱週期 Period</span>
-                                <span class="text-xs text-slate-200 font-bold">${periodText}</span>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">計費週期 Period</span>
+                                <span class="text-slate-200 font-bold">${periodText}</span>
                             </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">加值金額 Price</span>
-                                <span class="text-xs text-slate-200 font-mono font-bold">${priceText}</span>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">計費金額 Price</span>
+                                <span class="text-slate-200 font-mono font-bold">${priceText}</span>
                             </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">啟用日期 Start Date</span>
-                                <span class="text-xs text-slate-200 font-mono">${start_date}</span>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">啟用日期 Start Date</span>
+                                <span class="text-xs text-slate-200 font-mono">${startD}</span>
                             </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">結束到期日 Expiry Date</span>
-                                <span class="text-xs text-slate-200 font-mono">${expiry_date}</span>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">結束到期日 Expiry Date</span>
+                                <span class="text-xs text-slate-200 font-mono">${endD}</span>
                             </div>
-                            <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-4 text-xs space-y-1.5">
-                                <p class="text-amber-400 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1.5"></i> 已取消定期扣款：</p>
-                                <p class="text-slate-300 leading-relaxed font-semibold">
-                                    您已於之前取消自動扣款。在此計費週期到期前（至 <span class="text-white font-bold">${expiry_date}</span> 止），您仍可正常使用本方案所有的 Starter/Pro 權限。到期後系統將自動將您的帳戶調回 LITE 免費版，不會再進行任何扣款。
-                                </p>
-                            </div>
-                        </div>
-                    `;
-                } else {
-                    contentArea.innerHTML = `
-                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 text-left">
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">目前方案 Plan</span>
-                                <span class="text-sm font-bold text-indigo-400">${tier.toUpperCase()} 方案</span>
-                            </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">訂閱週期 Period</span>
-                                <span class="text-xs text-slate-200 font-bold">${periodText}</span>
-                            </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">加值金額 Price</span>
-                                <span class="text-xs text-slate-200 font-mono font-bold">${priceText}</span>
-                            </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">定期定額單號 No.</span>
-                                <span class="text-xs text-slate-200 font-mono">${sub.period_no || "Sandbox_Test"}</span>
-                            </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">啟用日期 Start Date</span>
-                                <span class="text-xs text-slate-200 font-mono">${start_date}</span>
-                            </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">下次扣款日 Next Pay Date</span>
-                                <span class="text-xs text-slate-200 font-mono">${expiry_date}</span>
-                            </div>
-                            <div class="flex justify-between items-center pb-2 border-b border-slate-800">
-                                <span class="text-xs text-slate-400">付款方式 Method</span>
-                                <span class="text-xs text-slate-200 font-bold">藍新信用卡定期定額</span>
-                            </div>
+                            ${s.period_no ? `
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">定期單號 No.</span>
+                                <span class="text-xs text-slate-200 font-mono">${s.period_no}</span>
+                            </div>` : ""}
                             
-                            <button onclick="handleUnsubscribe()" class="w-full bg-slate-950 border border-rose-500/30 hover:bg-rose-950/10 hover:border-rose-500 text-rose-400 hover:text-rose-300 font-bold py-3 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center space-x-2">
+                            ${!isCancelled && !isQueued ? `
+                            <button onclick="handleUnsubscribe()" class="w-full mt-2 bg-slate-950 border border-rose-500/20 hover:bg-rose-950/10 hover:border-rose-500 text-rose-400 hover:text-rose-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center space-x-2">
                                 <i class="fa-solid fa-ban"></i>
-                                <span>取消定期定額自動續費</span>
-                            </button>
+                                <span>取消此方案定期自動續費</span>
+                            </button>` : ""}
+                            
+                            ${isCancelled ? `
+                            <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-[10px] text-slate-300 leading-relaxed font-medium">
+                                <p class="text-amber-400 font-bold mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 已取消定期續費：</p>
+                                該期續費已被終止。在此到期日（至 <span class="text-white font-bold">${endD}</span> 止），您依然可正常使用其方案所有高階權限。
+                            </div>` : ""}
+                            
+                            ${isQueued && !isCancelled ? `
+                            <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-3 text-[10px] text-slate-300 leading-relaxed font-medium">
+                                <p class="text-indigo-400 font-bold mb-1"><i class="fa-solid fa-calendar-check mr-1"></i> 排約預定方案：</p>
+                                此年繳方案已完成付款，將會自前一個方案於 <span class="text-white font-bold">${startD}</span> 到期後自動接續啟用，至 <span class="text-white font-bold">${endD}</span> 止。
+                            </div>` : ""}
                         </div>
                     `;
-                }
+                });
+                contentArea.innerHTML = subsHtml;
             }
         }
 
@@ -2913,6 +2912,17 @@
             const monthlyPrice = plan === 'starter' ? '200' : '900';
             const annualPrice = plan === 'starter' ? '2,000' : '9,000';
 
+            // Check if user has an active annual subscription (Rule 2)
+            const hasActiveAnnual = window.currentUserProfile && 
+                ((window.currentUserProfile.newebpay_subscription && window.currentUserProfile.newebpay_subscription.period === 'annual' && window.currentUserProfile.newebpay_subscription.status !== 'cancelled') ||
+                 (window.currentUserProfile.newebpay_subscriptions && window.currentUserProfile.newebpay_subscriptions.some(s => s.period === 'annual' && s.status === 'active')));
+
+            const monthlyDisabledAttr = hasActiveAnnual ? "disabled style='opacity: 0.5; cursor: not-allowed;'" : "";
+            const monthlyRadioClass = hasActiveAnnual ? "text-slate-650 cursor-not-allowed opacity-50" : "cursor-pointer";
+            const monthlyLabelNotice = hasActiveAnnual ? "<span class='text-[10px] text-rose-400 block font-semibold mt-0.5'>(目前方案為年繳，不支援降級至月繳)</span>" : "";
+            const annualChecked = hasActiveAnnual ? "checked" : "";
+            const monthlyChecked = hasActiveAnnual ? "" : "checked";
+
             Swal.fire({
                 title: `升級 ${planTitle}`,
                 text: "請選擇您的訂閱週期：",
@@ -2924,17 +2934,18 @@
                     <div class="text-left space-y-4 p-2 font-sans text-slate-300">
                         <p class="text-xs text-slate-400 mb-4">我們將使用藍新信用卡定期扣款，隨時可取消。</p>
                         <div class="space-y-3">
-                            <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 cursor-pointer transition">
-                                <input type="radio" name="sub-period" value="monthly" checked class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
+                            <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 transition ${monthlyRadioClass}">
+                                <input type="radio" name="sub-period" value="monthly" ${monthlyChecked} ${monthlyDisabledAttr} class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
                                 <div class="flex-1">
                                     <div class="flex justify-between items-center">
                                         <span class="font-bold text-white text-sm">月訂閱 Monthly</span>
                                         <span class="font-extrabold text-indigo-400 text-base">NT$ ${monthlyPrice} <span class="text-xs text-slate-500">/ 月</span></span>
                                     </div>
+                                    ${monthlyLabelNotice}
                                 </div>
                             </label>
                             <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 cursor-pointer transition">
-                                <input type="radio" name="sub-period" value="annual" class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
+                                <input type="radio" name="sub-period" value="annual" ${annualChecked} class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
                                 <div class="flex-1">
                                     <div class="flex justify-between items-center">
                                         <span class="font-bold text-white text-sm">年訂閱 Annual</span>
