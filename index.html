@@ -336,7 +336,7 @@
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                         </ul>
                     </div>
-                    <button onclick="openUpgradeModal()" class="mt-8 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-500/20">
+                    <button id="upgrade-starter-btn" onclick="openUpgradeModal()" class="mt-8 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-500/20">
                         <span data-i18n="Upgrade Starter">聯繫客服升級 Starter</span>
                     </button>
                 </div>
@@ -367,7 +367,7 @@
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                         </ul>
                     </div>
-                    <button onclick="openUpgradeModal()" class="mt-8 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
+                    <button id="upgrade-pro-btn" onclick="openUpgradeModal()" class="mt-8 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
                         <span data-i18n="Upgrade Pro">聯繫客服升級 Pro</span>
                     </button>
                 </div>
@@ -1094,6 +1094,36 @@
                             applyTranslations();
                         }
                     }
+
+                    // Toggle test upgrade buttons for specific test account
+                    if (user.email === "neweb@test2.5233.space") {
+                        const starterBtn = document.getElementById("upgrade-starter-btn");
+                        const proBtn = document.getElementById("upgrade-pro-btn");
+                        if (starterBtn) {
+                            starterBtn.innerHTML = '<span>升級為starter</span>';
+                            starterBtn.setAttribute("onclick", "handleNewebpayUpgrade('starter')");
+                            starterBtn.removeAttribute("data-i18n");
+                        }
+                        if (proBtn) {
+                            proBtn.innerHTML = '<span>升級pro</span>';
+                            proBtn.setAttribute("onclick", "handleNewebpayUpgrade('pro')");
+                            proBtn.removeAttribute("data-i18n");
+                        }
+                    } else {
+                        // Reset to standard buttons
+                        const starterBtn = document.getElementById("upgrade-starter-btn");
+                        const proBtn = document.getElementById("upgrade-pro-btn");
+                        if (starterBtn) {
+                            starterBtn.innerHTML = '<span data-i18n="Upgrade Starter">聯繫客服升級 Starter</span>';
+                            starterBtn.setAttribute("onclick", "openUpgradeModal()");
+                            starterBtn.setAttribute("data-i18n", "Upgrade Starter");
+                        }
+                        if (proBtn) {
+                            proBtn.innerHTML = '<span data-i18n="Upgrade Pro">聯繫客服升級 Pro</span>';
+                            proBtn.setAttribute("onclick", "openUpgradeModal()");
+                            proBtn.setAttribute("data-i18n", "Upgrade Pro");
+                        }
+                    }
                 }
                 if (profile && profile.account_status === "pending_verification") {
                     document.getElementById("email-verification-modal").classList.remove("hidden");
@@ -1108,6 +1138,20 @@
                 userToken = "";
                 window.userToken = "";
                 localStorage.removeItem("bearer_jwt");
+
+                // Reset test upgrade buttons for guests/logout
+                const starterBtn = document.getElementById("upgrade-starter-btn");
+                const proBtn = document.getElementById("upgrade-pro-btn");
+                if (starterBtn) {
+                    starterBtn.innerHTML = '<span data-i18n="Upgrade Starter">聯繫客服升級 Starter</span>';
+                    starterBtn.setAttribute("onclick", "openUpgradeModal()");
+                    starterBtn.setAttribute("data-i18n", "Upgrade Starter");
+                }
+                if (proBtn) {
+                    proBtn.innerHTML = '<span data-i18n="Upgrade Pro">聯繫客服升級 Pro</span>';
+                    proBtn.setAttribute("onclick", "openUpgradeModal()");
+                    proBtn.setAttribute("data-i18n", "Upgrade Pro");
+                }
                 
                 // Show Guest headers if not in active guest mode
                 if (!isGuestMode) {
@@ -1123,10 +1167,12 @@
             const sections = ["landing-section", "pricing-section", "dashboard-section", "admin-section", "legal-section"];
             sections.forEach(id => {
                 const el = document.getElementById(id);
-                if (id === sectionId) {
-                    el.classList.remove("hidden");
-                } else {
-                    el.classList.add("hidden");
+                if (el) {
+                    if (id === sectionId) {
+                        el.classList.remove("hidden");
+                    } else {
+                        el.classList.add("hidden");
+                    }
                 }
             });
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2661,6 +2707,141 @@
             if (guestLang) guestLang.value = lang;
             if (mobileGuestLang) mobileGuestLang.value = lang;
         });
+
+        // NewebPay integration
+        function handleNewebpayUpgrade(plan) {
+            const planTitle = plan === 'starter' ? 'Starter 方案' : 'Pro 方案';
+            const monthlyPrice = plan === 'starter' ? '200' : '900';
+            const annualPrice = plan === 'starter' ? '2,000' : '9,000';
+
+            Swal.fire({
+                title: `升級 ${planTitle}`,
+                text: "請選擇您的訂閱週期：",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonText: "下一步",
+                cancelButtonText: "取消",
+                html: `
+                    <div class="text-left space-y-4 p-2 font-sans text-slate-300">
+                        <p class="text-xs text-slate-400 mb-4">我們將使用藍新信用卡定期扣款，隨時可取消。</p>
+                        <div class="space-y-3">
+                            <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 cursor-pointer transition">
+                                <input type="radio" name="sub-period" value="monthly" checked class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-white text-sm">月訂閱 Monthly</span>
+                                        <span class="font-extrabold text-indigo-400 text-base">NT$ ${monthlyPrice} <span class="text-xs text-slate-500">/ 月</span></span>
+                                    </div>
+                                </div>
+                            </label>
+                            <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 cursor-pointer transition">
+                                <input type="radio" name="sub-period" value="annual" class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
+                                <div class="flex-1">
+                                    <div class="flex justify-between items-center">
+                                        <span class="font-bold text-white text-sm">年訂閱 Annual</span>
+                                        <span class="font-extrabold text-indigo-400 text-base">NT$ ${annualPrice} <span class="text-xs text-slate-500">/ 年</span></span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                `,
+                preConfirm: () => {
+                    const selected = document.querySelector('input[name="sub-period"]:checked');
+                    if (!selected) {
+                        Swal.showValidationMessage("請選擇一個訂閱選項！");
+                        return false;
+                    }
+                    return selected.value;
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const period = result.value;
+                    proceedToNewebpay(plan, period);
+                }
+            });
+        }
+
+        async function proceedToNewebpay(plan, period) {
+            Swal.fire({
+                title: "正在產生安全支付連結...",
+                didOpen: () => Swal.showLoading(),
+                allowOutsideClick: false
+            });
+            
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/payment/newebpay/create`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ plan: plan, period: period })
+                });
+                
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.detail || "無法初始化支付連結");
+                }
+                
+                const data = await res.json();
+                
+                const form = document.createElement("form");
+                form.method = "POST";
+                form.action = data.action;
+                
+                const merchantInput = document.createElement("input");
+                merchantInput.type = "hidden";
+                merchantInput.name = "MerchantID_";
+                merchantInput.value = data.MerchantID_;
+                form.appendChild(merchantInput);
+                
+                const postDataInput = document.createElement("input");
+                postDataInput.type = "hidden";
+                postDataInput.name = "PostData_";
+                postDataInput.value = data.PostData_;
+                form.appendChild(postDataInput);
+                
+                document.body.appendChild(form);
+                form.submit();
+                
+            } catch (err) {
+                Swal.fire({
+                    icon: "error",
+                    title: "金流初始化失敗",
+                    text: err.message
+                });
+            }
+        }
+
+        function checkPaymentStatus() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const payment = urlParams.get("payment");
+            const plan = urlParams.get("plan");
+            
+            if (payment) {
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                if (payment === "success") {
+                    Swal.fire({
+                        icon: "success",
+                        title: "訂閱付款成功！",
+                        text: `恭喜您！您的帳號已成功升級至 ${plan === 'starter' ? 'Starter' : 'Pro'} 方案。`,
+                        confirmButtonText: "太棒了"
+                    });
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "訂閱付款失敗",
+                        text: "金流付款未成功，請確認信用卡資訊或稍後再試。",
+                        confirmButtonText: "關閉"
+                    });
+                }
+            }
+        }
+
+        // Run check on load
+        checkPaymentStatus();
     </script>
 </body>
 </html>
