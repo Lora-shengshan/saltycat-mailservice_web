@@ -134,7 +134,8 @@
     "Or sign in with email": "Or sign in with email",
     "Email Address Label": "Email Address",
     "Password Label": "Password",
-    "Most Popular": "Most Popular"
+    "Most Popular": "Most Popular",
+    "Wildcard SMTP Error": "Wildcard mapping can be used to receive email. To send email, you must use a specific mapping rule (e.g., yourname@domain)."
   },
   "zh_TW": {
     "Promo Banner": "🎉 優惠期間:註冊即免費體驗Lite方案",
@@ -271,7 +272,8 @@
     "Custom Source Email": "自訂信箱來源",
     "No email mapping rules configured yet.": "尚未建立任何轉寄對照。",
     "Configure Gmail Outbound": "可設定 Gmail 送信 email！",
-    "Most Popular": "熱門推薦"
+    "Most Popular": "熱門推薦",
+    "Wildcard SMTP Error": "萬用對照規則（*）僅可用於接收郵件。若要設定發信 SMTP 服務，請務必建立具體明確的單一信箱對照規則（例如：info@yourdomain）。"
   },
   "jp_JP": {
     "Promo Banner": "🎉 特典期間：登録後すぐにLiteプランを無料で体験できます",
@@ -406,7 +408,8 @@
     "Active Mail Routing Table": "現在稼働中のメール転送ルール一覧",
     "Custom Source Email": "カスタムドメイン送信元",
     "No email mapping rules configured yet.": "設定済みの転送ルールはまだありません。",
-    "Most Popular": "熱門推薦"
+    "Most Popular": "熱門推薦",
+    "Wildcard SMTP Error": "ワイルドカード（*）マッピング規則は受信のみに使用できます。送信 SMTP 設定を行うには、具体的な単一アドレスマッピング規則（例：info@yourdomain）を必ず作成してください。"
   },
   "kr_KR": {
     "Promo Banner": "🎉 이벤트 기간: 가입 즉시 Lite 요금제 무료 체험 제공",
@@ -541,6 +544,7 @@
     "Active Mail Routing Table": "현재 실시간 동작 중인 이메일 포워딩 목록",
     "Custom Source Email": "수신용 맞춤 메일 주소",
     "No email mapping rules configured yet.": "설정된 포워딩 매핑 규칙이 아직 없습니다.",
-    "Most Popular": "열정적 권장"
+    "Most Popular": "열정적 권장",
+    "Wildcard SMTP Error": "와일드카드(*) 매핑 규칙은 수신 전용으로만 사용할 수 있습니다. 이메일 발신 SMTP 설정을 하려면 구체적인 단일 메일 계정 매핑 규칙(예: info@yourdomain)을 반드시 생성해야 합니다."
   }
 }

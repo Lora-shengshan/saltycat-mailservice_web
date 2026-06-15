@@ -1700,6 +1700,16 @@
         let activeSmtpPrefix = "";
 
         async function openSmtpSettingModal(domain_name, prefix) {
+            if (prefix === "*") {
+                Swal.fire({
+                    icon: "warning",
+                    title: t("SMTP Setup") || "送信設定",
+                    text: t("Wildcard SMTP Error") || "wildcard mapping can use to receive email, to send email must use specific mapping",
+                    confirmButtonText: t("Close") || "關閉"
+                });
+                return;
+            }
+
             activeSmtpDomain = domain_name;
             activeSmtpPrefix = prefix;
 
