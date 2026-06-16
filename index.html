@@ -68,7 +68,7 @@
                             <i class="fa-solid fa-chart-line w-4 text-center text-indigo-400"></i>
                             <span>個人儀表板</span>
                         </button>
-                        <button id="dropdown-billing-btn" onclick="openBillingModal(); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
+                        <button id="dropdown-billing-btn" onclick="showSection('billing-section'); renderBillingPanel(); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-credit-card w-4 text-center text-indigo-400"></i>
                             <span>訂閱與帳務</span>
                         </button>
@@ -497,6 +497,61 @@
                                     <tr>
                                         <td colspan="4" class="py-6 text-center text-xs text-slate-500" data-i18n="No email mapping rules configured yet.">尚未建立任何轉寄對照。</td>
                                     </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3.5: BILLING & SUBSCRIPTIONS PANEL ================= -->
+        <section id="billing-section" class="hidden space-y-8 py-8">
+            <div class="glass-panel rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-credit-card text-indigo-400"></i> 訂閱與帳務歷史紀錄 Billing & Billing History
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-1">管理您名下的加值方案、定期定額授權與所有歷史繳費明細。</p>
+                </div>
+                <button onclick="showSection('dashboard-section')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-sm flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>返回個人儀表板</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left: Active/Pending Subscription details -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i class="fa-solid fa-crown text-indigo-400"></i> 當前訂閱方案 Status
+                        </h3>
+                        <div id="billing-active-subs-container" class="space-y-4">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Full Payment History List -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i class="fa-solid fa-receipt text-indigo-400"></i> 歷史付款明細 (所有購買紀錄) Receipts
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-800">
+                                <thead>
+                                    <tr class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                        <th class="py-3 px-4">付款日期 Date</th>
+                                        <th class="py-3 px-4">方案與週期 Plan / Cycle</th>
+                                        <th class="py-3 px-4">定期單號 Agreement No.</th>
+                                        <th class="py-3 px-4 text-right">扣款金額 Amount</th>
+                                        <th class="py-3 px-4 text-right">交易狀態 Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="billing-history-table-body" class="divide-y divide-slate-850 text-xs text-slate-300">
+                                    <!-- Populated dynamically -->
                                 </tbody>
                             </table>
                         </div>
@@ -1007,25 +1062,6 @@
         </div>
     </div>
 
-    <!-- ================= MODERN MODAL COMPONENT (Billing & Subscriptions) ================= -->
-    <div id="billing-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
-        <div class="glass-panel rounded-3xl max-w-md w-full p-8 shadow-2xl relative space-y-6">
-            <button onclick="closeBillingModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark"></i></button>
-            
-            <div class="text-center space-y-2">
-                <div class="w-12 h-12 bg-indigo-500/10 rounded-xl mx-auto flex items-center justify-center">
-                    <i class="fa-solid fa-credit-card text-indigo-400 text-2xl"></i>
-                </div>
-                <h3 class="text-lg font-bold text-white">訂閱與帳務管理</h3>
-                <p class="text-xs text-slate-400">管理您目前在平台的加值方案與續費設定。</p>
-            </div>
-
-            <div id="billing-content-area" class="space-y-4">
-                <!-- Will be dynamically populated by JavaScript -->
-            </div>
-        </div>
-    </div>
-
 
     <!-- ================= FIREBASE & APP LOGIC SCRIPT ================= -->
     <!-- Firebase App and Auth SDKs (Compat v9 for Native browser script execution) -->
@@ -1187,7 +1223,7 @@
 
         // Section Routing controller
         function showSection(sectionId) {
-            const sections = ["landing-section", "pricing-section", "dashboard-section", "admin-section", "legal-section"];
+            const sections = ["landing-section", "pricing-section", "dashboard-section", "admin-section", "billing-section", "legal-section"];
             sections.forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
@@ -2626,13 +2662,11 @@
         }
 
         // ================= BILLING & SUBSCRIPTIONS PROCESS =================
-        function openBillingModal() {
-            const modal = document.getElementById("billing-modal");
-            const contentArea = document.getElementById("billing-content-area");
-            if (!modal || !contentArea) return;
+        function renderBillingPanel() {
+            const subsContainer = document.getElementById("billing-active-subs-container");
+            const historyTableBody = document.getElementById("billing-history-table-body");
+            if (!subsContainer || !historyTableBody) return;
 
-            modal.classList.remove("hidden");
-            
             const profile = window.currentUserProfile || {};
             const tier = (profile.tier || "free").toLowerCase();
             const start_date = profile.tier_start_date || "無";
@@ -2644,12 +2678,13 @@
                 subs = [sub];
             }
 
+            // 1. Render Active Subscriptions
             if (tier === "free" || tier === "lite" || start_date === "無") {
-                contentArea.innerHTML = `
+                subsContainer.innerHTML = `
                     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-3">
                         <p class="text-sm font-bold text-slate-300">您目前使用的是 LITE 免費方案</p>
                         <p class="text-xs text-slate-500 leading-relaxed">免費方案僅支援綁定 1 個自訂網域。升級至 Starter 或 Pro 方案即可解鎖多網域綁定、Catch-all 萬用郵件轉寄及 Gmail 代發送信！</p>
-                        <button onclick="closeBillingModal(); showSection('pricing-section');" class="mt-2 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
+                        <button onclick="showSection('pricing-section');" class="mt-2 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
                             查看加值方案
                         </button>
                     </div>
@@ -2677,7 +2712,7 @@
                         : (isQueued ? "已排約 (Scheduled)" : "使用中 (Active)");
 
                     subsHtml += `
-                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3.5 text-left relative ${idx > 0 ? 'mt-4 border-t-2 border-dashed' : ''}">
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3.5 text-left relative ${idx > 0 ? 'mt-4 border-t-2 border-dashed border-slate-800' : ''}">
                             <div class="flex justify-between items-center pb-2 border-b border-slate-850">
                                 <span class="text-sm font-bold text-white">${s.plan.toUpperCase()} 方案</span>
                                 <span class="text-[9px] font-bold border px-1.5 py-0.5 rounded-md ${badgeColor}">${badgeText}</span>
@@ -2724,50 +2759,37 @@
                         </div>
                     `;
                 });
-
-                // Append historical transactions / receipts below the subscription cards (Rule Receipt History)
-                const history = profile.payment_history || [];
-                if (history.length > 0) {
-                    let historyHtml = `
-                        <div class="mt-6 space-y-3 pt-4 border-t border-slate-800">
-                            <h4 class="text-xs font-black text-slate-400 uppercase tracking-wider pl-1 flex items-center gap-1.5">
-                                <i class="fa-solid fa-receipt text-indigo-400"></i> 歷史扣款明細 Payment History
-                            </h4>
-                            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 divide-y divide-slate-800 space-y-2.5">
-                    `;
-                    
-                    // Sort history descending by payment date
-                    const sortedHistory = [...history].sort((a, b) => b.date.localeCompare(a.date));
-                    sortedHistory.forEach((h, idx) => {
-                        historyHtml += `
-                            <div class="flex justify-between items-center text-xs \${idx > 0 ? 'pt-2.5' : ''}">
-                                <div class="text-left space-y-0.5">
-                                    <p class="font-bold text-slate-200">\${h.plan.toUpperCase()} 方案 (\${h.period === 'annual' ? '年繳' : '月繳'})</p>
-                                    <p class="text-[10px] text-slate-500 font-mono">\${h.date}</p>
-                                </div>
-                                <div class="text-right space-y-0.5">
-                                    <p class="font-extrabold text-white font-mono">NT$ \${h.amt}</p>
-                                    <span class="inline-flex items-center rounded bg-emerald-500/10 px-1 py-0.5 text-[9px] font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/20">付款成功</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    
-                    historyHtml += `
-                            </div>
-                        </div>
-                    `;
-                    subsHtml += historyHtml;
-                }
-
-                contentArea.innerHTML = subsHtml;
+                subsContainer.innerHTML = subsHtml;
             }
-        }
 
-        function closeBillingModal() {
-            const modal = document.getElementById("billing-modal");
-            if (modal) {
-                modal.classList.add("hidden");
+            // 2. Render Payment History Table
+            const history = profile.payment_history || [];
+            if (history.length === 0) {
+                historyTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-8 text-center text-xs text-slate-500">
+                            <i class="fa-solid fa-receipt text-xl block mb-2 opacity-30"></i> 尚無歷史繳費明細。
+                        </td>
+                    </tr>
+                `;
+            } else {
+                let historyHtml = "";
+                // Sort history descending by payment date
+                const sortedHistory = [...history].sort((a, b) => b.date.localeCompare(a.date));
+                sortedHistory.forEach(h => {
+                    historyHtml += `
+                        <tr class="hover:bg-slate-800/10 transition">
+                            <td class="py-3 px-4 font-mono">${h.date}</td>
+                            <td class="py-3 px-4 font-semibold text-slate-200">${h.plan.toUpperCase()} 方案 (${h.period === 'annual' ? '年繳' : '月繳'})</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">${h.period_no || "N/A"}</td>
+                            <td class="py-3 px-4 text-right font-bold text-white font-mono">NT$ ${h.amt}</td>
+                            <td class="py-3 px-4 text-right">
+                                <span class="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/20">付款成功</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                historyTableBody.innerHTML = historyHtml;
             }
         }
 
