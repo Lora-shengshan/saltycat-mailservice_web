@@ -3019,16 +3019,6 @@
         }
 
         async function proceedToNewebpay(plan, period) {
-            if (plan === 'starter' && period === 'monthly') {
-                Swal.fire({
-                    title: "正在前往藍新定期定額支付...",
-                    didOpen: () => Swal.showLoading(),
-                    allowOutsideClick: false
-                });
-                window.location.href = "https://core.newebpay.com/Period/MS3834018665/77Vqts";
-                return;
-            }
-
             Swal.fire({
                 title: "正在產生安全支付連結...",
                 didOpen: () => Swal.showLoading(),
