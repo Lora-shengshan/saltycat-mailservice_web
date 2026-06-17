@@ -306,7 +306,7 @@
                             <li class="flex items-center text-slate-500"><i class="fa-solid fa-xmark mr-2.5"></i> <span data-i18n="No Catchall">Catch-all 萬用轉寄</span></li>
                         </ul>
                     </div>
-                    <button onclick="openAuthModal('signup')" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
+                    <button id="lite-plan-btn" onclick="openAuthModal('signup')" class="mt-8 w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
                         <span data-i18n="Register to Try Free">註冊即可免費體驗</span> <i class="fa-solid fa-arrow-right ml-1"></i>
                     </button>
                 </div>
@@ -1139,20 +1139,31 @@
                     document.getElementById("dropdown-admin-btn").classList.add("hidden");
                 }
 
-                // Load server data and transition to dashboard section
-                const profile = await initUserProfile();
-                if (profile) {
-                    window.currentUserProfile = profile;
-                    document.getElementById("dropdown-user-tier").innerText = (profile.tier || "lite").toUpperCase() + " 方案";
-                    document.getElementById("dropdown-user-expiry").innerText = "到期日：" + (profile.tier_end_date || "無");
-                    
-                    // Sync backend-stored preferred language
-                    if (profile.preferred_language) {
-                        localStorage.setItem("preferred_language", profile.preferred_language);
-                        if (typeof applyTranslations === "function") {
-                            applyTranslations();
-                        }
-                    }
+                 // Load server data and transition to dashboard section
+                 const profile = await initUserProfile();
+                 if (profile) {
+                     window.currentUserProfile = profile;
+                     document.getElementById("dropdown-user-tier").innerText = (profile.tier || "lite").toUpperCase() + " 方案";
+                     document.getElementById("dropdown-user-expiry").innerText = "到期日：" + (profile.tier_end_date || "無");
+                     
+                     // Sync backend-stored preferred language
+                     if (profile.preferred_language) {
+                         localStorage.setItem("preferred_language", profile.preferred_language);
+                         if (typeof applyTranslations === "function") {
+                             applyTranslations();
+                         }
+                     }
+
+                     // Rule 3: Hide Lite plan button if in Starter or Pro
+                     const isStarterOrProTier = (profile.tier === "starter" || profile.tier === "pro");
+                     const liteBtn = document.getElementById("lite-plan-btn");
+                     if (liteBtn) {
+                         if (isStarterOrProTier) {
+                             liteBtn.classList.add("hidden");
+                         } else {
+                             liteBtn.classList.remove("hidden");
+                         }
+                     }
 
                     // Toggle test upgrade buttons for specific test account
                     if (user.email === "neweb@test2.5233.space") {
@@ -1210,6 +1221,11 @@
                     proBtn.innerHTML = '<span data-i18n="Upgrade Pro">聯繫客服升級 Pro</span>';
                     proBtn.setAttribute("onclick", "openUpgradeModal()");
                     proBtn.setAttribute("data-i18n", "Upgrade Pro");
+                }
+
+                const liteBtn = document.getElementById("lite-plan-btn");
+                if (liteBtn) {
+                    liteBtn.classList.remove("hidden");
                 }
                 
                 // Show Guest headers if not in active guest mode
@@ -2975,22 +2991,78 @@
         });
 
         // NewebPay integration
-        function handleNewebpayUpgrade(plan) {
+        async function handleNewebpayUpgrade(plan) {
             const planTitle = plan === 'starter' ? 'Starter 方案' : 'Pro 方案';
             const monthlyPrice = plan === 'starter' ? '200' : '900';
             const annualPrice = plan === 'starter' ? '2,000' : '9,000';
 
-            // Check if user has an active annual subscription (Rule 2)
-            const hasActiveAnnual = window.currentUserProfile && 
-                ((window.currentUserProfile.newebpay_subscription && window.currentUserProfile.newebpay_subscription.period === 'annual' && window.currentUserProfile.newebpay_subscription.status !== 'cancelled') ||
-                 (window.currentUserProfile.newebpay_subscriptions && window.currentUserProfile.newebpay_subscriptions.some(s => s.period === 'annual' && s.status === 'active')));
+            const currentTier = (window.currentUserProfile && window.currentUserProfile.tier || "free").toLowerCase();
 
-            const monthlyDisabledAttr = hasActiveAnnual ? "disabled style='opacity: 0.5; cursor: not-allowed;'" : "";
-            const monthlyRadioClass = hasActiveAnnual ? "text-slate-650 cursor-not-allowed opacity-50" : "cursor-pointer";
-            const monthlyLabelNotice = hasActiveAnnual ? "<span class='text-[10px] text-rose-400 block font-semibold mt-0.5'>(目前方案為年繳，不支援降級至月繳)</span>" : "";
-            const annualChecked = hasActiveAnnual ? "checked" : "";
-            const monthlyChecked = hasActiveAnnual ? "" : "checked";
+            // Rule 4: User can't down-grade (Pro to Starter)
+            if (currentTier === "pro" && plan === "starter") {
+                Swal.fire({
+                    icon: "warning",
+                    title: "不支援降級方案",
+                    text: "您目前已是 PRO 方案高階會員，不支援降級至 Starter 方案。如有名下自訂域名與轉寄上限異動需求，請洽官方客服 cs@saltycat.tw。",
+                    confirmButtonText: "關閉"
+                });
+                return;
+            }
 
+            // Check if user already has an active monthly or yearly subscription for this plan
+            let hasActiveMonthly = false;
+            let hasActiveAnnual = false;
+            if (currentTier === plan) {
+                const sub = window.currentUserProfile.newebpay_subscription || {};
+                const subs = window.currentUserProfile.newebpay_subscriptions || [];
+                
+                if (sub.status !== "cancelled") {
+                    if (sub.period === "monthly") hasActiveMonthly = true;
+                    if (sub.period === "annual") hasActiveAnnual = true;
+                }
+                subs.forEach(s => {
+                    if (s.plan === plan && s.status === "active") {
+                        if (s.period === "monthly") hasActiveMonthly = true;
+                        if (s.period === "annual") hasActiveAnnual = true;
+                    }
+                });
+            }
+
+            // Rule 2 & 3: If user already in yearly plan, show "you are in starter/pro already"
+            if (hasActiveAnnual) {
+                Swal.fire({
+                    icon: "info",
+                    title: "您已訂閱此方案",
+                    text: `您已是有效的 ${planTitle} (年繳) 高階會員。目前無需重複進行相同級別方案之授權訂閱。`,
+                    confirmButtonText: "我知道了"
+                });
+                return;
+            }
+
+            // Rule 1 & 3: If user already in monthly plan, show only "yearly plan"
+            if (hasActiveMonthly) {
+                const { isConfirmed } = await Swal.fire({
+                    title: `升級 ${planTitle} 年繳`,
+                    html: `
+                        <div class="text-left font-sans text-xs text-slate-300 space-y-3 leading-relaxed p-2">
+                            <p>您目前是 ${planTitle} (月繳) 的有效會員。</p>
+                            <p class="text-emerald-400 font-bold"><i class="fa-solid fa-gift mr-1"></i> 您可以立即變更為年繳方案（享大額折扣價 NT$ ${annualPrice}/年）：</p>
+                            <p>1. 系統將會立即扣款年繳費用 NT$ ${annualPrice}，並**自動在藍新端退訂原月約自動扣款**，杜絕重複繳費。</p>
+                            <p>2. **您的年約效期將自您的月約到期日 (${window.currentUserProfile.tier_end_date}) 自動接續無縫延展一年**！</p>
+                        </div>
+                    `,
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "立即升級年繳方案",
+                    cancelButtonText: "暫時不要"
+                });
+                if (isConfirmed) {
+                    proceedToNewebpay(plan, "annual");
+                }
+                return;
+            }
+
+            // Default selection screen (for LITE/FREE/Expired users)
             Swal.fire({
                 title: `升級 ${planTitle}`,
                 text: "請選擇您的訂閱週期：",
@@ -3002,18 +3074,17 @@
                     <div class="text-left space-y-4 p-2 font-sans text-slate-300">
                         <p class="text-xs text-slate-400 mb-4">我們將使用藍新信用卡定期扣款，隨時可取消。</p>
                         <div class="space-y-3">
-                            <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 transition ${monthlyRadioClass}">
-                                <input type="radio" name="sub-period" value="monthly" ${monthlyChecked} ${monthlyDisabledAttr} class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
+                            <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 cursor-pointer transition">
+                                <input type="radio" name="sub-period" value="monthly" checked class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
                                 <div class="flex-1">
                                     <div class="flex justify-between items-center">
                                         <span class="font-bold text-white text-sm">月訂閱 Monthly</span>
                                         <span class="font-extrabold text-indigo-400 text-base">NT$ ${monthlyPrice} <span class="text-xs text-slate-500">/ 月</span></span>
                                     </div>
-                                    ${monthlyLabelNotice}
                                 </div>
                             </label>
                             <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 cursor-pointer transition">
-                                <input type="radio" name="sub-period" value="annual" ${annualChecked} class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
+                                <input type="radio" name="sub-period" value="annual" class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
                                 <div class="flex-1">
                                     <div class="flex justify-between items-center">
                                         <span class="font-bold text-white text-sm">年訂閱 Annual</span>
