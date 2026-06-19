@@ -1105,7 +1105,7 @@
         // Backend URL config (detects if local development or Cloud Run deploy)
         const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
             ? "http://localhost:8000" 
-            : "https://mailservice-api-497792128300.us-central1.run.app"; // Update with actual Cloud Run deployment URL
+            : "https://api.email.saltycat.tw"; // Mapped custom domain pointing to Cloud Run backend
 
         let userToken = "";
         let userUid = "";
@@ -1182,34 +1182,18 @@
                          }
                      }
 
-                    // Toggle test upgrade buttons for specific test account
-                    if (user.email === "neweb@test2.5233.space") {
-                        const starterBtn = document.getElementById("upgrade-starter-btn");
-                        const proBtn = document.getElementById("upgrade-pro-btn");
-                        if (starterBtn) {
-                            starterBtn.innerHTML = '<span>升級為starter</span>';
-                            starterBtn.setAttribute("onclick", "handleNewebpayUpgrade('starter')");
-                            starterBtn.removeAttribute("data-i18n");
-                        }
-                        if (proBtn) {
-                            proBtn.innerHTML = '<span>升級pro</span>';
-                            proBtn.setAttribute("onclick", "handleNewebpayUpgrade('pro')");
-                            proBtn.removeAttribute("data-i18n");
-                        }
-                    } else {
-                        // Reset to standard buttons
-                        const starterBtn = document.getElementById("upgrade-starter-btn");
-                        const proBtn = document.getElementById("upgrade-pro-btn");
-                        if (starterBtn) {
-                            starterBtn.innerHTML = '<span data-i18n="Upgrade Starter">聯繫客服升級 Starter</span>';
-                            starterBtn.setAttribute("onclick", "openUpgradeModal()");
-                            starterBtn.setAttribute("data-i18n", "Upgrade Starter");
-                        }
-                        if (proBtn) {
-                            proBtn.innerHTML = '<span data-i18n="Upgrade Pro">聯繫客服升級 Pro</span>';
-                            proBtn.setAttribute("onclick", "openUpgradeModal()");
-                            proBtn.setAttribute("data-i18n", "Upgrade Pro");
-                        }
+                    // Set standard upgrade buttons pointing directly to NewebPay payment flow for all logged-in users
+                    const starterBtn = document.getElementById("upgrade-starter-btn");
+                    const proBtn = document.getElementById("upgrade-pro-btn");
+                    if (starterBtn) {
+                        starterBtn.innerHTML = `<span data-i18n="Upgrade Starter">${t("Upgrade Starter")}</span>`;
+                        starterBtn.setAttribute("onclick", "handleNewebpayUpgrade('starter')");
+                        starterBtn.setAttribute("data-i18n", "Upgrade Starter");
+                    }
+                    if (proBtn) {
+                        proBtn.innerHTML = `<span data-i18n="Upgrade Pro">${t("Upgrade Pro")}</span>`;
+                        proBtn.setAttribute("onclick", "handleNewebpayUpgrade('pro')");
+                        proBtn.setAttribute("data-i18n", "Upgrade Pro");
                     }
                 }
                 if (profile && profile.account_status === "pending_verification") {
@@ -1226,16 +1210,16 @@
                 window.userToken = "";
                 localStorage.removeItem("bearer_jwt");
 
-                // Reset test upgrade buttons for guests/logout
+                // Reset upgrade buttons for guests/logout (pointing to modal/auth)
                 const starterBtn = document.getElementById("upgrade-starter-btn");
                 const proBtn = document.getElementById("upgrade-pro-btn");
                 if (starterBtn) {
-                    starterBtn.innerHTML = '<span data-i18n="Upgrade Starter">聯繫客服升級 Starter</span>';
+                    starterBtn.innerHTML = `<span data-i18n="Upgrade Starter">${t("Upgrade Starter")}</span>`;
                     starterBtn.setAttribute("onclick", "openUpgradeModal()");
                     starterBtn.setAttribute("data-i18n", "Upgrade Starter");
                 }
                 if (proBtn) {
-                    proBtn.innerHTML = '<span data-i18n="Upgrade Pro">聯繫客服升級 Pro</span>';
+                    proBtn.innerHTML = `<span data-i18n="Upgrade Pro">${t("Upgrade Pro")}</span>`;
                     proBtn.setAttribute("onclick", "openUpgradeModal()");
                     proBtn.setAttribute("data-i18n", "Upgrade Pro");
                 }
@@ -3025,6 +3009,7 @@
 
         // NewebPay integration
         async function handleNewebpayUpgrade(plan) {
+            const planLabel = plan === 'starter' ? 'Starter' : 'Pro';
             const planTitle = plan === 'starter' ? 'Starter 方案' : 'Pro 方案';
             const monthlyPrice = plan === 'starter' ? '200' : '900';
             const annualPrice = plan === 'starter' ? '2,000' : '9,000';
@@ -3035,9 +3020,9 @@
             if (currentTier === "pro" && plan === "starter") {
                 Swal.fire({
                     icon: "warning",
-                    title: "不支援降級方案",
-                    text: "您目前已是 PRO 方案高階會員，不支援降級至 Starter 方案。如有名下自訂域名與轉寄上限異動需求，請洽官方客服 cs@saltycat.tw。",
-                    confirmButtonText: "關閉"
+                    title: t("Downgrade Not Supported"),
+                    text: t("Downgrade Warning Text"),
+                    confirmButtonText: t("Close")
                 });
                 return;
             }
@@ -3065,9 +3050,9 @@
             if (hasActiveAnnual) {
                 Swal.fire({
                     icon: "info",
-                    title: "您已訂閱此方案",
-                    text: `您已是有效的 ${planTitle} (年繳) 高階會員。目前無需重複進行相同級別方案之授權訂閱。`,
-                    confirmButtonText: "我知道了"
+                    title: t("您已訂閱此方案"),
+                    text: t("Congratulations! Your account has been successfully upgraded to {plan} plan.", { plan: planLabel }),
+                    confirmButtonText: t("Close")
                 });
                 return;
             }
@@ -3075,19 +3060,12 @@
             // Rule 1 & 3: If user already in monthly plan, show only "yearly plan"
             if (hasActiveMonthly) {
                 const { isConfirmed } = await Swal.fire({
-                    title: `升級 ${planTitle} 年繳`,
-                    html: `
-                        <div class="text-left font-sans text-xs text-slate-300 space-y-3 leading-relaxed p-2">
-                            <p>您目前是 ${planTitle} (月繳) 的有效會員。</p>
-                            <p class="text-emerald-400 font-bold"><i class="fa-solid fa-gift mr-1"></i> 您可以立即變更為年繳方案（享大額折扣價 NT$ ${annualPrice}/年）：</p>
-                            <p>1. 系統將會立即扣款年繳費用 NT$ ${annualPrice}，並**自動在藍新端退訂原月約自動扣款**，杜絕重複繳費。</p>
-                            <p>2. **您的年約效期將自您的月約到期日 (${window.currentUserProfile.tier_end_date}) 自動接續無縫延展一年**！</p>
-                        </div>
-                    `,
+                    title: t("Upgrade Year Title", { plan: planLabel }),
+                    html: t("Upgrade Year Html", { plan: planLabel, price: annualPrice, endDate: window.currentUserProfile.tier_end_date || "" }),
                     icon: "info",
                     showCancelButton: true,
-                    confirmButtonText: "立即升級年繳方案",
-                    cancelButtonText: "暫時不要"
+                    confirmButtonText: t("Upgrade Annual Button"),
+                    cancelButtonText: t("Not Now")
                 });
                 if (isConfirmed) {
                     proceedToNewebpay(plan, "annual");
@@ -3097,22 +3075,22 @@
 
             // Default selection screen (for LITE/FREE/Expired users)
             Swal.fire({
-                title: `升級 ${planTitle}`,
-                text: "請選擇您的訂閱週期：",
+                title: t("Upgrade Plan Title", { plan: planLabel }),
+                text: t("Select Period Text"),
                 icon: "info",
                 showCancelButton: true,
-                confirmButtonText: "下一步",
-                cancelButtonText: "取消",
+                confirmButtonText: t("Next Step"),
+                cancelButtonText: t("Cancel"),
                 html: `
                     <div class="text-left space-y-4 p-2 font-sans text-slate-300">
-                        <p class="text-xs text-slate-400 mb-4">我們將使用藍新信用卡定期扣款，隨時可取消。</p>
+                        <p class="text-xs text-slate-400 mb-4">${t("Subscription Notice")}</p>
                         <div class="space-y-3">
                             <label class="flex items-center space-x-3 bg-slate-800 p-4 rounded-xl border border-slate-700 hover:border-indigo-500 cursor-pointer transition">
                                 <input type="radio" name="sub-period" value="monthly" checked class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
                                 <div class="flex-1">
                                     <div class="flex justify-between items-center">
-                                        <span class="font-bold text-white text-sm">月訂閱 Monthly</span>
-                                        <span class="font-extrabold text-indigo-400 text-base">NT$ ${monthlyPrice} <span class="text-xs text-slate-500">/ 月</span></span>
+                                        <span class="font-bold text-white text-sm">${t("Monthly Subscription")}</span>
+                                        <span class="font-extrabold text-indigo-400 text-base">NT$ ${monthlyPrice} <span class="text-xs text-slate-500">/ ${t("Month")}</span></span>
                                     </div>
                                 </div>
                             </label>
@@ -3120,8 +3098,8 @@
                                 <input type="radio" name="sub-period" value="annual" class="text-indigo-500 focus:ring-indigo-500 h-4 w-4">
                                 <div class="flex-1">
                                     <div class="flex justify-between items-center">
-                                        <span class="font-bold text-white text-sm">年訂閱 Annual</span>
-                                        <span class="font-extrabold text-indigo-400 text-base">NT$ ${annualPrice} <span class="text-xs text-slate-500">/ 年</span></span>
+                                        <span class="font-bold text-white text-sm">${t("Annual Subscription")}</span>
+                                        <span class="font-extrabold text-indigo-400 text-base">NT$ ${annualPrice} <span class="text-xs text-slate-500">/ ${t("Year")}</span></span>
                                     </div>
                                 </div>
                             </label>
@@ -3131,7 +3109,7 @@
                 preConfirm: () => {
                     const selected = document.querySelector('input[name="sub-period"]:checked');
                     if (!selected) {
-                        Swal.showValidationMessage("請選擇一個訂閱選項！");
+                        Swal.showValidationMessage(t("Validation Select Option"));
                         return false;
                     }
                     return selected.value;
@@ -3205,18 +3183,19 @@
                 window.history.replaceState({}, document.title, window.location.pathname);
                 
                 if (payment === "success") {
+                    const normalizedPlan = (plan || "").toLowerCase();
                     Swal.fire({
                         icon: "success",
-                        title: "訂閱付款成功！",
-                        text: `恭喜您！您的帳號已成功升級至 ${plan === 'starter' ? 'Starter' : 'Pro'} 方案。`,
-                        confirmButtonText: "太棒了"
+                        title: t("Subscription Payment Successful!"),
+                        text: t("Congratulations! Your account has been successfully upgraded to {plan} plan.", { plan: normalizedPlan === 'starter' ? 'Starter' : 'Pro' }),
+                        confirmButtonText: t("Awesome")
                     });
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: "訂閱付款失敗",
-                        text: "金流付款未成功，請確認信用卡資訊或稍後再試。",
-                        confirmButtonText: "關閉"
+                        title: t("Subscription Payment Failed"),
+                        text: t("Payment was not successful. Please verify your credit card details or try again later."),
+                        confirmButtonText: t("Close")
                     });
                 }
             }
