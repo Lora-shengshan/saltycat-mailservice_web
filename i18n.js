@@ -26,13 +26,19 @@ async function initI18n() {
         const response = await fetch('translations.json?v=3');
         window.TRANSLATIONS = await response.json();
         
-        // If preferred_language is not in LocalStorage, check browser language
-        let currentLang = localStorage.getItem('preferred_language');
-        if (!currentLang) {
-            currentLang = getBrowserLanguage();
-            localStorage.setItem('preferred_language', currentLang);
+        const isLoggedIn = !!localStorage.getItem('bearer_jwt');
+        const isManuallyAssigned = localStorage.getItem('manually_assigned_language') === 'true';
+        
+        let currentLang = null;
+        if (isLoggedIn || isManuallyAssigned) {
+            currentLang = localStorage.getItem('preferred_language');
         }
         
+        if (!currentLang) {
+            currentLang = getBrowserLanguage();
+        }
+        
+        localStorage.setItem('preferred_language', currentLang);
         applyTranslations();
     } catch (e) {
         console.error("Failed to load L10N translations dictionary:", e);
@@ -82,6 +88,7 @@ function applyTranslations() {
 async function changeLanguage(selectedLang) {
     const formatted = formatLangCode(selectedLang);
     localStorage.setItem('preferred_language', formatted);
+    localStorage.setItem('manually_assigned_language', 'true');
     applyTranslations();
     
     // Synchronize to Firestore if userToken exists

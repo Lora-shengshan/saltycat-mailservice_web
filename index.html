@@ -1209,6 +1209,14 @@
                 userToken = "";
                 window.userToken = "";
                 localStorage.removeItem("bearer_jwt");
+                
+                // Stable L10N rule: Reset to browser language upon logout so guest experience is correct
+                localStorage.removeItem("preferred_language");
+                const currentLang = typeof getBrowserLanguage === "function" ? getBrowserLanguage() : "en_US";
+                localStorage.setItem("preferred_language", currentLang);
+                if (typeof applyTranslations === "function") {
+                    applyTranslations();
+                }
 
                 // Reset upgrade buttons for guests/logout (pointing to modal/auth)
                 const starterBtn = document.getElementById("upgrade-starter-btn");
