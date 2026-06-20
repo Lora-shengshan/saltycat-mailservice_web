@@ -69,6 +69,8 @@ function replaceVariables(text, variables) {
 
 // Scan whole DOM and apply translation replacements
 function applyTranslations() {
+    if (!window.TRANSLATIONS) return; // Defensive gate: skip if dictionary hasn't loaded yet
+    
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         el.innerHTML = t(key);
@@ -78,6 +80,9 @@ function applyTranslations() {
         const key = el.getAttribute('data-i18n-placeholder');
         el.placeholder = t(key);
     });
+    
+    // Smooth L10N rendering transition: reveal fully-translated DOM elements seamlessly
+    document.documentElement.classList.remove('l10n-loading');
     
     // Broadcast custom event so index.html and other templates can refresh dynamic components
     window.dispatchEvent(new CustomEvent('languageChanged', { 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-TW" class="h-full bg-slate-900 text-slate-100">
 <head>
+    <script>document.documentElement.classList.add('l10n-loading');</script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="CP值最高, email forward, forward to Gmail, 有網址就可以使用, 郵件轉寄, 閒貓電郵, 自訂域名信箱">
@@ -16,6 +17,8 @@
     <!-- L10N Native Localization Engine -->
     <script src="i18n.js?v=3"></script>
     <style>
+        .l10n-loading [data-i18n] { opacity: 0; }
+        [data-i18n] { transition: opacity 0.15s ease-in-out; }
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
         body {
             font-family: 'Noto Sans TC', sans-serif;
