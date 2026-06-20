@@ -47,7 +47,8 @@ async function initI18n() {
 
 // Translation translation lookup core
 function t(key, variables = {}) {
-    const lang = localStorage.getItem('preferred_language') || 'en_US';
+    let lang = localStorage.getItem('preferred_language') || 'en_US';
+    lang = formatLangCode(lang);
     
     // If dictionary exists and has the translation for the selected language
     if (window.TRANSLATIONS && window.TRANSLATIONS[lang] && window.TRANSLATIONS[lang][key]) {
