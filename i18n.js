@@ -4,13 +4,14 @@
 
 window.TRANSLATIONS = null;
 
-// Helper to clean language code format (e.g., 'zh-TW' -> 'zh_TW', 'en-US' -> 'en_US')
+// Helper to clean language code format (e.g., 'zh-TW' -> 'zh_TW', 'en-US' -> 'en_US', 'jp' -> 'jp_JP')
 function formatLangCode(langCode) {
     if (!langCode) return 'en_US';
-    const clean = langCode.replace('-', '_');
-    if (clean.startsWith('zh_')) return 'zh_TW';
-    if (clean.startsWith('ja_') || clean.startsWith('jp_')) return 'jp_JP';
-    if (clean.startsWith('ko_') || clean.startsWith('kr_')) return 'kr_KR';
+    const clean = langCode.toLowerCase().replace('-', '_');
+    if (clean.startsWith('zh_') || clean === 'zh' || clean === 'tw') return 'zh_TW';
+    if (clean.startsWith('ja_') || clean.startsWith('jp_') || clean === 'ja' || clean === 'jp') return 'jp_JP';
+    if (clean.startsWith('ko_') || clean.startsWith('kr_') || clean === 'ko' || clean === 'kr') return 'kr_KR';
+    if (clean === 'en' || clean.startsWith('en_')) return 'en_US';
     return 'en_US';
 }
 
@@ -30,7 +31,14 @@ async function initI18n() {
         const isManuallyAssigned = localStorage.getItem('manually_assigned_language') === 'true';
         
         let currentLang = null;
-        if (isLoggedIn || isManuallyAssigned) {
+        
+        // Parse special query parameter ?lang=jp (or lang=tw, etc.) for non-logged-in users
+        const urlParams = new URLSearchParams(window.location.search);
+        const queryLang = urlParams.get('lang');
+        
+        if (!isLoggedIn && queryLang) {
+            currentLang = formatLangCode(queryLang);
+        } else if (isLoggedIn || isManuallyAssigned) {
             currentLang = localStorage.getItem('preferred_language');
         }
         
