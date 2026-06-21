@@ -343,7 +343,7 @@
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                         </ul>
                     </div>
-                    <button id="upgrade-starter-btn" onclick="openUpgradeModal()" class="mt-8 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-500/20">
+                    <button id="upgrade-starter-btn" onclick="openAuthModal('signup')" class="mt-8 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition shadow-lg shadow-indigo-500/20">
                         <span data-i18n="Upgrade Starter">聯繫客服升級 Starter</span>
                     </button>
                 </div>
@@ -374,7 +374,7 @@
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                         </ul>
                     </div>
-                    <button id="upgrade-pro-btn" onclick="openUpgradeModal()" class="mt-8 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
+                    <button id="upgrade-pro-btn" onclick="openAuthModal('signup')" class="mt-8 w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-4 rounded-xl text-sm transition">
                         <span data-i18n="Upgrade Pro">聯繫客服升級 Pro</span>
                     </button>
                 </div>
@@ -1249,19 +1249,19 @@
                     applyTranslations();
                 }
 
-                // Reset upgrade buttons for guests/logout (pointing to modal/auth)
-                const starterBtn = document.getElementById("upgrade-starter-btn");
-                const proBtn = document.getElementById("upgrade-pro-btn");
-                if (starterBtn) {
-                    starterBtn.innerHTML = `<span data-i18n="Upgrade Starter">${t("Upgrade Starter")}</span>`;
-                    starterBtn.setAttribute("onclick", "openUpgradeModal()");
-                    starterBtn.setAttribute("data-i18n", "Upgrade Starter");
-                }
-                if (proBtn) {
-                    proBtn.innerHTML = `<span data-i18n="Upgrade Pro">${t("Upgrade Pro")}</span>`;
-                    proBtn.setAttribute("onclick", "openUpgradeModal()");
-                    proBtn.setAttribute("data-i18n", "Upgrade Pro");
-                }
+                 // Reset upgrade buttons for guests/logout (pointing to modal/auth)
+                 const starterBtn = document.getElementById("upgrade-starter-btn");
+                 const proBtn = document.getElementById("upgrade-pro-btn");
+                 if (starterBtn) {
+                     starterBtn.innerHTML = `<span data-i18n="Upgrade Starter">${t("Upgrade Starter")}</span>`;
+                     starterBtn.setAttribute("onclick", "openAuthModal('signup')");
+                     starterBtn.setAttribute("data-i18n", "Upgrade Starter");
+                 }
+                 if (proBtn) {
+                     proBtn.innerHTML = `<span data-i18n="Upgrade Pro">${t("Upgrade Pro")}</span>`;
+                     proBtn.setAttribute("onclick", "openAuthModal('signup')");
+                     proBtn.setAttribute("data-i18n", "Upgrade Pro");
+                 }
 
                 const liteBtn = document.getElementById("lite-plan-btn");
                 if (liteBtn) {
