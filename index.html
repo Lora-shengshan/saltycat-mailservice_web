@@ -691,19 +691,19 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-2">
                 <!-- Left: Email Login Form -->
                 <div class="space-y-4 pr-0 md:pr-6 md:border-r border-slate-800/80">
-                    <h4 class="text-xs font-black text-indigo-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <h4 class="text-xs font-black text-indigo-400 uppercase tracking-wider flex items-center gap-1.5" data-i18n="Sign In to Your Account">
                         <i class="fa-solid fa-lock"></i> 會員帳戶登入
                     </h4>
                     <form id="email-login-form" onsubmit="handleEmailAuth(event)" class="space-y-3.5">
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-400 mb-1">電子信箱 Email</label>
+                            <label class="block text-[10px] font-semibold text-slate-400 mb-1" data-i18n="Email Address Label">電子信箱 Email</label>
                             <input id="auth-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
                         </div>
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-400 mb-1">密碼 Password</label>
+                            <label class="block text-[10px] font-semibold text-slate-400 mb-1" data-i18n="Password Label">密碼 Password</label>
                             <input id="auth-password" type="password" required placeholder="••••••••" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
                         </div>
-                        <button type="submit" id="auth-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 shadow-lg shadow-indigo-600/10 mt-1">
+                        <button type="submit" id="auth-submit-btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 shadow-lg shadow-indigo-600/10 mt-1" data-i18n="Sign In">
                             立即登入 Login
                         </button>
                     </form>
@@ -711,18 +711,18 @@
 
                 <!-- Right: Email Register Form (Rule Single Email Registration) -->
                 <div class="space-y-4 pl-0 md:pl-2">
-                    <h4 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                    <h4 class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5" data-i18n="Register for free">
                         <i class="fa-solid fa-user-plus"></i> 註冊免費體驗
                     </h4>
                     <form id="email-register-form" onsubmit="handleEmailRegister(event)" class="space-y-3.5">
                         <div>
-                            <label class="block text-[10px] font-semibold text-slate-400 mb-1">註冊電子信箱 Register Email</label>
+                            <label class="block text-[10px] font-semibold text-slate-400 mb-1" data-i18n="Email Address Label">註冊電子信箱 Register Email</label>
                             <input id="register-email" type="email" required placeholder="name@example.com" class="w-full bg-slate-950/50 border border-slate-800 focus:border-indigo-500 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
                         </div>
-                        <p class="text-[10px] text-slate-500 leading-relaxed font-semibold">
+                        <p class="text-[10px] text-slate-500 leading-relaxed font-semibold" data-i18n="Register Password Note">
                             ※ 點選註冊後，系統將自動隨機產生一組安全性臨時密碼，並即時投遞至您的信箱。
                         </p>
-                        <button type="submit" id="register-submit-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 shadow-lg shadow-emerald-600/10">
+                        <button type="submit" id="register-submit-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition duration-200 shadow-lg shadow-emerald-600/10" data-i18n="Register Button">
                             同意條款並註冊 Register
                         </button>
                     </form>
@@ -733,19 +733,19 @@
 
     <!-- ================= MODERN MODAL COMPONENT (DNS overlay) ================= -->
     <div id="dns-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
-        <div class="glass-panel rounded-3xl max-w-2xl w-full p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
+        <div class="glass-panel rounded-3xl max-w-4xl w-full p-8 shadow-2xl space-y-6 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-start border-b border-slate-800 pb-4">
                 <div>
-                    <h3 id="dns-modal-title" class="text-xl font-black text-white">GoDaddy DNS 自訂網域設定值</h3>
-                    <p class="text-xs text-slate-400 mt-1">請將下方 3 組 Easy DKIM CNAME 與 1 組 MX 記錄貼入您的 GoDaddy DNS 後台。</p>
+                    <h3 id="dns-modal-title" class="text-xl font-black text-white" data-i18n="DNS Setup Guide Title">自訂網域 DNS 設定值</h3>
+                    <p id="dns-modal-desc" class="text-xs text-slate-400 mt-1" data-i18n="DNS Setup Guide Desc">請將下方 3 組 Easy DKIM CNAME 與 1 組 MX 記錄貼入您的 DNS 託管後台（如 GoDaddy、Cloudflare 或 Namecheap 等）。</p>
                 </div>
                 <button onclick="closeDnsModal()" class="text-slate-400 hover:text-white transition text-lg"><i class="fa-solid fa-xmark"></i></button>
             </div>
 
             <!-- CNAME records tables -->
             <div class="space-y-4">
-                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第一步：配置 3 組 DKIM 安全金鑰 (CNAME Records)</h4>
-                <div class="space-y-3" id="dns-cname-rows-container">
+                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase" data-i18n="Step 1: Configure 3 DKIM Keys">第一步：配置 3 組 DKIM 安全金鑰 (CNAME Records)</h4>
+                <div id="dns-cname-rows-container" class="space-y-3">
                     <!-- Dynamic CNAME Rows -->
                 </div>
             </div>
@@ -760,7 +760,7 @@
 
             <!-- MX Records -->
             <div class="space-y-4 border-t border-slate-800/80 pt-4">
-                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase">第二步：配置郵件進站路徑 (MX Record)</h4>
+                <h4 class="text-xs font-bold text-indigo-400 tracking-wider uppercase" data-i18n="Step 2: Configure Inbound Route">第二步：配置郵件進站路徑 (MX Record)</h4>
                 <div id="dns-mx-row-container" class="space-y-3">
                     <!-- Dynamic MX Row -->
                 </div>
@@ -769,9 +769,9 @@
             <div class="flex items-center space-x-3 pt-4">
                 <button id="verify-dns-btn" onclick="triggerDnsVerify()" class="flex-grow bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-2 shadow-lg shadow-indigo-600/10">
                     <i class="fa-solid fa-circle-check"></i>
-                    <span>我已在 GoDaddy 設定完畢，立即檢查驗證狀態！</span>
+                    <span data-i18n="Verify DNS Button Text">我已設定完畢，立即檢查驗證狀態！</span>
                 </button>
-                <button onclick="closeDnsModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-5 rounded-xl text-sm transition">
+                <button onclick="closeDnsModal()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-3 px-5 rounded-xl text-sm transition" data-i18n="Close">
                     關閉
                 </button>
             </div>
@@ -891,8 +891,8 @@
 
             <!-- Step 4: DMARC Settings -->
             <div class="space-y-4 border-t border-slate-800/80 pt-4 text-xs text-slate-300 leading-relaxed">
-                <h4 class="text-xs font-bold text-emerald-400 tracking-wider uppercase">第四步：重要安全配置！配置 DMARC 安全政策 (TXT Record)</h4>
-                <p class="text-[11px] text-slate-400">
+                <h4 class="text-xs font-bold text-emerald-400 tracking-wider uppercase" data-i18n="Step 4 Header">第四步：重要安全配置！配置 DMARC 安全政策 (TXT Record)</h4>
+                <p class="text-[11px] text-slate-400" data-i18n="DMARC Step Desc">
                     為確保您用 Gmail 寄出的信件不會因為 DMARC 宣告缺失而被 Gmail 判定為 DMARC Fail，請前往您的 <strong>GoDaddy DNS 控制台</strong>，新增以下這條 TXT 安全政策記錄：
                 </p>
                 <div class="space-y-3">
@@ -1686,7 +1686,7 @@
         let activeVerifyDomain = "";
         function showDnsModalDetails(domain_name, custom_dns = null) {
             activeVerifyDomain = domain_name;
-            document.getElementById("dns-modal-title").innerText = `${domain_name} DNS 設定教學 (GoDaddy)`;
+            document.getElementById("dns-modal-title").innerHTML = `${domain_name} <span data-i18n="DNS Setup Guide Title">${t("DNS Setup Guide Title")}</span>`;
             
             // Subdomain and MX Host analysis
             const godaddySub = getGoDaddyHostPrefix(domain_name);
@@ -1696,17 +1696,17 @@
             const noteText = document.getElementById("dns-subdomain-note-text");
             
             if (godaddySub) {
-                noteText.innerHTML = `偵測到您綁定的是子網域 <strong>${domain_name}</strong>。為了相容 GoDaddy DNS，所有的 CNAME 主機 (Host) 欄位已自動補上子網域字尾（<strong>${godaddySub}</strong>），並且第二步的 <strong>MX 記錄主機 (Host) 已自動修正為 ${mxHost}</strong>（非預設的 @），請直接複製使用！`;
+                noteText.innerHTML = t("Subdomain DNS Warning", { domain_name: domain_name, godaddySub: godaddySub, mxHost: mxHost });
                 noteContainer.classList.remove("hidden");
             } else {
                 noteText.innerText = "";
                 noteContainer.classList.add("hidden");
             }
             
-            // 1. Render CNAME rows
+            // 1. Render CNAME rows in a clean, compact table
             const rowsContainer = document.getElementById("dns-cname-rows-container");
             rowsContainer.innerHTML = "";
-
+            
             let dns_records = custom_dns;
             if (!dns_records) {
                 const activeList = isGuestMode ? guestDomains : registeredDomains;
@@ -1714,86 +1714,97 @@
                 dns_records = found ? found.dns_payload : [];
             }
 
+            let tableHtml = `
+                <div class="overflow-x-auto rounded-2xl border border-slate-800/80 bg-slate-950/40 text-xs">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800/80 bg-slate-900/60 text-slate-400 font-black uppercase tracking-wider text-[10px]">
+                                <th class="px-4 py-3" data-i18n="DNS Table Host">${t("DNS Table Host")}</th>
+                                <th class="px-4 py-3 w-20 text-center" data-i18n="DNS Table Type">${t("DNS Table Type")}</th>
+                                <th class="px-4 py-3" data-i18n="DNS Table Value">${t("DNS Table Value")}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
             dns_records.forEach((dns, idx) => {
-                rowsContainer.innerHTML += `
-                    <div class="bg-slate-950/50 rounded-2xl p-4 border border-slate-800 space-y-3">
-                        <div class="flex items-center justify-between text-xs border-b border-slate-800/80 pb-2">
-                            <span class="font-bold text-slate-400">安全金鑰記錄 #${idx+1} (CNAME)</span>
-                        </div>
-                        <div class="space-y-2 text-xs">
-                            <!-- Host -->
-                            <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
-                                <div class="truncate">
-                                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">主機 Host</span>
-                                    <span class="font-mono text-slate-200 block truncate">${dns.host}</span>
-                                </div>
-                                <button onclick="copyText('${dns.host}', '主機 Host')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
-                                    <i class="fa-solid fa-copy"></i>
-                                </button>
-                            </div>
-                            <!-- Type -->
-                            <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
-                                <div>
-                                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">類型 Type</span>
-                                    <span class="font-mono text-slate-200 block">CNAME</span>
-                                </div>
-                            </div>
-                            <!-- Value -->
-                            <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
-                                <div class="truncate">
-                                    <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">設定值 Value</span>
-                                    <span class="font-mono text-slate-200 block truncate">${dns.value}</span>
-                                </div>
-                                <button onclick="copyText('${dns.value}', '設定值 Value')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
-                                    <i class="fa-solid fa-copy"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                tableHtml += `
+                            <tr class="border-b border-slate-800/40 last:border-0 hover:bg-slate-900/20 transition">
+                                <td class="px-4 py-3.5">
+                                    <div class="flex items-center justify-between gap-2 max-w-[220px] sm:max-w-none">
+                                        <span class="font-mono text-slate-200 block truncate" title="${dns.host}">${dns.host}</span>
+                                        <button onclick="copyText('${dns.host}', 'Host')" class="bg-slate-800/80 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition flex-shrink-0">
+                                            <i class="fa-solid fa-copy text-[10px]"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3.5 text-center">
+                                    <span class="font-mono text-indigo-400 font-bold bg-indigo-500/10 px-2 py-0.5 rounded-md border border-indigo-500/20">CNAME</span>
+                                </td>
+                                <td class="px-4 py-3.5">
+                                    <div class="flex items-center justify-between gap-2 max-w-[220px] sm:max-w-none">
+                                        <span class="font-mono text-slate-200 block truncate" title="${dns.value}">${dns.value}</span>
+                                        <button onclick="copyText('${dns.value}', 'Value')" class="bg-slate-800/80 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition flex-shrink-0">
+                                            <i class="fa-solid fa-copy text-[10px]"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                 `;
             });
 
-            // 2. Render MX row
+            tableHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            rowsContainer.innerHTML = tableHtml;
+
+            // 2. Render MX row in a clean, compact table
             const mxContainer = document.getElementById("dns-mx-row-container");
             mxContainer.innerHTML = `
-                <div class="bg-slate-950/50 rounded-2xl p-4 border border-slate-800 space-y-2 text-xs">
-                    <!-- Host -->
-                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
-                        <div class="truncate">
-                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">主機 Host</span>
-                            <span class="font-mono text-slate-200 block truncate">${mxHost}</span>
-                        </div>
-                        <button onclick="copyText('${mxHost}', '主機 Host')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                    </div>
-                    <!-- Type -->
-                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
-                        <div>
-                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">類型 Type</span>
-                            <span class="font-mono text-slate-200 block">MX</span>
-                        </div>
-                    </div>
-                    <!-- Priority -->
-                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
-                        <div>
-                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">優先權 Priority / Precedence</span>
-                            <span class="font-mono text-slate-200 block">10</span>
-                        </div>
-                        <button onclick="copyText('10', '優先權')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                    </div>
-                    <!-- Value -->
-                    <div class="flex items-center justify-between bg-slate-900/40 p-2.5 rounded-xl border border-slate-800/50">
-                        <div class="truncate">
-                            <span class="text-slate-500 block text-[10px] uppercase font-bold tracking-wider">設定值 Value / Points To</span>
-                            <span class="font-mono text-slate-200 block truncate">inbound-smtp.us-east-1.amazonaws.com.</span>
-                        </div>
-                        <button onclick="copyText('inbound-smtp.us-east-1.amazonaws.com.', '設定值 Value')" class="bg-slate-800 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition ml-3">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                    </div>
+                <div class="overflow-x-auto rounded-2xl border border-slate-800/80 bg-slate-950/40 text-xs">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="border-b border-slate-800/80 bg-slate-900/60 text-slate-400 font-black uppercase tracking-wider text-[10px]">
+                                <th class="px-4 py-3" data-i18n="DNS Table Host">${t("DNS Table Host")}</th>
+                                <th class="px-4 py-3 w-16 text-center" data-i18n="DNS Table Type">${t("DNS Table Type")}</th>
+                                <th class="px-4 py-3 w-24 text-center" data-i18n="DNS Table Priority">${t("DNS Table Priority")}</th>
+                                <th class="px-4 py-3" data-i18n="DNS Table Value">${t("DNS Table Value")}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="hover:bg-slate-900/20 transition">
+                                <td class="px-4 py-3.5">
+                                    <div class="flex items-center justify-between gap-2">
+                                        <span class="font-mono text-slate-200 block truncate">${mxHost}</span>
+                                        <button onclick="copyText('${mxHost}', 'Host')" class="bg-slate-800/80 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition flex-shrink-0">
+                                            <i class="fa-solid fa-copy text-[10px]"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3.5 text-center">
+                                    <span class="font-mono text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">MX</span>
+                                </td>
+                                <td class="px-4 py-3.5 text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <span class="font-mono text-slate-200 block">10</span>
+                                        <button onclick="copyText('10', 'Priority')" class="bg-slate-800/80 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition flex-shrink-0">
+                                            <i class="fa-solid fa-copy text-[10px]"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td class="px-4 py-3.5">
+                                    <div class="flex items-center justify-between gap-2 max-w-[200px] sm:max-w-none">
+                                        <span class="font-mono text-slate-200 block truncate" title="inbound-smtp.us-east-1.amazonaws.com.">inbound-smtp.us-east-1.amazonaws.com.</span>
+                                        <button onclick="copyText('inbound-smtp.us-east-1.amazonaws.com.', 'Value')" class="bg-slate-800/80 hover:bg-slate-700 p-1.5 rounded-lg text-slate-400 hover:text-white transition flex-shrink-0">
+                                            <i class="fa-solid fa-copy text-[10px]"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             `;
 
@@ -1962,10 +1973,10 @@
             if (isGuestMode) {
                 const btn = document.getElementById("verify-dns-btn");
                 btn.disabled = true;
-                btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在驗證主機中...</span>`;
+                btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>${t("Verifying DNS...")}</span>`;
                 setTimeout(() => {
                     btn.disabled = false;
-                    btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>我已在 GoDaddy 設定完畢，立即檢查驗證狀態！</span>`;
+                    btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${t("I have configured DNS, check now!")}</span>`;
                     
                     // Simulate verified
                     guestDomains.forEach(d => {
@@ -1977,8 +1988,8 @@
                     renderDomains();
                     Swal.fire({
                         icon: "success",
-                        title: "【模擬】驗證通過！",
-                        text: "在體驗模式中成功模擬網域驗證！您的自訂網域現已切換為已驗證狀態。"
+                        title: t("【模擬】驗證通過！") || "【模擬】驗證通過！",
+                        text: t("在體驗模式中成功模擬網域驗證！您的自訂網域現已切換為已驗證狀態。") || "在體驗模式中成功模擬網域驗證！您的自訂網域現已切換為已驗證狀態。"
                     });
                     closeDnsModal();
                 }, 1500);
@@ -1987,7 +1998,7 @@
 
             const btn = document.getElementById("verify-dns-btn");
             btn.disabled = true;
-            btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>正在驗證主機中...</span>`;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> <span>${t("Verifying DNS...")}</span>`;
 
             try {
                 const res = await fetch(`${BACKEND_URL}/api/domains/${activeVerifyDomain}/verify`, {
@@ -1996,18 +2007,22 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data.status === "verified") {
-                        Swal.fire({ icon: "success", title: "恭喜！驗證通過！", text: "您的自訂域名已完全啟用！現在起可以自由轉寄郵件！" });
+                        Swal.fire({ icon: "success", title: t("恭喜！驗證通過！") || "恭喜！驗證通過！", text: t("您的自訂域名已完全啟用！現在起可以自由轉寄郵件！") || "您的自訂域名已完全啟用！現在起可以自由轉寄郵件！" });
                         closeDnsModal();
                         fetchDomains();
                     } else {
-                        Swal.fire({ icon: "info", title: "DNS 尚未生效", text: "系統尚未偵測到您的 DNS 更新。GoDaddy DNS 傳播通常需要數分鐘，請耐心等待後再點擊檢查。" });
+                        Swal.fire({ 
+                            icon: "info", 
+                            title: t("DNS Not Active Yet"), 
+                            text: t("The system has not detected your DNS updates yet. DNS propagation usually takes a few minutes, please wait and try again.") 
+                        });
                     }
                 }
             } catch (e) {
-                Swal.fire({ icon: "error", title: "連線失敗", text: e.message });
+                Swal.fire({ icon: "error", title: t("Connection Failed"), text: e.message });
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>我已在 GoDaddy 設定完畢，立即檢查驗證狀態！</span>`;
+                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>${t("I have configured DNS, check now!")}</span>`;
             }
         }
 
