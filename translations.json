@@ -375,7 +375,7 @@
     "Personal Dashboard": "個人儀表板",
     "Subscription & Billing": "訂閱與帳務",
     "Change Password": "更改密碼",
-    "Admin System Console": "系統管理台",
+    "Admin System Console": "系統管理台"
   },
   "jp_JP": {
     "Saltycat Mailservice": "きまぐれ猫メール",
@@ -563,7 +563,7 @@
     "Personal Dashboard": "ダッシュボード",
     "Subscription & Billing": "サブスクリプションと請求",
     "Change Password": "パスワード変更",
-    "Admin System Console": "システム管理画面",
+    "Admin System Console": "システム管理画面"
   },
   "kr_KR": {
     "Promo Banner": "🎉 이벤트 기간: 가입 즉시 Lite 요금제 무료 체험 제공",
@@ -750,6 +750,6 @@
     "Personal Dashboard": "대시보드",
     "Subscription & Billing": "구독 및 결제",
     "Change Password": "비밀번호 변경",
-    "Admin System Console": "시스템 관리 콘솔",
+    "Admin System Console": "시스템 관리 콘솔"
   }
 }
