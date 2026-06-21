@@ -61,7 +61,7 @@
                 <!-- Dynamic User Dropdown Menu Card -->
                 <div id="user-dropdown-menu" class="hidden absolute right-0 top-12 z-50 mt-2 w-56 rounded-2xl bg-slate-950 border border-slate-800 shadow-2xl p-4 space-y-3">
                     <div class="border-b border-slate-800 pb-2.5">
-                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider">登入帳戶</p>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="Logged In As">登入帳戶</p>
                         <p id="dropdown-user-email" class="text-xs text-slate-200 font-semibold truncate font-mono mt-0.5">user@example.com</p>
                         <span id="dropdown-user-tier" class="inline-flex items-center rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-indigo-400 ring-1 ring-inset ring-indigo-500/30 mt-1.5">LITE 方案</span>
                         <p id="dropdown-user-expiry" class="text-[9px] text-slate-500 mt-1 font-semibold">到期日：無</p>
@@ -69,19 +69,19 @@
                     <div class="space-y-1 text-xs">
                         <button onclick="showSection('dashboard-section'); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-chart-line w-4 text-center text-indigo-400"></i>
-                            <span>個人儀表板</span>
+                            <span data-i18n="Personal Dashboard">個人儀表板</span>
                         </button>
                         <button id="dropdown-billing-btn" onclick="showSection('billing-section'); renderBillingPanel(); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-credit-card w-4 text-center text-indigo-400"></i>
-                            <span>訂閱與帳務</span>
+                            <span data-i18n="Subscription & Billing">訂閱與帳務</span>
                         </button>
                         <button id="dropdown-change-password-btn" onclick="openChangePasswordModal(); closeUserDropdown();" class="hidden w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-key w-4 text-center text-indigo-400"></i>
-                            <span>更改密碼</span>
+                            <span data-i18n="Change Password">更改密碼</span>
                         </button>
                         <button id="dropdown-admin-btn" onclick="showAdminPanel(); closeUserDropdown();" class="hidden w-full text-left text-rose-400 hover:text-rose-300 py-2 px-2.5 rounded-xl hover:bg-rose-950/30 transition flex items-center space-x-2">
                             <i class="fa-solid fa-user-shield w-4 text-center text-rose-400"></i>
-                            <span>系統管理台</span>
+                            <span data-i18n="Admin System Console">系統管理台</span>
                         </button>
                     </div>
                     <!-- User Preference Language Selection -->
@@ -97,7 +97,7 @@
                     <div class="border-t border-slate-800 pt-2 text-xs">
                         <button onclick="handleSignOut(); closeUserDropdown();" class="w-full text-left text-slate-400 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-400"></i>
-                            <span>登出帳戶</span>
+                            <span data-i18n="Sign Out">登出</span>
                         </button>
                     </div>
                 </div>
@@ -1186,8 +1186,10 @@
                  const profile = await initUserProfile();
                  if (profile) {
                      window.currentUserProfile = profile;
-                     document.getElementById("dropdown-user-tier").innerText = (profile.tier || "lite").toUpperCase() + " 方案";
-                     document.getElementById("dropdown-user-expiry").innerText = "到期日：" + (profile.tier_end_date || "無");
+                     const planName = (profile.tier || "lite").toUpperCase();
+                     document.getElementById("dropdown-user-tier").innerText = t("Plan Badge", { plan: planName });
+                     const expiryDate = profile.tier_end_date && profile.tier_end_date !== "無" ? profile.tier_end_date : t("No Expiry");
+                     document.getElementById("dropdown-user-expiry").innerText = t("Dropdown Expiry", { date: expiryDate });
                      
                      // Render dashboard subscription management card dynamically
                      if (typeof renderDashboardSubscriptionCard === "function") {
@@ -2979,8 +2981,10 @@
                     const profile = await initUserProfile();
                     if (profile) {
                         window.currentUserProfile = profile;
-                        document.getElementById("dropdown-user-tier").innerText = (profile.tier || "lite").toUpperCase() + " 方案";
-                        document.getElementById("dropdown-user-expiry").innerText = "到期日：" + (profile.tier_end_date || "無");
+                        const planName = (profile.tier || "lite").toUpperCase();
+                        document.getElementById("dropdown-user-tier").innerText = t("Plan Badge", { plan: planName });
+                        const expiryDate = profile.tier_end_date && profile.tier_end_date !== "無" ? profile.tier_end_date : t("No Expiry");
+                        document.getElementById("dropdown-user-expiry").innerText = t("Dropdown Expiry", { date: expiryDate });
                     }
                     
                     // Dynamically refresh the rendering tables and cards
