@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <script>document.documentElement.classList.add('l10n-loading');</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>帳務與點數歷史紀錄 - Saltycat Mailservice</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- SweetAlert2 for modern dialogs -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- L10N Native Localization Engine -->
+    <script src="i18n.js?v=3"></script>
+    <style>
+        .l10n-loading [data-i18n] { opacity: 0; }
+        [data-i18n] { transition: opacity 0.15s ease-in-out; }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col justify-between">
+
+    <!-- Top Navigation Bar -->
+    <header class="glass-panel sticky top-0 z-40 w-full border-b border-slate-800 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-2 sm:space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+            <div class="bg-indigo-600 p-2 sm:p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
+                <i class="fa-solid fa-cat text-white text-lg sm:text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-sm sm:text-base md:text-lg font-black tracking-wider text-white">Saltycat Mailservice</h1>
+                <p class="text-[10px] sm:text-xs text-slate-400 font-medium" data-i18n="Saltycat Mailservice">閒貓電郵</p>
+            </div>
+        </div>
+        
+        <!-- Navigation Buttons & User Info -->
+        <div class="flex items-center space-x-2 sm:space-x-4 md:space-x-6">
+            <nav class="hidden md:flex space-x-6 text-sm font-semibold text-slate-300">
+                <a href="index.html" class="hover:text-white transition" data-i18n="Home">首頁</a>
+                <a href="faq.html" target="_blank" class="hover:text-white transition" data-i18n="FAQ">常見問題 (FAQ)</a>
+            </nav>
+
+            <div id="nav-user-area" class="relative">
+                <button onclick="toggleUserDropdown()" id="user-avatar-btn" class="flex text-sm rounded-full bg-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition items-center space-x-2 p-1.5 hover:bg-slate-700">
+                    <div id="user-avatar-text" class="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">U</div>
+                    <i class="fa-solid fa-chevron-down text-slate-400 text-xs pr-1"></i>
+                </button>
+
+                <!-- Dynamic User Dropdown Menu Card -->
+                <div id="user-dropdown-menu" class="hidden absolute right-0 top-12 z-50 mt-2 w-56 rounded-2xl bg-slate-950 border border-slate-800 shadow-2xl p-4 space-y-3">
+                    <div class="border-b border-slate-800 pb-2.5">
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider" data-i18n="Logged In As">登入帳戶</p>
+                        <p id="dropdown-user-email" class="text-xs text-slate-200 font-semibold truncate font-mono mt-0.5">user@example.com</p>
+                        <span id="dropdown-user-tier" class="inline-flex items-center rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-indigo-400 ring-1 ring-inset ring-indigo-500/30 mt-1.5">LITE 方案</span>
+                        <p id="dropdown-user-expiry" class="text-[9px] text-slate-500 mt-1 font-semibold">到期日：無</p>
+                        <p id="dropdown-user-points" class="text-[9px] text-amber-400 mt-1 font-semibold">S-Points：0 點</p>
+                    </div>
+                    <div class="space-y-1 text-xs">
+                        <button onclick="window.location.href='index.html'; closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-chart-line w-4 text-center text-indigo-400"></i>
+                            <span data-i18n="Personal Dashboard">個人儀表板</span>
+                        </button>
+                        <button id="dropdown-buy-points-btn" onclick="openBuyPointsModal(); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-coins w-4 text-center text-amber-400"></i>
+                            <span data-i18n="Buy Points">購買點數</span>
+                        </button>
+                        <button id="dropdown-billing-btn" onclick="closeUserDropdown();" class="w-full text-left text-white py-2 px-2.5 rounded-xl bg-slate-900 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-credit-card w-4 text-center text-indigo-400"></i>
+                            <span data-i18n="Billing Details">帳務</span>
+                        </button>
+                    </div>
+                    <!-- User Preference Language Selection -->
+                    <div class="border-t border-slate-800 pt-2.5">
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-wider mb-1" data-i18n="Language">語言設定</p>
+                        <select onchange="changeLanguage(this.value)" id="dropdown-user-lang" class="w-full bg-slate-900 border border-slate-800 rounded-lg px-2 py-1 text-xs text-slate-300 focus:outline-none focus:border-indigo-500 transition cursor-pointer">
+                            <option value="en_US" data-i18n="English">English</option>
+                            <option value="zh_TW" data-i18n="Traditional Chinese">繁體中文</option>
+                            <option value="jp_JP" data-i18n="Japanese">日本語</option>
+                            <option value="kr_KR" data-i18n="Korean">한국어</option>
+                        </select>
+                    </div>
+                    <div class="border-t border-slate-800 pt-2 text-xs">
+                        <button onclick="handleSignOut(); closeUserDropdown();" class="w-full text-left text-slate-400 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-arrow-right-from-bracket w-4 text-center text-slate-400"></i>
+                            <span data-i18n="Sign Out">登出</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow container mx-auto px-6 py-8">
+        
+        <!-- ================= STANDALONE BILLING SECTION ================= -->
+        <section id="billing-section" class="space-y-8 py-8 animate-[fadeIn_0.3s_ease-out]">
+            <div class="glass-panel rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-2xl font-black text-white flex items-center gap-2">
+                        <i class="fa-solid fa-credit-card text-indigo-400"></i> 帳務與點數歷史紀錄 Billing & S-Points History
+                    </h2>
+                    <p class="text-slate-400 text-sm mt-1">管理您名下的加值方案、定期定額授權與所有歷史繳費及點數異動明細。</p>
+                </div>
+                <button onclick="window.location.href='index.html'" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-sm flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span>返回個人儀表板</span>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left: Active/Pending Subscription details & S-Points Balance -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i class="fa-solid fa-crown text-indigo-400"></i> 當前訂閱方案 Status
+                        </h3>
+                        <div id="billing-active-subs-container" class="space-y-4">
+                            <!-- Populated dynamically -->
+                            <div class="animate-pulse flex space-y-4 py-4">
+                                <div class="flex-1 space-y-4 py-1">
+                                    <div class="h-4 bg-slate-800 rounded"></div>
+                                    <div class="h-4 bg-slate-800 rounded w-5/6"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- S-Points Balance Card -->
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i class="fa-solid fa-coins text-amber-400"></i> S-Points 點數餘額 Balance
+                        </h3>
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3.5 text-left">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">加值點數 S-Points Balance</span>
+                                <span id="billing-points-balance" class="text-lg font-mono font-black text-amber-400">0 點</span>
+                            </div>
+                            <button onclick="openBuyPointsModal()" class="w-full mt-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-white font-bold py-3 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2 cursor-pointer shadow-lg shadow-amber-500/10">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>購買點數 Buy Points</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Full Payment History List & Top-Up History -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Receipts Table -->
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i class="fa-solid fa-receipt text-indigo-400"></i> 歷史付款明細 (所有購買紀錄) Receipts
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-800">
+                                <thead>
+                                    <tr class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                        <th class="py-3 px-4">付款日期 Date</th>
+                                        <th class="py-3 px-4">方案與週期 Plan / Cycle</th>
+                                        <th class="py-3 px-4">定期單號 Agreement No.</th>
+                                        <th class="py-3 px-4 text-right">扣款金額 Amount</th>
+                                        <th class="py-3 px-4 text-right">交易狀態 Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="billing-history-table-body" class="divide-y divide-slate-850 text-xs text-slate-300">
+                                    <!-- Populated dynamically -->
+                                    <tr>
+                                        <td colspan="5" class="py-8 text-center text-xs text-slate-500">
+                                            正在加載帳務歷史紀錄...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- S-Points Top-Up History Table -->
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> 儲值點數與異動歷史紀錄 Top-Up & Points History
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-800">
+                                <thead>
+                                    <tr class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                        <th class="py-3 px-4">異動日期 Date</th>
+                                        <th class="py-3 px-4">異動單號 ID</th>
+                                        <th class="py-3 px-4">說明 Description</th>
+                                        <th class="py-3 px-4 text-right">點數異動 Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="billing-points-history-table-body" class="divide-y divide-slate-850 text-xs text-slate-300">
+                                    <!-- Populated dynamically -->
+                                    <tr>
+                                        <td colspan="4" class="py-8 text-center text-xs text-slate-500">
+                                            正在加載點數歷史紀錄...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Area -->
+    <footer class="w-full border-t border-slate-800/80 bg-slate-950/40 py-6 text-center text-xs text-slate-500 leading-normal">
+        <p>© 2026 Saltycat Mailservice 閒貓電郵. All rights reserved.</p>
+        <p class="mt-1">陞和姍科技商號 | 統編: 61263535</p>
+    </footer>
+
+    <!-- ================= FIREBASE & APP LOGIC SCRIPT ================= -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+    <script>
+        // Real Firebase Web Config
+        const firebaseConfig = {
+            projectId: "sandyai-1495680215360",
+            appId: "1:497792128300:web:ab092d45fa1d600b484889",
+            storageBucket: "sandyai-1495680215360.firebasestorage.app",
+            apiKey: "AIzaSyD0Ju1nNqMIMGHrpUVIQyJ8KI_BMeVL8Z4",
+            authDomain: "sandyai-1495680215360.firebaseapp.com",
+            messagingSenderId: "497792128300",
+            projectNumber: "497792128300"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        const BACKEND_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1" 
+            ? "http://localhost:8000" 
+            : "https://api.email.saltycat.tw";
+
+        let userToken = "";
+        let userUid = "";
+
+        // Protect page: Redirect unauthenticated users
+        auth.onAuthStateChanged(async (user) => {
+            window.BACKEND_URL = BACKEND_URL;
+            if (user) {
+                userUid = user.uid;
+                userToken = await user.getIdToken();
+                window.userToken = userToken;
+                
+                // Update dropdown metadata
+                document.getElementById("dropdown-user-email").innerText = user.email;
+                document.getElementById("user-avatar-text").innerText = user.email.charAt(0).toUpperCase();
+
+                // Load server profile data and render the Billing Panel
+                const profile = await initUserProfile();
+                if (profile) {
+                    window.currentUserProfile = profile;
+                    const planName = (profile.tier || "lite").toUpperCase();
+                    document.getElementById("dropdown-user-tier").innerText = t("Plan Badge", { plan: planName });
+                    const expiryDate = profile.tier_end_date && profile.tier_end_date !== "無" ? profile.tier_end_date : t("No Expiry");
+                    document.getElementById("dropdown-user-expiry").innerText = t("Dropdown Expiry", { date: expiryDate });
+                    document.getElementById("dropdown-user-points").innerText = t("Dropdown Points", { points: profile.points_balance || 0 });
+                    
+                    renderBillingPanel();
+                    
+                    // Sync lang preference
+                    if (profile.preferred_language) {
+                        localStorage.setItem("preferred_language", profile.preferred_language);
+                        if (typeof applyTranslations === "function") {
+                            applyTranslations();
+                        }
+                    }
+                }
+            } else {
+                // If not logged in, redirect to index
+                window.location.href = "index.html";
+            }
+        });
+
+        async function initUserProfile() {
+            try {
+                const currentLang = localStorage.getItem('preferred_language') || getBrowserLanguage();
+                const res = await fetch(`${BACKEND_URL}/api/users/init`, {
+                    method: "POST",
+                    headers: { 
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ preferred_language: currentLang })
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    return data.profile;
+                }
+                return null;
+            } catch (e) {
+                console.error("Network error during init user profile:", e);
+                return null;
+            }
+        }
+
+        function toggleUserDropdown() {
+            const dropdown = document.getElementById("user-dropdown-menu");
+            dropdown.classList.toggle("hidden");
+        }
+        
+        function closeUserDropdown() {
+            const dropdown = document.getElementById("user-dropdown-menu");
+            dropdown.classList.add("hidden");
+        }
+
+        function handleSignOut() {
+            auth.signOut().then(() => {
+                window.location.href = "index.html";
+            });
+        }
+
+        // ================= BILLING RENDERING LOGIC =================
+        function renderBillingPanel() {
+            const subsContainer = document.getElementById("billing-active-subs-container");
+            const historyTableBody = document.getElementById("billing-history-table-body");
+            if (!subsContainer || !historyTableBody) return;
+
+            const profile = window.currentUserProfile || {};
+            const tier = (profile.tier || "free").toLowerCase();
+            const start_date = profile.tier_start_date || "無";
+            const sub = profile.newebpay_subscription || {};
+            
+            let subs = profile.newebpay_subscriptions || [];
+            if (subs.length === 0 && sub.period_no) {
+                subs = [sub];
+            }
+
+            // 1. Render Active Subscriptions
+            if (tier === "free" || tier === "lite" || start_date === "無") {
+                subsContainer.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 text-center space-y-3">
+                        <p class="text-sm font-bold text-slate-300">您目前使用的是 LITE 免費方案</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">免費方案僅支援綁定 1 個自訂網域。升級至 Starter 或 Pro 方案即可解鎖多網域綁定及 Gmail 代發送信！</p>
+                        <button onclick="window.location.href='index.html'" class="mt-2 w-full bg-gradient-to-r from-indigo-500 to-pink-600 hover:from-indigo-400 hover:to-pink-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition">
+                            返回首頁加值方案
+                        </button>
+                    </div>
+                `;
+            } else {
+                let subsHtml = "";
+                subs.forEach((s, idx) => {
+                    const isCancelled = s.status === "cancelled";
+                    const periodText = s.period === "annual" ? "年訂閱 (Annual)" : "月訂閱 (Monthly)";
+                    const priceText = s.plan === "starter" 
+                        ? (s.period === "annual" ? "NT$ 2,000 / 年" : "NT$ 200 / 月")
+                        : (s.period === "annual" ? "NT$ 9,000 / 年" : "NT$ 900 / 月");
+                    
+                    const startD = s.start_date || "無";
+                    const endD = s.end_date || "無";
+                    
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const isQueued = startD > todayStr;
+                    
+                    const badgeColor = isCancelled 
+                        ? "bg-rose-500/10 text-rose-400 border-rose-500/20" 
+                        : (isQueued ? "bg-amber-500/10 text-amber-400 border-amber-500/20" : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20");
+                    const badgeText = isCancelled 
+                        ? "已取消 (Cancelled)" 
+                        : (isQueued ? "已排約 (Scheduled)" : "使用中 (Active)");
+
+                    subsHtml += `
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3.5 text-left relative ${idx > 0 ? 'mt-4 border-t-2 border-dashed border-slate-800' : ''}">
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-850">
+                                <span class="text-sm font-bold text-white">${s.plan.toUpperCase()} 方案</span>
+                                <span class="text-[9px] font-bold border px-1.5 py-0.5 rounded-md ${badgeColor}">${badgeText}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">計費週期 Period</span>
+                                <span class="text-slate-200 font-bold">${periodText}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">計費金額 Price</span>
+                                <span class="text-slate-200 font-mono font-bold">${priceText}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">啟用日期 Start Date</span>
+                                <span class="text-xs text-slate-200 font-mono">${startD}</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">結束到期日 Expiry Date</span>
+                                <span class="text-xs text-slate-200 font-mono">${endD}</span>
+                            </div>
+                            ${s.period_no ? `
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">定期單號 No.</span>
+                                <span class="text-xs text-slate-200 font-mono">${s.period_no}</span>
+                            </div>` : ""}
+                            
+                            ${!isCancelled && !isQueued ? `
+                            <button onclick="handleUnsubscribe()" class="w-full mt-2 bg-slate-950 border border-rose-500/20 hover:bg-rose-950/10 hover:border-rose-500 text-rose-400 hover:text-rose-300 font-semibold py-2.5 px-4 rounded-xl text-xs transition duration-200 flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-ban"></i>
+                                <span>取消此方案定期自動續費</span>
+                            </button>` : ""}
+                            
+                            ${isCancelled ? `
+                            <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 text-[10px] text-slate-300 leading-relaxed font-medium">
+                                <p class="text-amber-400 font-bold mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 已取消定期續費：</p>
+                                該期續費已被終止。在此到期日（至 <span class="text-white font-bold">${endD}</span> 止），您依然可正常使用其方案所有高階權限。
+                            </div>` : ""}
+                        </div>
+                    `;
+                });
+                subsContainer.innerHTML = subsHtml;
+            }
+
+            // 2. Render Payment History Table
+            const history = profile.payment_history || [];
+            if (history.length === 0) {
+                historyTableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="py-8 text-center text-xs text-slate-500">
+                            <i class="fa-solid fa-receipt text-xl block mb-2 opacity-30"></i> 尚無歷史繳費明細。
+                        </td>
+                    </tr>
+                `;
+            } else {
+                let historyHtml = "";
+                const sortedHistory = [...history].sort((a, b) => b.date.localeCompare(a.date));
+                sortedHistory.forEach(h => {
+                    historyHtml += `
+                        <tr class="hover:bg-slate-800/10 transition">
+                            <td class="py-3 px-4 font-mono">${h.date}</td>
+                            <td class="py-3 px-4 font-semibold text-slate-200">${h.plan.toUpperCase()} 方案 (${h.period === 'annual' ? '年繳' : '月繳'})</td>
+                            <td class="py-3 px-4 font-mono text-slate-400">${h.period_no || "N/A"}</td>
+                            <td class="py-3 px-4 text-right font-bold text-white font-mono">NT$ ${h.amt}</td>
+                            <td class="py-3 px-4 text-right">
+                                <span class="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/20">付款成功</span>
+                            </td>
+                        </tr>
+                    `;
+                });
+                historyTableBody.innerHTML = historyHtml;
+            }
+
+            // 3. Render Points Balance
+            const pointsBalanceEl = document.getElementById("billing-points-balance");
+            if (pointsBalanceEl) {
+                pointsBalanceEl.innerText = t("Dropdown Points", { points: profile.points_balance || 0 });
+            }
+
+            // 4. Render Points History Table
+            const pointsHistoryTableBody = document.getElementById("billing-points-history-table-body");
+            if (pointsHistoryTableBody) {
+                const pointsHistory = profile.points_history || [];
+                if (pointsHistory.length === 0) {
+                    pointsHistoryTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="py-8 text-center text-xs text-slate-500">
+                                <i class="fa-solid fa-coins text-xl block mb-2 opacity-30 text-amber-400"></i> 尚無點數儲值與異動歷史紀錄。
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    let pointsHtml = "";
+                    const sortedPoints = [...pointsHistory].sort((a, b) => b.date.localeCompare(a.date));
+                    sortedPoints.forEach(p => {
+                        const isPositive = p.amount > 0;
+                        const amtColor = isPositive ? "text-emerald-400 font-bold" : "text-rose-400 font-bold";
+                        const amtPrefix = isPositive ? "+" : "";
+                        const typeBadgeColor = p.type === "purchase" ? "bg-amber-500/10 text-amber-400 border-amber-500/20" : "bg-blue-500/10 text-blue-400 border-blue-500/20";
+                        const typeBadgeText = p.type === "purchase" ? "購買 (Purchase)" : "手動調整 (Adjustment)";
+                        
+                        pointsHtml += `
+                            <tr class="hover:bg-slate-800/10 transition">
+                                <td class="py-3 px-4 font-mono">${p.date}</td>
+                                <td class="py-3 px-4 font-mono text-slate-400">${p.transaction_id}</td>
+                                <td class="py-3 px-4 font-semibold text-slate-200">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] border px-1.5 py-0.5 rounded-md ${typeBadgeColor}">${typeBadgeText}</span>
+                                        <span>${p.description}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 text-right ${amtColor} font-mono">${amtPrefix}${p.amount} 點</td>
+                            </tr>
+                        `;
+                    });
+                    pointsHistoryTableBody.innerHTML = pointsHtml;
+                }
+            }
+        }
+
+        async function handleUnsubscribe() {
+            const profile = window.currentUserProfile || {};
+            const sub = profile.newebpay_subscription || {};
+            const periodNo = sub.period_no;
+            
+            if (!periodNo) return;
+            
+            const confirm = await Swal.fire({
+                title: "確定取消自動續費？",
+                text: "取消後，此計費週期結束後方案將自動終止並恢復為Lite免費版，在此之前您仍能正常使用該方案權限。",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "確定取消",
+                cancelButtonText: "先不要"
+            });
+            
+            if (confirm.isConfirmed) {
+                Swal.fire({ title: "正在處理中...", didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+                try {
+                    const res = await fetch(`${BACKEND_URL}/api/payment/newebpay/cancel`, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${userToken}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({ period_no: period_no })
+                    });
+                    
+                    if (res.ok) {
+                        Swal.fire({ icon: "success", title: "成功取消定期續費", timer: 1500, showConfirmButton: false });
+                        const updated = await initUserProfile();
+                        if (updated) {
+                            window.currentUserProfile = updated;
+                            renderBillingPanel();
+                        }
+                    } else {
+                        const err = await res.json();
+                        throw new Error(err.detail || "取消失敗");
+                    }
+                } catch (e) {
+                    Swal.fire({ icon: "error", title: "取消失敗", text: e.message });
+                }
+            }
+        }
+
+        function openBuyPointsModal() {
+            Swal.fire({
+                title: t("Buy S-Points"),
+                html: `
+                    <div class="text-left space-y-4 text-slate-300 text-xs leading-relaxed">
+                        <p class="font-bold text-sm text-center text-amber-400 mb-4"><i class="fa-solid fa-coins mr-1"></i> 1 S-point = NT$ 10</p>
+                        <div class="space-y-3 bg-slate-900/60 p-4 border border-slate-800 rounded-xl">
+                            <p class="font-semibold text-slate-100 flex justify-between">
+                                <span>🛒 10 S-points 包</span>
+                                <span class="text-indigo-400 font-black">NT$ 100</span>
+                            </p>
+                            <p class="text-slate-500 text-[11px] leading-relaxed">適合小用量多域名用戶，可用於補足發信差額或開啟加值。購買後永久有效！</p>
+                        </div>
+                        <div class="space-y-3 bg-slate-900/60 p-4 border border-slate-800 rounded-xl">
+                            <p class="font-semibold text-slate-100 flex justify-between">
+                                <span>🛒 50 S-points 加值包</span>
+                                <span class="text-indigo-400 font-black">NT$ 450 (9折!)</span>
+                            </p>
+                            <p class="text-slate-500 text-[11px] leading-relaxed">熱銷划算加值包。可用於抵扣加值服務與多網域管理費。</p>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-4 leading-normal">如欲購買/加值點數，請聯繫平台專屬客服電子信箱 <strong class="text-white font-mono">cs@saltycat.tw</strong>，或由系統治理後台請管理員進行額度手動充值與扣款變更。</p>
+                    </div>
+                `,
+                icon: "info",
+                confirmButtonText: t("Close"),
+                customClass: {
+                    popup: 'glass-panel rounded-3xl border border-slate-800 text-white bg-slate-950/95',
+                    title: 'text-xl font-black text-amber-400',
+                    confirmButton: 'bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-sm transition border-none focus:ring-2 focus:ring-slate-700 outline-none'
+                }
+            });
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", (e) => {
+            const dropdown = document.getElementById("user-dropdown-menu");
+            const btn = document.getElementById("user-avatar-btn");
+            if (dropdown && btn && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+                dropdown.classList.add("hidden");
+            }
+        });
+
+        // L10N State Sync Listener
+        window.addEventListener('languageChanged', (e) => {
+            const lang = e.detail;
+            const dropdownLang = document.getElementById("dropdown-user-lang");
+            if (dropdownLang) dropdownLang.value = lang;
+            
+            // Sync user dropdown details & billing panels
+            const profile = window.currentUserProfile;
+            if (profile) {
+                const planName = (profile.tier || "lite").toUpperCase();
+                const badgeEl = document.getElementById("dropdown-user-tier");
+                const expiryEl = document.getElementById("dropdown-user-expiry");
+                const pointsEl = document.getElementById("dropdown-user-points");
+                if (badgeEl) badgeEl.innerText = t("Plan Badge", { plan: planName });
+                const expiryDate = profile.tier_end_date && profile.tier_end_date !== "無" ? profile.tier_end_date : t("No Expiry");
+                if (expiryEl) expiryEl.innerText = t("Dropdown Expiry", { date: expiryDate });
+                if (pointsEl) pointsEl.innerText = t("Dropdown Points", { points: profile.points_balance || 0 });
+                
+                renderBillingPanel();
+            }
+        });
+    </script>
+</body>
+</html>
