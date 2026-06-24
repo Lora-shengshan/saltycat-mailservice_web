@@ -65,15 +65,20 @@
                         <p id="dropdown-user-email" class="text-xs text-slate-200 font-semibold truncate font-mono mt-0.5">user@example.com</p>
                         <span id="dropdown-user-tier" class="inline-flex items-center rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-indigo-400 ring-1 ring-inset ring-indigo-500/30 mt-1.5">LITE 方案</span>
                         <p id="dropdown-user-expiry" class="text-[9px] text-slate-500 mt-1 font-semibold">到期日：無</p>
+                        <p id="dropdown-user-points" class="text-[9px] text-amber-400 mt-1 font-semibold">S-Points：0 點</p>
                     </div>
                     <div class="space-y-1 text-xs">
                         <button onclick="showSection('dashboard-section'); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-chart-line w-4 text-center text-indigo-400"></i>
                             <span data-i18n="Personal Dashboard">個人儀表板</span>
                         </button>
+                        <button id="dropdown-buy-points-btn" onclick="openBuyPointsModal(); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-coins w-4 text-center text-amber-400"></i>
+                            <span data-i18n="Buy Points">購買點數</span>
+                        </button>
                         <button id="dropdown-billing-btn" onclick="showSection('billing-section'); renderBillingPanel(); closeUserDropdown();" class="w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-credit-card w-4 text-center text-indigo-400"></i>
-                            <span data-i18n="Subscription & Billing">訂閱與帳務</span>
+                            <span data-i18n="Billing Details">帳務</span>
                         </button>
                         <button id="dropdown-change-password-btn" onclick="openChangePasswordModal(); closeUserDropdown();" class="hidden w-full text-left text-slate-300 hover:text-white py-2 px-2.5 rounded-xl hover:bg-slate-900 transition flex items-center space-x-2">
                             <i class="fa-solid fa-key w-4 text-center text-indigo-400"></i>
@@ -536,9 +541,9 @@
             <div class="glass-panel rounded-3xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
                     <h2 class="text-2xl font-black text-white flex items-center gap-2">
-                        <i class="fa-solid fa-credit-card text-indigo-400"></i> 訂閱與帳務歷史紀錄 Billing & Billing History
+                        <i class="fa-solid fa-credit-card text-indigo-400"></i> 帳務與點數歷史紀錄 Billing & S-Points History
                     </h2>
-                    <p class="text-slate-400 text-sm mt-1">管理您名下的加值方案、定期定額授權與所有歷史繳費明細。</p>
+                    <p class="text-slate-400 text-sm mt-1">管理您名下的加值方案、定期定額授權與所有歷史繳費及點數異動明細。</p>
                 </div>
                 <button onclick="showSection('dashboard-section')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-sm flex items-center space-x-2 transition">
                     <i class="fa-solid fa-arrow-left"></i>
@@ -547,7 +552,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Left: Active/Pending Subscription details -->
+                <!-- Left: Active/Pending Subscription details & S-Points Balance -->
                 <div class="lg:col-span-1 space-y-6">
                     <div class="glass-panel rounded-3xl p-6 space-y-4">
                         <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
@@ -557,10 +562,28 @@
                             <!-- Populated dynamically -->
                         </div>
                     </div>
+
+                    <!-- S-Points Balance Card -->
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i class="fa-solid fa-coins text-amber-400"></i> S-Points 點數餘額 Balance
+                        </h3>
+                        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-3.5 text-left">
+                            <div class="flex justify-between items-center text-xs">
+                                <span class="text-slate-400">加值點數 S-Points Balance</span>
+                                <span id="billing-points-balance" class="text-lg font-mono font-black text-amber-400">0 點</span>
+                            </div>
+                            <button onclick="openBuyPointsModal()" class="w-full mt-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-white font-bold py-3 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-2 cursor-pointer shadow-lg shadow-amber-500/10">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>購買點數 Buy Points</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Right: Full Payment History List -->
+                <!-- Right: Full Payment History List & Top-Up History -->
                 <div class="lg:col-span-2 space-y-6">
+                    <!-- Receipts Table -->
                     <div class="glass-panel rounded-3xl p-6 space-y-4">
                         <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
                             <i class="fa-solid fa-receipt text-indigo-400"></i> 歷史付款明細 (所有購買紀錄) Receipts
@@ -577,6 +600,28 @@
                                     </tr>
                                 </thead>
                                 <tbody id="billing-history-table-body" class="divide-y divide-slate-850 text-xs text-slate-300">
+                                    <!-- Populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- S-Points Top-Up History Table -->
+                    <div class="glass-panel rounded-3xl p-6 space-y-4">
+                        <h3 class="text-base font-black text-white flex items-center gap-2 border-b border-slate-800 pb-3">
+                            <i class="fa-solid fa-clock-rotate-left text-amber-400"></i> 儲值點數與異動歷史紀錄 Top-Up & Points History
+                        </h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-800">
+                                <thead>
+                                    <tr class="text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                                        <th class="py-3 px-4">異動日期 Date</th>
+                                        <th class="py-3 px-4">異動單號 ID</th>
+                                        <th class="py-3 px-4">說明 Description</th>
+                                        <th class="py-3 px-4 text-right">點數增減 Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="billing-points-history-table-body" class="divide-y divide-slate-850 text-xs text-slate-300">
                                     <!-- Populated dynamically -->
                                 </tbody>
                             </table>
@@ -1013,6 +1058,39 @@
                         <button onclick="saveUserSubscriptionDates()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-1">
                             <i class="fa-solid fa-floppy-disk"></i>
                             <span>儲存日期</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- S-Points Management (New!) -->
+            <div class="bg-slate-950/45 rounded-2xl p-5 border border-slate-800/80 space-y-4">
+                <h4 class="text-sm font-bold text-slate-300 tracking-wider uppercase flex items-center gap-1.5">
+                    <i class="fa-solid fa-coins text-amber-400"></i> 編輯與調整帳戶點數 (S-Points Management)
+                </h4>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                    <!-- Current points display (readonly) -->
+                    <div class="md:col-span-3 text-xs">
+                        <label class="block text-slate-500 font-bold mb-1.5">當前點數餘額 Balance</label>
+                        <div id="admin-detail-points-balance" class="w-full bg-slate-900/40 border border-slate-800 rounded-xl px-4 py-2.5 text-amber-400 font-bold font-mono">
+                            0 點
+                        </div>
+                    </div>
+                    <!-- Points offset input -->
+                    <div class="md:col-span-3 text-xs">
+                        <label class="block text-slate-500 font-bold mb-1.5">點數增減 Offset (可正負)</label>
+                        <input id="admin-edit-points-offset" type="number" placeholder="例如 +10 或 -5" class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 font-bold font-mono focus:outline-none focus:ring-1 focus:ring-amber-500 transition">
+                    </div>
+                    <!-- Adjustment description -->
+                    <div class="md:col-span-4 text-xs">
+                        <label class="block text-slate-500 font-bold mb-1.5">異動原因說明 Description</label>
+                        <input id="admin-edit-points-desc" type="text" placeholder="手動調整原因..." class="w-full bg-slate-900/60 border border-slate-800 rounded-xl px-4 py-2.5 text-slate-200 text-xs focus:outline-none focus:ring-1 focus:ring-indigo-500 transition">
+                    </div>
+                    <!-- Submit button -->
+                    <div class="md:col-span-2">
+                        <button onclick="handleAdminPointsAdjustment()" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 px-4 rounded-xl text-xs transition flex items-center justify-center space-x-1 shadow-lg shadow-amber-500/5 cursor-pointer">
+                            <i class="fa-solid fa-square-poll-horizontal"></i>
+                            <span>調整點數</span>
                         </button>
                     </div>
                 </div>
@@ -2543,6 +2621,11 @@
                     document.getElementById("admin-detail-email").innerText = data.email || "無";
                     document.getElementById("admin-detail-tier").innerText = data.tier.toUpperCase();
                     
+                    // Fill in points details
+                    document.getElementById("admin-detail-points-balance").innerText = `${data.points_balance || 0} 點`;
+                    document.getElementById("admin-edit-points-offset").value = "";
+                    document.getElementById("admin-edit-points-desc").value = "";
+                    
                     // Fill in subscription dates
                     const startDateInput = document.getElementById("admin-edit-start-date");
                     const endDateInput = document.getElementById("admin-edit-end-date");
@@ -2635,6 +2718,103 @@
         
         function closeAdminUserDetailsModal() {
             document.getElementById("admin-user-details-modal").classList.add("hidden");
+        }
+
+        async function handleAdminPointsAdjustment() {
+            const offsetInput = document.getElementById("admin-edit-points-offset");
+            const descInput = document.getElementById("admin-edit-points-desc");
+            const offset = parseInt(offsetInput.value);
+            const desc = descInput.value.trim() || "系統管理員手動調整點數";
+            
+            if (isNaN(offset)) {
+                Swal.fire({
+                    icon: "error",
+                    title: "錯誤",
+                    text: "請輸入有效的整數點數（可為正數或負數）"
+                });
+                return;
+            }
+            
+            const uid = document.getElementById("admin-detail-uid").innerText;
+            if (!uid) return;
+            
+            try {
+                Swal.fire({
+                    title: "正在進行點數調整...",
+                    allowOutsideClick: false,
+                    didOpen: () => { Swal.showLoading(); }
+                });
+                
+                const res = await fetch(`${BACKEND_URL}/api/admin/users/${uid}/points`, {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${userToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        points: offset,
+                        description: desc
+                    })
+                });
+                
+                if (res.ok) {
+                    const data = await res.json();
+                    Swal.fire({
+                        icon: "success",
+                        title: "調整成功",
+                        text: `用戶點數餘額已更新為 ${data.points_balance} 點！`
+                    });
+                    
+                    document.getElementById("admin-detail-points-balance").innerText = `${data.points_balance} 點`;
+                    offsetInput.value = "";
+                    descInput.value = "";
+                    
+                    // Refresh the user table if needed
+                    fetchAdminUsersList();
+                } else {
+                    const err = await res.json();
+                    throw new Error(err.detail || "調整點數失敗");
+                }
+            } catch (e) {
+                Swal.fire({
+                    icon: "error",
+                    title: "調整失敗",
+                    text: e.message
+                });
+            }
+        }
+
+        function openBuyPointsModal() {
+            Swal.fire({
+                title: t("Buy S-Points"),
+                html: `
+                    <div class="text-left space-y-4 text-slate-300 text-xs leading-relaxed">
+                        <p class="font-bold text-sm text-center text-amber-400 mb-4"><i class="fa-solid fa-coins mr-1"></i> 1 S-point = NT$ 10</p>
+                        <div class="space-y-3 bg-slate-900/60 p-4 border border-slate-800 rounded-xl">
+                            <p class="font-semibold text-slate-100 flex justify-between">
+                                <span>🛒 10 S-points 包</span>
+                                <span class="text-indigo-400 font-black">NT$ 100</span>
+                            </p>
+                            <p class="text-slate-500 text-[11px] leading-relaxed">適合小用量多域名用戶，可用於補足發信差額或開啟加值。購買後永久有效！</p>
+                        </div>
+                        <div class="space-y-3 bg-slate-900/60 p-4 border border-slate-800 rounded-xl">
+                            <p class="font-semibold text-slate-100 flex justify-between">
+                                <span>🛒 50 S-points 加值包</span>
+                                <span class="text-indigo-400 font-black">NT$ 450 (9折!)</span>
+                            </p>
+                            <p class="text-slate-500 text-[11px] leading-relaxed">熱銷划算加值包。可用於抵扣加值服務與多網域管理費。</p>
+                        </div>
+                        <p class="text-[11px] text-slate-400 mt-4 leading-normal">如欲購買/加值點數，請聯繫平台專屬客服電子信箱 <strong class="text-white font-mono">cs@saltycat.tw</strong>，或由系統治理後台請管理員進行額度手動充值與扣款變更。</p>
+                    </div>
+                `,
+                icon: "info",
+                confirmButtonText: t("Close"),
+                customClass: {
+                    popup: 'glass-panel rounded-3xl border border-slate-800 text-white bg-slate-950/95',
+                    title: 'text-xl font-black text-amber-400',
+                    confirmButton: 'bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 px-5 rounded-xl text-sm transition border-none focus:ring-2 focus:ring-slate-700 outline-none'
+                }
+            });
         }
 
         async function saveUserSubscriptionDates() {
@@ -2879,6 +3059,53 @@
                     `;
                 });
                 historyTableBody.innerHTML = historyHtml;
+            }
+
+            // 3. Render Points Balance
+            const pointsBalanceEl = document.getElementById("billing-points-balance");
+            if (pointsBalanceEl) {
+                pointsBalanceEl.innerText = t("Dropdown Points", { points: profile.points_balance || 0 });
+            }
+
+            // 4. Render Points History Table
+            const pointsHistoryTableBody = document.getElementById("billing-points-history-table-body");
+            if (pointsHistoryTableBody) {
+                const pointsHistory = profile.points_history || [];
+                if (pointsHistory.length === 0) {
+                    pointsHistoryTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="4" class="py-8 text-center text-xs text-slate-500">
+                                <i class="fa-solid fa-coins text-xl block mb-2 opacity-30 text-amber-400"></i> 尚無點數儲值與異動歷史紀錄。
+                            </td>
+                        </tr>
+                    `;
+                } else {
+                    let pointsHtml = "";
+                    // Sort by date descending
+                    const sortedPoints = [...pointsHistory].sort((a, b) => b.date.localeCompare(a.date));
+                    sortedPoints.forEach(p => {
+                        const isPositive = p.amount > 0;
+                        const amtColor = isPositive ? "text-emerald-400 font-bold" : "text-rose-400 font-bold";
+                        const amtPrefix = isPositive ? "+" : "";
+                        const typeBadgeColor = p.type === "purchase" ? "bg-amber-500/10 text-amber-400 border border-amber-500/20" : "bg-blue-500/10 text-blue-400 border border-blue-500/20";
+                        const typeBadgeText = p.type === "purchase" ? "購買 (Purchase)" : "手動調整 (Adjustment)";
+                        
+                        pointsHtml += `
+                            <tr class="hover:bg-slate-800/10 transition">
+                                <td class="py-3 px-4 font-mono">${p.date}</td>
+                                <td class="py-3 px-4 font-mono text-slate-400">${p.transaction_id}</td>
+                                <td class="py-3 px-4 font-semibold text-slate-200">
+                                    <div class="flex items-center gap-1.5">
+                                        <span class="text-[9px] border px-1.5 py-0.5 rounded-md ${typeBadgeColor}">${typeBadgeText}</span>
+                                        <span>${p.description}</span>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4 text-right ${amtColor} font-mono">${amtPrefix}${p.amount} 點</td>
+                            </tr>
+                        `;
+                    });
+                    pointsHistoryTableBody.innerHTML = pointsHtml;
+                }
             }
         }
 
@@ -3125,6 +3352,19 @@
             if (dropdownLang) dropdownLang.value = lang;
             if (guestLang) guestLang.value = lang;
             if (mobileGuestLang) mobileGuestLang.value = lang;
+            
+            // Sync user dropdown details
+            const profile = window.currentUserProfile;
+            if (profile) {
+                const planName = (profile.tier || "lite").toUpperCase();
+                const badgeEl = document.getElementById("dropdown-user-tier");
+                const expiryEl = document.getElementById("dropdown-user-expiry");
+                const pointsEl = document.getElementById("dropdown-user-points");
+                if (badgeEl) badgeEl.innerText = t("Plan Badge", { plan: planName });
+                const expiryDate = profile.tier_end_date && profile.tier_end_date !== "無" ? profile.tier_end_date : t("No Expiry");
+                if (expiryEl) expiryEl.innerText = t("Dropdown Expiry", { date: expiryDate });
+                if (pointsEl) pointsEl.innerText = t("Dropdown Points", { points: profile.points_balance || 0 });
+            }
         });
 
         // NewebPay integration

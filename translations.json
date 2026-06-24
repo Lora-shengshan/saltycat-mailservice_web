@@ -186,7 +186,11 @@
     "Annual Subscription": "Annual Subscription",
     "Validation Select Option": "Please select a subscription option!",
     "Month": "mo",
-    "Year": "yr"
+    "Year": "yr",
+    "Buy Points": "Buy Points",
+    "Billing Details": "Billing & History",
+    "Buy S-Points": "Buy S-Points",
+    "Dropdown Points": "S-Points: {points} pts"
   },
   "zh_TW": {
     "Promo Banner": "🎉 優惠期間:註冊即免費體驗Lite方案",
@@ -375,7 +379,11 @@
     "Personal Dashboard": "個人儀表板",
     "Subscription & Billing": "訂閱與帳務",
     "Change Password": "更改密碼",
-    "Admin System Console": "系統管理台"
+    "Admin System Console": "系統管理台",
+    "Buy Points": "購買點數",
+    "Billing Details": "帳務服務",
+    "Buy S-Points": "儲值點數",
+    "Dropdown Points": "S-Points：{points} 點"
   },
   "jp_JP": {
     "Saltycat Mailservice": "きまぐれ猫メール",
@@ -563,7 +571,11 @@
     "Personal Dashboard": "ダッシュボード",
     "Subscription & Billing": "サブスクリプションと請求",
     "Change Password": "パスワード変更",
-    "Admin System Console": "システム管理画面"
+    "Admin System Console": "システム管理画面",
+    "Buy Points": "ポイント購入",
+    "Billing Details": "請求と支払",
+    "Buy S-Points": "ポイント購入",
+    "Dropdown Points": "S-Points：{points} pt"
   },
   "kr_KR": {
     "Promo Banner": "🎉 이벤트 기간: 가입 즉시 Lite 요금제 무료 체험 제공",
@@ -750,6 +762,10 @@
     "Personal Dashboard": "대시보드",
     "Subscription & Billing": "구독 및 결제",
     "Change Password": "비밀번호 변경",
-    "Admin System Console": "시스템 관리 콘솔"
+    "Admin System Console": "시스템 관리 콘솔",
+    "Buy Points": "포인트 구매",
+    "Billing Details": "결제 및 청구",
+    "Buy S-Points": "포인트 충전",
+    "Dropdown Points": "S-Points: {points} pt"
   }
 }
