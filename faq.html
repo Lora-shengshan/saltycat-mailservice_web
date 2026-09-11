@@ -10,7 +10,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- L10N Native Localization Engine -->
-    <script src="i18n.js?v=3"></script>
+    <script src="i18n.js?v=4"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
         body {
@@ -252,6 +252,26 @@
                                 <p class="text-slate-400">
                                     * 為確保整體服務器架構的穩定度，若偵測到極為異常的流量（例如被垃圾郵件爆擊），系統安全機制會先自動限制流量並通知管理員。如有特殊的超大吞吐量業務需求，建議您預先發信至 <a href="mailto:cs@saltycat.tw" class="text-indigo-400 hover:underline">cs@saltycat.tw</a> 與我們溝通，我們將為您安排專屬的高效能叢集。
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5: Reverse-alias reply addresses (Gmail Send-As phase-out) -->
+                <div class="space-y-3 bg-slate-950/20 border border-slate-800 p-6 rounded-2xl">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-indigo-500/10 p-2 rounded-xl text-indigo-400 mt-0.5">
+                            <i class="fa-solid fa-reply"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-bold text-white" data-i18n="FAQ Reply Alias Title">Q5. Why does my reply go to a strange address like sender_at_domain_xxxx@mydomain?</h3>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+                                <p data-i18n="FAQ Reply Alias Body 1">This is our Reply Alias system working as designed — it is safe and expected. When you hit Reply in Gmail on a forwarded email, your reply is routed through Saltycat, which re-sends it to the original sender from your own custom-domain address (e.g., you@yourdomain.tw). The recipient sees a normal reply from your custom domain, with the conversation thread intact.</p>
+                                <p data-i18n="FAQ Reply Alias Body 2">Background: Google is phasing out Gmail's third-party "Send mail as" (SMTP) feature. Reply Aliases replace it with zero setup — you simply press Reply in Gmail as usual.</p>
+                                <div class="bg-amber-950/40 border border-amber-500/20 p-4 rounded-xl">
+                                    <p class="text-[11px] text-amber-300 font-bold" data-i18n="FAQ Reply Alias Action Title">Important one-time action</p>
+                                    <p class="text-[10px] text-slate-400 leading-relaxed mt-1" data-i18n="FAQ Reply Alias Action Body">Please remove your old Gmail "Send mail as" configuration (Gmail Settings &gt; Accounts &gt; "Send mail as"). Replies sent through the old Send-As identity will NOT be delivered by the Reply Alias system.</p>
+                                </div>
                             </div>
                         </div>
                     </div>

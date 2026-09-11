@@ -24,7 +24,7 @@ function getBrowserLanguage() {
 // Initialise L10N dictionary loading
 async function initI18n() {
     try {
-        const response = await fetch('translations.json?v=3');
+        const response = await fetch('translations.json?v=4');
         window.TRANSLATIONS = await response.json();
         
         const isLoggedIn = !!localStorage.getItem('bearer_jwt');

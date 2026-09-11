@@ -167,7 +167,7 @@
     "Congratulations! Your account has been successfully upgraded to {plan} plan.": "Congratulations! Your account has been successfully upgraded to {plan} plan.",
     "Awesome": "Awesome",
     "Subscription Payment Failed": "Subscription Payment Failed",
-    "Payment was not successful. Please verify your credit card details or try again later.":     "Payment was not successful. Please verify your credit card details or try again later.",
+    "Payment was not successful. Please verify your credit card details or try again later.": "Payment was not successful. Please verify your credit card details or try again later.",
     "Downgrade Not Supported": "Downgrade Not Supported",
     "Current Subscription Status": "My Subscription Status",
     "Billing Cycle": "Billing Cycle",
@@ -190,7 +190,12 @@
     "Buy Points": "Buy Points",
     "Billing Details": "Billing & History",
     "Buy S-Points": "Buy S-Points",
-    "Dropdown Points": "S-Points: {points} pts"
+    "Dropdown Points": "S-Points: {points} pts",
+    "FAQ Reply Alias Title": "Q5. Why does my reply go to a strange address like sender_at_domain_xxxx@mydomain?",
+    "FAQ Reply Alias Body 1": "This is our Reply Alias system working as designed — it is safe and expected. When you hit Reply in Gmail on a forwarded email, your reply is routed through Saltycat, which re-sends it to the original sender from your own custom-domain address (e.g., you@yourdomain.tw). The recipient sees a normal reply from your custom domain, with the conversation thread intact.",
+    "FAQ Reply Alias Body 2": "Background: Google is phasing out Gmail's third-party \"Send mail as\" (SMTP) feature. Reply Aliases replace it with zero setup — you simply press Reply in Gmail as usual.",
+    "FAQ Reply Alias Action Title": "Important one-time action",
+    "FAQ Reply Alias Action Body": "Please remove your old Gmail \"Send mail as\" configuration (Gmail Settings > Accounts > \"Send mail as\"). Replies sent through the old Send-As identity will NOT be delivered by the Reply Alias system."
   },
   "zh_TW": {
     "Promo Banner": "🎉 優惠期間:註冊即免費體驗Lite方案",
@@ -383,7 +388,12 @@
     "Buy Points": "購買點數",
     "Billing Details": "帳務服務",
     "Buy S-Points": "儲值點數",
-    "Dropdown Points": "S-Points：{points} 點"
+    "Dropdown Points": "S-Points：{points} 點",
+    "FAQ Reply Alias Title": "Q5. 為什麼我回信時，收件人會是一串像 sender_at_domain_xxxx@我的網域 的特殊地址？",
+    "FAQ Reply Alias Body 1": "這是我們的「回覆別名 (Reply Alias)」系統正常運作的機制，安全且符合預期！當您在 Gmail 中對轉寄信件按下「回覆」時，您的回信會先經由閒貓電郵路由，再以您的自訂網域地址（例如 you@yourdomain.tw）重新寄送給原始寄件人。對方收到的是一封來自您自訂網域的正常回信，且對話串完整不中斷。",
+    "FAQ Reply Alias Body 2": "背景說明：Google 正逐步淘汰 Gmail 的第三方「以其他地址寄送郵件 (Send mail as)」SMTP 功能。回覆別名機制無需任何設定即可完全取代它 — 您只需照常在 Gmail 按「回覆」即可。",
+    "FAQ Reply Alias Action Title": "重要的一次性操作",
+    "FAQ Reply Alias Action Body": "請移除您舊有的 Gmail「以其他地址寄送郵件」設定（Gmail 設定 > 帳戶 >「以這個地址寄送郵件」）。透過舊 Send-As 身分寄出的回信，將無法經由回覆別名系統送達。"
   },
   "jp_JP": {
     "Saltycat Mailservice": "きまぐれ猫メール",
@@ -575,7 +585,12 @@
     "Buy Points": "ポイント購入",
     "Billing Details": "請求と支払",
     "Buy S-Points": "ポイント購入",
-    "Dropdown Points": "S-Points：{points} pt"
+    "Dropdown Points": "S-Points：{points} pt",
+    "FAQ Reply Alias Title": "Q5. 返信時の宛先が sender_at_domain_xxxx@自分のドメイン のような特殊なアドレスになるのはなぜですか？",
+    "FAQ Reply Alias Body 1": "これは当サービスの「返信エイリアス (Reply Alias)」システムが正常に動作している証拠で、安全かつ想定どおりの挙動です。Gmail で転送メールに「返信」すると、返信は一度 Saltycat を経由し、お客様の独自ドメインのアドレス（例：you@yourdomain.tw）から元の差出人へ再送信されます。相手には独自ドメインからの通常の返信として届き、スレッドも途切れません。",
+    "FAQ Reply Alias Body 2": "背景：Google は Gmail のサードパーティ「別のアドレスからメールを送信 (Send mail as)」SMTP 機能を段階的に廃止しています。返信エイリアスは設定不要でこの機能を完全に代替します — これまでどおり Gmail で「返信」を押すだけです。",
+    "FAQ Reply Alias Action Title": "重要な一回限りの操作",
+    "FAQ Reply Alias Action Body": "以前の Gmail「別のアドレスからメールを送信」設定を削除してください（Gmail 設定 > アカウント > 「別のアドレスからメールを送信」）。旧 Send-As 経由で送信された返信は、返信エイリアスシステムでは配信されません。"
   },
   "kr_KR": {
     "Promo Banner": "🎉 이벤트 기간: 가입 즉시 Lite 요금제 무료 체험 제공",
@@ -766,6 +781,11 @@
     "Buy Points": "포인트 구매",
     "Billing Details": "결제 및 청구",
     "Buy S-Points": "포인트 충전",
-    "Dropdown Points": "S-Points: {points} pt"
+    "Dropdown Points": "S-Points: {points} pt",
+    "FAQ Reply Alias Title": "Q5. 답장할 때 받는 사람 주소가 sender_at_domain_xxxx@내도메인 같은 특수한 주소로 표시되는 이유는 무엇인가요?",
+    "FAQ Reply Alias Body 1": "이것은 저희 '답장 별칭(Reply Alias)' 시스템이 정상적으로 작동하는 것으로, 안전하며 의도된 동작입니다. Gmail에서 전달된 메일에 '답장'을 누르면, 답장이 Saltycat을 거쳐 고객님의 커스텀 도메인 주소(예: you@yourdomain.tw)로 원래 발신자에게 재발송됩니다. 상대방은 커스텀 도메인에서 온 일반적인 답장을 받게 되며, 대화 스레드도 그대로 유지됩니다.",
+    "FAQ Reply Alias Body 2": "배경: Google은 Gmail의 서드파티 '다른 주소에서 메일 보내기(Send mail as)' SMTP 기능을 단계적으로 폐지하고 있습니다. 답장 별칭은 별도의 설정 없이 이 기능을 완전히 대체합니다 — 지금처럼 Gmail에서 '답장'만 누르시면 됩니다.",
+    "FAQ Reply Alias Action Title": "중요한 일회성 조치",
+    "FAQ Reply Alias Action Body": "기존 Gmail의 '다른 주소에서 메일 보내기' 설정을 삭제해 주세요(Gmail 설정 > 계정 > '다른 주소에서 메일 보내기'). 이전 Send-As 방식으로 보낸 답장은 답장 별칭 시스템을 통해 전달되지 않습니다."
   }
 }
