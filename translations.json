@@ -264,7 +264,8 @@
     "Alias creation failed. Please try again later.": "Alias creation failed. Please try again later.",
     "Alias deletion failed. Please try again later.": "Alias deletion failed. Please try again later.",
     "Failed to send the verification email. Please try again.": "Failed to send the verification email. Please try again.",
-    "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead."
+    "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.",
+    "Free Option": "✨ Completely free during our trial period!"
   },
   "zh_TW": {
     "Promo Banner": "🎉 優惠期間:註冊即免費體驗Lite方案",
@@ -531,7 +532,8 @@
     "Alias creation failed. Please try again later.": "別名建立失敗，請稍後再試。",
     "Alias deletion failed. Please try again later.": "別名刪除失敗，請稍後再試。",
     "Failed to send the verification email. Please try again.": "驗證信寄送失敗，請再試一次。",
-    "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "這是 Saltycat 的共用網域，請改從「Saltycat 別名信箱」面板建立別名。"
+    "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "這是 Saltycat 的共用網域，請改從「Saltycat 別名信箱」面板建立別名。",
+    "Free Option": "✨ 試營運期完全免費！"
   },
   "jp_JP": {
     "Saltycat Mailservice": "きまぐれ猫メール",
@@ -797,7 +799,8 @@
     "Alias creation failed. Please try again later.": "エイリアスの作成に失敗しました。後でもう一度お試しください。",
     "Alias deletion failed. Please try again later.": "エイリアスの削除に失敗しました。後でもう一度お試しください。",
     "Failed to send the verification email. Please try again.": "認証メールの送信に失敗しました。もう一度お試しください。",
-    "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "これは Saltycat の共有ドメインです。「Saltycat エイリアス」パネルからエイリアスを作成してください。"
+    "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "これは Saltycat の共有ドメインです。「Saltycat エイリアス」パネルからエイリアスを作成してください。",
+    "Free Option": "✨ 試験運用期間中は完全無料！"
   },
   "kr_KR": {
     "Promo Banner": "🎉 이벤트 기간: 가입 즉시 Lite 요금제 무료 체험 제공",
@@ -1062,6 +1065,7 @@
     "Alias creation failed. Please try again later.": "별칭 생성에 실패했습니다. 나중에 다시 시도해 주세요.",
     "Alias deletion failed. Please try again later.": "별칭 삭제에 실패했습니다. 나중에 다시 시도해 주세요.",
     "Failed to send the verification email. Please try again.": "인증 메일 전송에 실패했습니다. 다시 시도해 주세요.",
-    "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "이 도메인은 Saltycat 공유 도메인입니다. 'Saltycat 별칭' 패널에서 별칭을 만들어 주세요."
+    "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "이 도메인은 Saltycat 공유 도메인입니다. 'Saltycat 별칭' 패널에서 별칭을 만들어 주세요.",
+    "Free Option": "✨ 시범 운영 기간 동안 완전 무료!"
   }
 }
