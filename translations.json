@@ -242,11 +242,10 @@
     "FAQ Shared Alias Body 1": "A Saltycat alias is a ready-made address on our shared domain, e.g. <strong>jack.chen@saltycat.tw</strong>, that forwards to your own mailbox. You do not need to own a domain. Use it to sign up for services, share on business cards, or keep your real address private. Every plan includes aliases: Lite 1, Starter 10, Pro 50.",
     "FAQ Shared Alias Body 2": "Replying works exactly like the Reply Alias system above (Q5): press Reply in your mailbox, and the recipient receives your message from your Saltycat alias with the conversation thread intact. Replies are only accepted from the verified forwarding mailbox.",
     "FAQ Shared Alias Rules Title": "Good to know",
-    "FAQ Shared Alias Rules Body": "Alias names are 3-32 characters (lowercase letters, digits, dots, hyphens, underscores) and first-come, first-served. Common words such as admin, support or info are reserved. If your plan is downgraded, your oldest aliases stay active and the rest are paused (not deleted) until you upgrade again. A deleted alias is quarantined for 90 days before anyone else can claim it.",
+    "FAQ Shared Alias Rules Body": "Alias names are 4-32 characters (lowercase letters, digits, dots, hyphens, underscores) and first-come, first-served. Common words such as admin, support or info are reserved. If your plan is downgraded, your oldest aliases stay active and the rest are paused (not deleted) until you upgrade again. A deleted alias is quarantined for 90 days before anyone else can claim it.",
     "This alias is already taken.": "This alias is already taken.",
     "This alias name is reserved.": "This alias name is reserved.",
     "This alias was recently released and is temporarily unavailable.": "This alias was recently released and is temporarily unavailable.",
-    "Alias name must be at least 3 characters.": "Alias name must be at least 3 characters.",
     "Alias name must be at most 32 characters.": "Alias name must be at most 32 characters.",
     "Alias name may only contain lowercase letters, digits, dots, hyphens and underscores, and must start and end with a letter or digit.": "Alias name may only contain lowercase letters, digits, dots, hyphens and underscores, and must start and end with a letter or digit.",
     "Alias name cannot contain consecutive dots.": "Alias name cannot contain consecutive dots.",
@@ -265,7 +264,8 @@
     "Alias deletion failed. Please try again later.": "Alias deletion failed. Please try again later.",
     "Failed to send the verification email. Please try again.": "Failed to send the verification email. Please try again.",
     "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.",
-    "Free Option": "✨ Completely free during our trial period!"
+    "Free Option": "✨ Completely free during our trial period!",
+    "Alias name must be at least 4 characters.": "Alias name must be at least 4 characters."
   },
   "zh_TW": {
     "Promo Banner": "🎉 優惠期間:註冊即免費體驗Lite方案",
@@ -510,11 +510,10 @@
     "FAQ Shared Alias Body 1": "Saltycat 別名信箱是我們共用網域上的現成地址，例如 <strong>jack.chen@saltycat.tw</strong>，郵件會轉寄到您自己的信箱，完全不需要擁有網域。可用來註冊各種服務、印在名片上，或保護真實信箱不外流。所有方案皆內含別名：Lite 1 個、Starter 10 個、Pro 50 個。",
     "FAQ Shared Alias Body 2": "回信方式與上方 Q5 的「回覆別名」機制完全相同：在您的信箱按下「回覆」，收件人就會收到以您的 Saltycat 別名寄出的信，且對話串保持完整。系統僅接受來自已驗證轉寄信箱的回信。",
     "FAQ Shared Alias Rules Title": "小提醒",
-    "FAQ Shared Alias Rules Body": "別名長度為 3–32 字元（小寫英文、數字、點、連字號、底線），先搶先贏。admin、support、info 等常見字詞為保留字。若方案降級，最早建立的別名會維持啟用，其餘僅暫停（不會刪除），升級後即恢復。刪除的別名會保留 90 天，期間他人無法註冊。",
+    "FAQ Shared Alias Rules Body": "別名長度為 4–32 字元（小寫英文、數字、點、連字號、底線），先搶先贏。admin、support、info 等常見字詞為保留字。若方案降級，最早建立的別名會維持啟用，其餘僅暫停（不會刪除），升級後即恢復。刪除的別名會保留 90 天，期間他人無法註冊。",
     "This alias is already taken.": "此別名已被使用。",
     "This alias name is reserved.": "此別名為系統保留字。",
     "This alias was recently released and is temporarily unavailable.": "此別名最近才被釋出，目前暫時無法註冊。",
-    "Alias name must be at least 3 characters.": "別名至少需 3 個字元。",
     "Alias name must be at most 32 characters.": "別名最多 32 個字元。",
     "Alias name may only contain lowercase letters, digits, dots, hyphens and underscores, and must start and end with a letter or digit.": "別名僅能包含小寫英文、數字、點、連字號與底線，且必須以字母或數字開頭與結尾。",
     "Alias name cannot contain consecutive dots.": "別名不能包含連續的點。",
@@ -533,7 +532,8 @@
     "Alias deletion failed. Please try again later.": "別名刪除失敗，請稍後再試。",
     "Failed to send the verification email. Please try again.": "驗證信寄送失敗，請再試一次。",
     "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "這是 Saltycat 的共用網域，請改從「Saltycat 別名信箱」面板建立別名。",
-    "Free Option": "✨ 試營運期完全免費！"
+    "Free Option": "✨ 試營運期完全免費！",
+    "Alias name must be at least 4 characters.": "別名至少需 4 個字元。"
   },
   "jp_JP": {
     "Saltycat Mailservice": "きまぐれ猫メール",
@@ -777,11 +777,10 @@
     "FAQ Shared Alias Body 1": "Saltycat エイリアスは、共有ドメイン上のすぐに使えるアドレス（例: <strong>jack.chen@saltycat.tw</strong>）で、お使いの受信箱に転送されます。独自ドメインは不要です。サービス登録や名刺、本来のアドレスの保護などにご利用ください。全プランにエイリアスが含まれます：Lite 1 個、Starter 10 個、Pro 50 個。",
     "FAQ Shared Alias Body 2": "返信方法は上記 Q5 の返信エイリアスと同じです。受信箱で「返信」を押すと、相手には Saltycat エイリアスからのメールとして届き、スレッドも維持されます。返信は認証済みの転送先メールボックスからのみ受け付けます。",
     "FAQ Shared Alias Rules Title": "ご注意",
-    "FAQ Shared Alias Rules Body": "エイリアス名は 3〜32 文字（小文字英字・数字・ドット・ハイフン・アンダースコア）で早い者勝ちです。admin、support、info などの一般的な語は予約済みです。プランをダウングレードした場合、古いエイリアスから有効のまま残り、超過分は削除されずに一時停止となり、再アップグレードで復活します。削除したエイリアスは 90 日間保護され、他の人は取得できません。",
+    "FAQ Shared Alias Rules Body": "エイリアス名は 4〜32 文字（小文字英字・数字・ドット・ハイフン・アンダースコア）で早い者勝ちです。admin、support、info などの一般的な語は予約済みです。プランをダウングレードした場合、古いエイリアスから有効のまま残り、超過分は削除されずに一時停止となり、再アップグレードで復活します。削除したエイリアスは 90 日間保護され、他の人は取得できません。",
     "This alias is already taken.": "このエイリアスは既に使用されています。",
     "This alias name is reserved.": "このエイリアス名は予約済みです。",
     "This alias was recently released and is temporarily unavailable.": "このエイリアスは最近解放されたため、一時的に利用できません。",
-    "Alias name must be at least 3 characters.": "エイリアス名は 3 文字以上必要です。",
     "Alias name must be at most 32 characters.": "エイリアス名は 32 文字以内にしてください。",
     "Alias name may only contain lowercase letters, digits, dots, hyphens and underscores, and must start and end with a letter or digit.": "エイリアス名に使えるのは小文字英字・数字・ドット・ハイフン・アンダースコアのみで、先頭と末尾は英数字にしてください。",
     "Alias name cannot contain consecutive dots.": "エイリアス名に連続したドットは使えません。",
@@ -800,7 +799,8 @@
     "Alias deletion failed. Please try again later.": "エイリアスの削除に失敗しました。後でもう一度お試しください。",
     "Failed to send the verification email. Please try again.": "認証メールの送信に失敗しました。もう一度お試しください。",
     "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "これは Saltycat の共有ドメインです。「Saltycat エイリアス」パネルからエイリアスを作成してください。",
-    "Free Option": "✨ 試験運用期間中は完全無料！"
+    "Free Option": "✨ 試験運用期間中は完全無料！",
+    "Alias name must be at least 4 characters.": "エイリアス名は 4 文字以上必要です。"
   },
   "kr_KR": {
     "Promo Banner": "🎉 이벤트 기간: 가입 즉시 Lite 요금제 무료 체험 제공",
@@ -1043,11 +1043,10 @@
     "FAQ Shared Alias Body 1": "Saltycat 별칭은 공유 도메인에서 바로 사용할 수 있는 주소(예: <strong>jack.chen@saltycat.tw</strong>)로, 내 메일함으로 전달됩니다. 도메인이 필요 없습니다. 서비스 가입, 명함, 실제 주소 보호 등에 활용하세요. 모든 요금제에 별칭이 포함됩니다: Lite 1개, Starter 10개, Pro 50개.",
     "FAQ Shared Alias Body 2": "답장 방식은 위 Q5의 답장 별칭과 동일합니다. 메일함에서 답장을 누르면 받는 사람에게 Saltycat 별칭으로 보낸 메일이 도착하고 대화 스레드도 유지됩니다. 답장은 인증된 전달 메일함에서만 허용됩니다.",
     "FAQ Shared Alias Rules Title": "알아두세요",
-    "FAQ Shared Alias Rules Body": "별칭 이름은 3~32자(소문자, 숫자, 점, 하이픈, 밑줄)이며 선착순입니다. admin, support, info 등 일반적인 단어는 예약되어 있습니다. 요금제를 다운그레이드하면 가장 오래된 별칭은 유지되고 나머지는 삭제되지 않고 일시중지되며, 다시 업그레이드하면 복구됩니다. 삭제한 별칭은 90일간 보호되어 다른 사람이 등록할 수 없습니다.",
+    "FAQ Shared Alias Rules Body": "별칭 이름은 4~32자(소문자, 숫자, 점, 하이픈, 밑줄)이며 선착순입니다. admin, support, info 등 일반적인 단어는 예약되어 있습니다. 요금제를 다운그레이드하면 가장 오래된 별칭은 유지되고 나머지는 삭제되지 않고 일시중지되며, 다시 업그레이드하면 복구됩니다. 삭제한 별칭은 90일간 보호되어 다른 사람이 등록할 수 없습니다.",
     "This alias is already taken.": "이미 사용 중인 별칭입니다.",
     "This alias name is reserved.": "이 별칭 이름은 예약되어 있습니다.",
     "This alias was recently released and is temporarily unavailable.": "이 별칭은 최근 해제되어 일시적으로 사용할 수 없습니다.",
-    "Alias name must be at least 3 characters.": "별칭 이름은 3자 이상이어야 합니다.",
     "Alias name must be at most 32 characters.": "별칭 이름은 32자 이하여야 합니다.",
     "Alias name may only contain lowercase letters, digits, dots, hyphens and underscores, and must start and end with a letter or digit.": "별칭 이름은 소문자, 숫자, 점, 하이픈, 밑줄만 사용할 수 있으며 영숫자로 시작하고 끝나야 합니다.",
     "Alias name cannot contain consecutive dots.": "별칭 이름에 연속된 점을 사용할 수 없습니다.",
@@ -1066,6 +1065,7 @@
     "Alias deletion failed. Please try again later.": "별칭 삭제에 실패했습니다. 나중에 다시 시도해 주세요.",
     "Failed to send the verification email. Please try again.": "인증 메일 전송에 실패했습니다. 다시 시도해 주세요.",
     "This is a Saltycat shared domain. Create an alias on it from the Saltycat Aliases panel instead.": "이 도메인은 Saltycat 공유 도메인입니다. 'Saltycat 별칭' 패널에서 별칭을 만들어 주세요.",
-    "Free Option": "✨ 시범 운영 기간 동안 완전 무료!"
+    "Free Option": "✨ 시범 운영 기간 동안 완전 무료!",
+    "Alias name must be at least 4 characters.": "별칭 이름은 4자 이상이어야 합니다."
   }
 }

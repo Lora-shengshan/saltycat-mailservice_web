@@ -2519,7 +2519,7 @@
                 clearTimeout(aliasAvailabilityTimer);
                 hint.innerText = "";
                 hint.className = "text-[10px] block mt-1 h-3 text-slate-500";
-                if (value.length < 3 || !userToken) return;
+                if (value.length < 4 || !userToken) return;
                 aliasAvailabilityTimer = setTimeout(async () => {
                     try {
                         const res = await fetch(`${BACKEND_URL}/api/aliases/availability?prefix=${encodeURIComponent(value)}`, {
