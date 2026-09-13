@@ -15,7 +15,7 @@
     <!-- SweetAlert2 for modern dialogs -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- L10N Native Localization Engine -->
-    <script src="i18n.js?v=4"></script>
+    <script src="i18n.js?v=5"></script>
     <style>
         .l10n-loading [data-i18n] { opacity: 0; }
         [data-i18n] { transition: opacity 0.15s ease-in-out; }
@@ -305,6 +305,7 @@
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center" data-i18n="1 Custom Domain"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>1 個</strong> 自訂域名綁定</li>
                             <li class="flex items-center" data-i18n="2 Mappings"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 組</strong> email郵件轉寄 (Mappings)</li>
+                            <li class="flex items-center" data-i18n="1 Saltycat Alias"><i class="fa-solid fa-cat text-amber-400 mr-2"></i> <strong>1</strong> @saltycat.tw alias (no domain needed)</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
                             <li class="flex items-center text-slate-500"><i class="fa-solid fa-xmark mr-2.5"></i> <span data-i18n="No Catchall">Catch-all 萬用轉寄</span></li>
                         </ul>
@@ -338,6 +339,7 @@
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center" data-i18n="2 Custom Domains"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2 個</strong> 自訂域名綁定</li>
                             <li class="flex items-center" data-i18n="20 Mappings"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 組</strong> email郵件轉寄</li>
+                            <li class="flex items-center" data-i18n="10 Saltycat Aliases"><i class="fa-solid fa-cat text-amber-400 mr-2"></i> <strong>10</strong> @saltycat.tw aliases (no domain needed)</li>
                             <li class="flex items-center font-bold text-white" data-i18n="Catchall Support"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
                             <li class="flex items-center font-bold text-emerald-400" data-i18n="Configure Gmail Outbound"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 可設定 Gmail 送信 email！</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
@@ -369,6 +371,7 @@
                         <ul class="space-y-3.5 text-xs text-slate-300 border-t border-slate-800 pt-6">
                             <li class="flex items-center" data-i18n="20 Custom Domains"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>20 個</strong> 自訂網域綁定</li>
                             <li class="flex items-center" data-i18n="2000 Mappings"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <strong>2000 組</strong> email郵件轉寄</li>
+                            <li class="flex items-center" data-i18n="50 Saltycat Aliases"><i class="fa-solid fa-cat text-amber-400 mr-2"></i> <strong>50</strong> @saltycat.tw aliases (no domain needed)</li>
                             <li class="flex items-center" data-i18n="Catchall Support"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> 支援 Catch-all 萬用收件 (一起轉寄到同個信箱)</li>
                             <li class="flex items-center font-bold text-emerald-400" data-i18n="Configure Gmail Outbound"><i class="fa-solid fa-circle-check text-indigo-400 mr-2"></i> 可設定 Gmail 送信 email！</li>
                             <li class="flex items-center"><i class="fa-solid fa-check text-indigo-400 mr-2"></i> <span data-i18n="Unlimited Emails">信件數量無上限</span> <i onclick="showFairUseInfo()" class="fa-solid fa-circle-info text-slate-500 hover:text-indigo-400 cursor-pointer ml-1 text-[11px]" title="公平使用原則"></i></li>
@@ -524,6 +527,55 @@
                                         <td colspan="4" class="py-6 text-center text-xs text-slate-500" data-i18n="No email mapping rules configured yet.">尚未建立任何轉寄對照。</td>
                                     </tr>
                                 </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Saltycat Shared Aliases Card (shared_alias_development_plan.md Phase 3) -->
+                    <div id="aliases-card" class="glass-panel rounded-3xl p-6 shadow-xl space-y-6 hidden">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-2 text-white">
+                                <i class="fa-solid fa-cat text-amber-400 text-lg"></i>
+                                <h3 class="text-lg font-bold" data-i18n="Alias Step Title">3. Saltycat Aliases (no domain needed)</h3>
+                            </div>
+                            <span id="alias-quota-indicator" class="text-xs font-semibold text-slate-500">0 / 1</span>
+                        </div>
+                        <p class="text-xs text-slate-400" data-i18n="Alias Step Desc">Don't have your own domain? Create a <strong>name@saltycat.tw</strong> address that forwards to your mailbox. Reply from your inbox and the recipient sees your alias as the sender.</p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                            <div class="md:col-span-5">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5" data-i18n="Alias Name Label">Alias name</label>
+                                <div class="flex items-stretch">
+                                    <input id="alias-prefix" type="text" placeholder="e.g., jack.chen" data-i18n-placeholder="e.g., jack.chen" autocomplete="off" class="flex-1 min-w-0 bg-slate-950/50 border border-slate-800 focus:border-amber-500 rounded-l-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-amber-500 transition">
+                                    <span id="alias-domain-suffix" class="inline-flex items-center bg-slate-900 border border-l-0 border-slate-800 rounded-r-xl px-3 text-sm text-amber-400 font-mono font-bold">@saltycat.tw</span>
+                                </div>
+                                <span id="alias-availability" class="text-[10px] block mt-1 h-3 text-slate-500"></span>
+                            </div>
+                            <div class="md:col-span-5">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5" data-i18n="Alias Target Label">Forward to your mailbox</label>
+                                <input id="alias-target" type="email" placeholder="e.g., yourname@gmail.com" data-i18n-placeholder="e.g., yourname@gmail.com" class="w-full bg-slate-950/50 border border-slate-800 focus:border-amber-500 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:ring-1 focus:ring-amber-500 transition">
+                                <span class="text-[9px] text-slate-500 block mt-1 h-3"></span>
+                            </div>
+                            <div class="md:col-span-2">
+                                <button id="alias-create-btn" onclick="handleCreateAlias()" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 px-4 rounded-xl text-sm transition flex items-center justify-center space-x-1.5 shadow-lg shadow-amber-600/10">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <span data-i18n="Create Alias">Create</span>
+                                </button>
+                                <span class="text-[9px] text-slate-500 block mt-1 h-3"></span>
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-slate-800">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="Alias Address">Alias</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider"></th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-xs font-bold text-slate-400 uppercase tracking-wider" data-i18n="Destination Gmail">轉寄目標信箱</th>
+                                        <th scope="col" class="relative py-3.5 pl-3 pr-4 text-right"><span class="sr-only">actions</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="aliases-table-body" class="divide-y divide-slate-800 bg-slate-900/40"></tbody>
                             </table>
                         </div>
                     </div>
@@ -1214,6 +1266,7 @@
                 
                 await fetchDomains();
                 await fetchMappings();
+                await fetchAliases();
                 showSection("dashboard-section");
             } else {
                 userUid = "";
@@ -2365,6 +2418,255 @@
             });
         }
 
+        // ================= SALTYCAT SHARED ALIASES (shared_alias_development_plan.md Phase 3) =================
+        let aliasState = { enabled: false, domain_name: "saltycat.tw", used: 0, limit: 1, aliases: [] };
+        let aliasAvailabilityTimer = null;
+
+        function aliasErrorText(err) {
+            // Backend returns English detail strings; translate when a key exists.
+            const d = (err && err.detail) ? (typeof err.detail === "string" ? err.detail : JSON.stringify(err.detail)) : "";
+            return d ? t(d) : t("Unexpected error. Please try again later.");
+        }
+
+        async function fetchAliases() {
+            const card = document.getElementById("aliases-card");
+            if (!card || isGuestMode || !userToken) return;
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/aliases`, { headers: { "Authorization": `Bearer ${userToken}` } });
+                if (!res.ok) { card.classList.add("hidden"); return; }
+                aliasState = await res.json();
+                if (!aliasState.enabled) { card.classList.add("hidden"); return; }
+                card.classList.remove("hidden");
+                document.getElementById("alias-domain-suffix").innerText = `@${aliasState.domain_name}`;
+                renderAliases();
+            } catch (e) {
+                console.warn("fetchAliases failed", e);
+                card.classList.add("hidden");
+            }
+        }
+
+        function renderAliases() {
+            const body = document.getElementById("aliases-table-body");
+            const quota = document.getElementById("alias-quota-indicator");
+            const createBtn = document.getElementById("alias-create-btn");
+            const list = aliasState.aliases || [];
+            const atQuota = list.length >= aliasState.limit;
+            quota.innerText = `${list.length} / ${aliasState.limit} ${t("Aliases")}`;
+            quota.classList.toggle("text-amber-400", atQuota);
+
+            if (createBtn) {
+                createBtn.disabled = false;
+                createBtn.classList.toggle("opacity-60", atQuota);
+            }
+
+            if (list.length === 0) {
+                body.innerHTML = `
+                    <tr>
+                        <td colspan="4" class="py-8 text-center text-xs text-slate-500">
+                            <i class="fa-solid fa-cat text-xl block mb-2 opacity-30"></i> ${t("No Saltycat aliases yet.")}
+                        </td>
+                    </tr>`;
+                return;
+            }
+
+            body.innerHTML = "";
+            list.forEach(a => {
+                let badge;
+                if (a.status === "verified") {
+                    badge = `<span class="inline-flex items-center rounded-md bg-emerald-500/10 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 ring-1 ring-inset ring-emerald-500/30">${t("Verified Active")}</span>`;
+                } else if (a.status === "over_quota") {
+                    badge = `<span class="inline-flex items-center rounded-md bg-slate-500/10 px-2 py-0.5 text-[10px] font-semibold text-slate-400 ring-1 ring-inset ring-slate-500/30" title="${t("Alias Paused Hint")}">${t("Paused (over quota)")}</span>`;
+                } else if (a.status === "disabled") {
+                    badge = `<span class="inline-flex items-center rounded-md bg-rose-500/10 px-2 py-0.5 text-[10px] font-semibold text-rose-400 ring-1 ring-inset ring-rose-500/30">${t("Disabled")}</span>`;
+                } else {
+                    badge = `<span class="inline-flex items-center rounded-md bg-amber-500/10 px-2 py-0.5 text-[10px] font-semibold text-amber-400 ring-1 ring-inset ring-amber-500/30">${t("Pending Verification")}</span>`;
+                }
+                const verifyBtn = a.status === "pending_verification"
+                    ? `<button onclick="promptAliasVerification('${a.prefix}', '${a.target_gmail}', true)" class="text-[11px] bg-amber-600/15 border border-amber-500/20 text-amber-400 py-1.5 px-3 rounded-lg hover:bg-amber-600 hover:text-white transition duration-150 mr-2">
+                        <i class="fa-solid fa-envelope-shield mr-1"></i>${t("Verify Email")}
+                       </button>` : "";
+                body.innerHTML += `
+                    <tr class="hover:bg-slate-800/20 transition">
+                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-semibold text-slate-200 font-mono">
+                            ${a.prefix}<span class="text-amber-500/70">@${a.domain_name}</span>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-xs text-slate-500 text-center">
+                            <i class="fa-solid fa-arrow-right-long text-slate-700"></i>
+                        </td>
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-indigo-400 font-mono">
+                            <div class="flex items-center space-x-3">
+                                <span>${a.target_gmail}</span>
+                                ${badge}
+                            </div>
+                        </td>
+                        <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium">
+                            ${verifyBtn}
+                            <button onclick="handleDeleteAlias('${a.prefix}')" class="text-rose-400 hover:text-rose-300 transition duration-150 font-medium">
+                                <i class="fa-solid fa-trash-can"></i> ${t("Delete")}
+                            </button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        // Debounced live availability check on the prefix input
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("alias-prefix");
+            if (!input) return;
+            input.addEventListener("input", () => {
+                const hint = document.getElementById("alias-availability");
+                const value = input.value.trim().toLowerCase();
+                clearTimeout(aliasAvailabilityTimer);
+                hint.innerText = "";
+                hint.className = "text-[10px] block mt-1 h-3 text-slate-500";
+                if (value.length < 3 || !userToken) return;
+                aliasAvailabilityTimer = setTimeout(async () => {
+                    try {
+                        const res = await fetch(`${BACKEND_URL}/api/aliases/availability?prefix=${encodeURIComponent(value)}`, {
+                            headers: { "Authorization": `Bearer ${userToken}` }
+                        });
+                        if (!res.ok) return;
+                        const data = await res.json();
+                        if (data.available) {
+                            hint.innerText = `✓ ${t("Available")}`;
+                            hint.className = "text-[10px] block mt-1 h-3 text-emerald-400";
+                        } else {
+                            hint.innerText = `✕ ${t(data.reason || "This alias is already taken.")}`;
+                            hint.className = "text-[10px] block mt-1 h-3 text-rose-400";
+                        }
+                    } catch (e) { /* ignore */ }
+                }, 450);
+            });
+        });
+
+        async function handleCreateAlias() {
+            const prefixInput = document.getElementById("alias-prefix");
+            const targetInput = document.getElementById("alias-target");
+            const prefix = prefixInput.value.trim().toLowerCase();
+            const target = targetInput.value.trim().toLowerCase();
+
+            if (!prefix || !target) {
+                Swal.fire({ icon: "warning", title: t("Missing Fields"), text: t("Please enter an alias name and a forwarding target.") });
+                return;
+            }
+            if ((aliasState.aliases || []).length >= aliasState.limit) {
+                Swal.fire({
+                    icon: "info",
+                    title: t("Alias Limit Reached"),
+                    html: t("Alias Limit Body", { used: aliasState.aliases.length, limit: aliasState.limit, plan: (aliasState.tier || "lite").toUpperCase() }),
+                    showCancelButton: true,
+                    confirmButtonText: t("View Plans"),
+                    cancelButtonText: t("Close")
+                }).then(r => { if (r.isConfirmed) showSection("pricing-section"); });
+                return;
+            }
+
+            Swal.fire({ title: t("Creating alias..."), didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/aliases/create`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${userToken}` },
+                    body: JSON.stringify({ prefix, target_gmail: target })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    Swal.fire({ icon: "error", title: t("Alias Creation Failed"), text: aliasErrorText(data) });
+                    return;
+                }
+                prefixInput.value = "";
+                targetInput.value = "";
+                document.getElementById("alias-availability").innerText = "";
+                await fetchAliases();
+                promptAliasVerification(prefix, target, false);
+            } catch (e) {
+                Swal.fire({ icon: "error", title: t("Network Error"), text: e.message });
+            }
+        }
+
+        async function promptAliasVerification(prefix, target, resendFirst) {
+            if (resendFirst) {
+                Swal.fire({ title: t("Sending code..."), didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+                try {
+                    const res = await fetch(`${BACKEND_URL}/api/aliases/resend`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json", "Authorization": `Bearer ${userToken}` },
+                        body: JSON.stringify({ prefix })
+                    });
+                    if (!res.ok) {
+                        Swal.fire({ icon: "error", title: t("Resend Failed"), text: aliasErrorText(await res.json()) });
+                        return;
+                    }
+                } catch (e) {
+                    Swal.fire({ icon: "error", title: t("Network Error"), text: e.message });
+                    return;
+                }
+            }
+            const { value: code } = await Swal.fire({
+                title: t("Enter Verification Code"),
+                html: t("Alias Code Sent Body", { target: target, alias: `${prefix}@${aliasState.domain_name}` }),
+                input: "text",
+                inputAttributes: { maxlength: 6, autocapitalize: "off", autocorrect: "off", inputmode: "numeric" },
+                inputPlaceholder: "123456",
+                showCancelButton: true,
+                confirmButtonText: t("Verify"),
+                cancelButtonText: t("Later"),
+                inputValidator: (v) => (!v || !/^\d{6}$/.test(v.trim())) ? t("Please enter the 6-digit code.") : null
+            });
+            if (!code) return;
+            Swal.fire({ title: t("Verifying..."), didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/aliases/verify`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${userToken}` },
+                    body: JSON.stringify({ prefix, code: code.trim() })
+                });
+                const data = await res.json();
+                if (!res.ok) {
+                    Swal.fire({ icon: "error", title: t("Verification Failed"), text: aliasErrorText(data) })
+                        .then(() => promptAliasVerification(prefix, target, false));
+                    return;
+                }
+                await fetchAliases();
+                Swal.fire({
+                    icon: "success",
+                    title: t("Alias Activated!"),
+                    html: t("Alias Activated Body", { alias: `${prefix}@${aliasState.domain_name}`, target: target }),
+                    confirmButtonText: t("Close")
+                });
+            } catch (e) {
+                Swal.fire({ icon: "error", title: t("Network Error"), text: e.message });
+            }
+        }
+
+        async function handleDeleteAlias(prefix) {
+            const alias = `${prefix}@${aliasState.domain_name}`;
+            const result = await Swal.fire({
+                title: t("Delete this alias?"),
+                html: t("Delete Alias Body", { alias: alias }),
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                confirmButtonText: t("Delete"),
+                cancelButtonText: t("Cancel")
+            });
+            if (!result.isConfirmed) return;
+            Swal.fire({ title: t("Deleting..."), didOpen: () => Swal.showLoading(), allowOutsideClick: false });
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/aliases/${encodeURIComponent(prefix)}`, {
+                    method: "DELETE",
+                    headers: { "Authorization": `Bearer ${userToken}` }
+                });
+                if (res.ok) {
+                    await fetchAliases();
+                    Swal.fire({ icon: "success", title: t("Alias Deleted"), text: t("Mail to this alias will no longer be forwarded.") });
+                } else {
+                    Swal.fire({ icon: "error", title: t("Deletion Failed"), text: aliasErrorText(await res.json()) });
+                }
+            } catch (e) {
+                Swal.fire({ icon: "error", title: t("Network Error"), text: e.message });
+            }
+        }
+
         // Upgrade modals (Phase 6.4)
         function openUpgradeModal() {
             document.getElementById("upgrade-modal").classList.remove("hidden");
@@ -2753,6 +3055,7 @@
                     // Refresh data and load dashboard
                     await fetchDomains();
                     await fetchMappings();
+                    await fetchAliases();
                     showSection("dashboard-section");
                 } else {
                     const err = await res.json();
@@ -3230,6 +3533,8 @@
                 const expiryDate = profile.tier_end_date && profile.tier_end_date !== "無" ? profile.tier_end_date : t("No Expiry");
                 if (expiryEl) expiryEl.innerText = t("Dropdown Expiry", { date: expiryDate });
             }
+            // Re-render dynamic alias rows in the new language
+            if (typeof renderAliases === "function" && aliasState && aliasState.enabled) renderAliases();
         });
 
         // NewebPay integration
