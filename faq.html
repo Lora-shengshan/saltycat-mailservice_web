@@ -10,7 +10,7 @@
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- L10N Native Localization Engine -->
-    <script src="i18n.js?v=4"></script>
+    <script src="i18n.js?v=5"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap');
         body {
@@ -271,6 +271,26 @@
                                 <div class="bg-amber-950/40 border border-amber-500/20 p-4 rounded-xl">
                                     <p class="text-[11px] text-amber-300 font-bold" data-i18n="FAQ Reply Alias Action Title">Important one-time action</p>
                                     <p class="text-[10px] text-slate-400 leading-relaxed mt-1" data-i18n="FAQ Reply Alias Action Body">Please remove your old Gmail "Send mail as" configuration (Gmail Settings &gt; Accounts &gt; "Send mail as"). Replies sent through the old Send-As identity will NOT be delivered by the Reply Alias system.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q6: Saltycat shared aliases -->
+                <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-xl">
+                    <div class="flex items-start space-x-3">
+                        <div class="bg-amber-500/10 p-2 rounded-xl text-amber-400 mt-0.5">
+                            <i class="fa-solid fa-cat"></i>
+                        </div>
+                        <div class="space-y-2">
+                            <h3 class="text-base font-bold text-white" data-i18n="FAQ Shared Alias Title">Q6. What is a Saltycat alias (name@saltycat.tw) and how do I reply from it?</h3>
+                            <div class="text-xs text-slate-300 leading-relaxed space-y-2">
+                                <p data-i18n="FAQ Shared Alias Body 1">A Saltycat alias is a ready-made address on our shared domain, e.g. <strong>jack.chen@saltycat.tw</strong>, that forwards to your own mailbox. You do not need to own a domain. Use it to sign up for services, share on business cards, or keep your real address private. Every plan includes aliases: Lite 1, Starter 10, Pro 50.</p>
+                                <p data-i18n="FAQ Shared Alias Body 2">Replying works exactly like the Reply Alias system above (Q5): press Reply in your mailbox, and the recipient receives your message from your Saltycat alias with the conversation thread intact. Replies are only accepted from the verified forwarding mailbox.</p>
+                                <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl">
+                                    <p class="text-[11px] text-slate-300 font-bold" data-i18n="FAQ Shared Alias Rules Title">Good to know</p>
+                                    <p class="text-[10px] text-slate-400 leading-relaxed mt-1" data-i18n="FAQ Shared Alias Rules Body">Alias names are 3-32 characters (lowercase letters, digits, dots, hyphens, underscores) and first-come, first-served. Common words such as admin, support or info are reserved. If your plan is downgraded, your oldest aliases stay active and the rest are paused (not deleted) until you upgrade again. A deleted alias is quarantined for 90 days before anyone else can claim it.</p>
                                 </div>
                             </div>
                         </div>
